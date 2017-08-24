@@ -136,6 +136,83 @@ namespace RapidP1
             }
 
 
+            // Check the device for Player One
+            GamePadCapabilities capabilities1 = GamePad.GetCapabilities(PlayerIndex.One);
+
+            if (capabilities1.IsConnected)
+            {
+                // Get the current state of Controller1
+                GamePadState state = GamePad.GetState(PlayerIndex.One);
+
+                // You can check explicitly if a gamepad has support for a certain feature
+                if (capabilities1.HasLeftXThumbStick)
+                    {
+                        // Check teh direction in X axis of left analog stick
+                    if (state.ThumbSticks.Left.X < -0.5f)
+                            ball1Pos.X -= 10.0f;
+                        if (state.ThumbSticks.Left.X > 0.5f)
+                            ball1Pos.X += 10.0f;
+                    }
+            }
+
+
+            // Check the device for Player Two
+            GamePadCapabilities capabilities2 = GamePad.GetCapabilities(PlayerIndex.Two);
+
+            if (capabilities2.IsConnected)
+            {
+                // Get the current state of Controller1
+                GamePadState state = GamePad.GetState(PlayerIndex.Two);
+
+                // You can check explicitly if a gamepad has support for a certain feature
+                if (capabilities2.HasLeftXThumbStick)
+                {
+                    // Check teh direction in X axis of left analog stick
+                    if (state.ThumbSticks.Left.X < -0.5f)
+                        ball2Pos.X -= 10.0f;
+                    if (state.ThumbSticks.Left.X > 0.5f)
+                        ball2Pos.X += 10.0f;
+                }
+            }
+
+            // Check the device for Player Three
+            //GamePadCapabilities capabilities3 = GamePad.GetCapabilities(PlayerIndex.Three);
+
+            //if (capabilities3.IsConnected)
+            //{
+            //    // Get the current state of Controller1
+            //    GamePadState state = GamePad.GetState(PlayerIndex.Three);
+
+            //    // You can check explicitly if a gamepad has support for a certain feature
+            //    if (capabilities3.HasLeftXThumbStick)
+            //    {
+            //        // Check teh direction in X axis of left analog stick
+            //        if (state.ThumbSticks.Left.X < -0.5f)
+            //            ball3Pos.X -= 10.0f;
+            //        if (state.ThumbSticks.Left.X > 0.5f)
+            //            ball3Pos.X += 10.0f;
+            //    }
+            //}
+
+            //Check the device for Player Four
+            //GamePadCapabilities capabilities4 = GamePad.GetCapabilities(PlayerIndex.Four);
+
+            //if (capabilities4.IsConnected)
+            //{
+            //    // Get the current state of Controller1
+            //    GamePadState state = GamePad.GetState(PlayerIndex.Four);
+
+            //    // You can check explicitly if a gamepad has support for a certain feature
+            //    if (capabilities4.HasLeftXThumbStick)
+            //    {
+            //        // Check teh direction in X axis of left analog stick
+            //        if (state.ThumbSticks.Left.X < -0.5f)
+            //            ball4Pos.X -= 10.0f;
+            //        if (state.ThumbSticks.Left.X > 0.5f)
+            //            ball4Pos.X += 10.0f;
+            //    }
+            //}
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
