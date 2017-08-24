@@ -168,7 +168,7 @@ namespace RapidP1
                         ball1Pos.Y += 10.0f;
                 }
 
-                //Player shoot button
+                //Player shoot/dash button
                 if (capabilities1.HasAButton)
                 {
                     //Shoot
@@ -212,7 +212,7 @@ namespace RapidP1
                         ball2Pos.Y += 10.0f;
                 }
 
-                //Player shoot button
+                //Player shoot/Dash button
                 if (capabilities2.HasAButton)
                 {
                     //Shoot
