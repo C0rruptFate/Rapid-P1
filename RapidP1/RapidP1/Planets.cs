@@ -9,7 +9,7 @@ namespace RapidP1
     {
         #region fields
 
-        bool inOrbit = true;
+        bool inOrbit = false;
         Texture2D sprite;
         Rectangle drawRectangle;
         Vector2 velocity;
@@ -27,6 +27,11 @@ namespace RapidP1
         public Rectangle CollisionRectangle
         {
             get { return drawRectangle; }
+        }
+
+        public Vector2 getVelocity
+        {
+            get { return velocity; }
         }
 
         #endregion
@@ -60,7 +65,7 @@ namespace RapidP1
         {
             if (!inOrbit)
             {
-                drawRectangle.X += (int)velocity.X * gameTime.ElapsedGameTime.Milliseconds;
+                drawRectangle.X += (int)velocity.X * gameTime.ElapsedGameTime.Milliseconds;  //Or TotalMilliseconds (need to check)
                 drawRectangle.Y += (int)velocity.Y * gameTime.ElapsedGameTime.Milliseconds;
 
                 velocity.X += acceleration.X * gameTime.ElapsedGameTime.Milliseconds;
