@@ -152,13 +152,22 @@ namespace RapidP1
 
                 // You can check explicitly if a gamepad has support for a certain feature
                 if (capabilities1.HasLeftXThumbStick)
-                    {
-                        // Check teh direction in X axis of left analog stick
+                {
+                    // Check for movement
+                    //Move Left
                     if (state.ThumbSticks.Left.X < -0.5f)
-                            ball1Pos.X -= 10.0f;
-                        if (state.ThumbSticks.Left.X > 0.5f)
-                            ball1Pos.X += 10.0f;
-                    }
+                        ball1Pos.X -= 10.0f;
+                    //Move Right
+                    else if (state.ThumbSticks.Left.X > 0.5f)
+                        ball1Pos.X += 10.0f;
+                    //Move Down
+                    if (state.ThumbSticks.Left.Y < -0.5f)
+                        ball1Pos.Y -= 10.0f;
+                    //Move Up
+                    else if (state.ThumbSticks.Left.Y > -0.5f)
+                        ball1Pos.Y += 10.0f;
+                }
+
             }
 
 
@@ -173,11 +182,19 @@ namespace RapidP1
                 // You can check explicitly if a gamepad has support for a certain feature
                 if (capabilities2.HasLeftXThumbStick)
                 {
-                    // Check teh direction in X axis of left analog stick
+                    // Check for movement
+                    //Move Left
                     if (state.ThumbSticks.Left.X < -0.5f)
                         ball2Pos.X -= 10.0f;
-                    if (state.ThumbSticks.Left.X > 0.5f)
+                    //Move Right
+                    else if (state.ThumbSticks.Left.X > 0.5f)
                         ball2Pos.X += 10.0f;
+                    //Move Down
+                    if (state.ThumbSticks.Left.Y < -0.5f)
+                        ball2Pos.Y -= 10.0f;
+                    //Move Up
+                    else if (state.ThumbSticks.Left.Y > -0.5f)
+                        ball2Pos.Y += 10.0f;
                 }
             }
 
@@ -192,11 +209,19 @@ namespace RapidP1
             //    // You can check explicitly if a gamepad has support for a certain feature
             //    if (capabilities3.HasLeftXThumbStick)
             //    {
-            //        // Check teh direction in X axis of left analog stick
+            //        // Check for movement
+            //        //Move Left
             //        if (state.ThumbSticks.Left.X < -0.5f)
             //            ball3Pos.X -= 10.0f;
-            //        if (state.ThumbSticks.Left.X > 0.5f)
+            //        //Move Right
+            //        else if (state.ThumbSticks.Left.X > 0.5f)
             //            ball3Pos.X += 10.0f;
+            //        //Move Down
+            //        if (state.ThumbSticks.Left.Y < -0.5f)
+            //            ball3Pos.Y -= 10.0f;
+            //        //Move Up
+            //        else if (state.ThumbSticks.Left.Y > -0.5f)
+            //            ball3Pos.Y += 10.0f;
             //    }
             //}
 
@@ -211,11 +236,19 @@ namespace RapidP1
             //    // You can check explicitly if a gamepad has support for a certain feature
             //    if (capabilities4.HasLeftXThumbStick)
             //    {
-            //        // Check teh direction in X axis of left analog stick
+            //        // Check for movement
+            //        //Move Left
             //        if (state.ThumbSticks.Left.X < -0.5f)
             //            ball4Pos.X -= 10.0f;
-            //        if (state.ThumbSticks.Left.X > 0.5f)
+            //        //Move Right
+            //        else if (state.ThumbSticks.Left.X > 0.5f)
             //            ball4Pos.X += 10.0f;
+            //        //Move Down
+            //        if (state.ThumbSticks.Left.Y < -0.5f)
+            //            ball4Pos.Y -= 10.0f;
+            //        //Move Up
+            //        else if (state.ThumbSticks.Left.Y > -0.5f)
+            //            ball4Pos.Y += 10.0f;
             //    }
             //}
 
