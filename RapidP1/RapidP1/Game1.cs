@@ -164,7 +164,7 @@ namespace RapidP1
                     if (state.ThumbSticks.Left.Y < -0.5f)
                         ball1Pos.Y -= 10.0f;
                     //Move Up
-                    else if (state.ThumbSticks.Left.Y > -0.5f)
+                    else if (state.ThumbSticks.Left.Y > 0.5f)
                         ball1Pos.Y += 10.0f;
                 }
 
@@ -193,7 +193,7 @@ namespace RapidP1
                     if (state.ThumbSticks.Left.Y < -0.5f)
                         ball2Pos.Y -= 10.0f;
                     //Move Up
-                    else if (state.ThumbSticks.Left.Y > -0.5f)
+                    else if (state.ThumbSticks.Left.Y > 0.5f)
                         ball2Pos.Y += 10.0f;
                 }
             }
@@ -220,7 +220,7 @@ namespace RapidP1
             //        if (state.ThumbSticks.Left.Y < -0.5f)
             //            ball3Pos.Y -= 10.0f;
             //        //Move Up
-            //        else if (state.ThumbSticks.Left.Y > -0.5f)
+            //        else if (state.ThumbSticks.Left.Y > 0.5f)
             //            ball3Pos.Y += 10.0f;
             //    }
             //}
@@ -247,7 +247,7 @@ namespace RapidP1
             //        if (state.ThumbSticks.Left.Y < -0.5f)
             //            ball4Pos.Y -= 10.0f;
             //        //Move Up
-            //        else if (state.ThumbSticks.Left.Y > -0.5f)
+            //        else if (state.ThumbSticks.Left.Y > 0.5f)
             //            ball4Pos.Y += 10.0f;
             //    }
             //}
