@@ -168,6 +168,21 @@ namespace RapidP1
                         ball1Pos.Y += 10.0f;
                 }
 
+                //Player shoot button
+                if (capabilities1.HasAButton)
+                {
+                    //Shoot
+                    if (state.Buttons.A == ButtonState.Pressed)
+                    {
+                        //[TODO] shoot planet like missle
+                    }
+                    //Dash
+                    if (state.Buttons.X == ButtonState.Pressed)
+                    {
+                        //[TODO] Dash.
+                    }
+                }
+
             }
 
 
@@ -196,6 +211,21 @@ namespace RapidP1
                     else if (state.ThumbSticks.Left.Y > 0.5f)
                         ball2Pos.Y += 10.0f;
                 }
+
+                //Player shoot button
+                if (capabilities2.HasAButton)
+                {
+                    //Shoot
+                    if (state.Buttons.A == ButtonState.Pressed)
+                    {
+                        //[TODO] shoot planet like missle
+                    }
+                    //Dash
+                    if (state.Buttons.X == ButtonState.Pressed)
+                    {
+                        //[TODO] Dash.
+                    }
+                }
             }
 
             // Check the device for Player Three
@@ -223,6 +253,20 @@ namespace RapidP1
             //        else if (state.ThumbSticks.Left.Y > 0.5f)
             //            ball3Pos.Y += 10.0f;
             //    }
+            ////Player shoot button
+            //if (capabilities1.HasAButton)
+            //{
+            //    //Shoot
+            //    if (state.Buttons.A == ButtonState.Pressed)
+            //    {
+            //        //[TODO] shoot planet like missle
+            //    }
+            //    //Dash
+            //    if (state.Buttons.X == ButtonState.Pressed)
+            //    {
+            //        //[TODO] Dash.
+            //    }
+            //}
             //}
 
             //Check the device for Player Four
@@ -250,6 +294,20 @@ namespace RapidP1
             //        else if (state.ThumbSticks.Left.Y > 0.5f)
             //            ball4Pos.Y += 10.0f;
             //    }
+            ////Player shoot button
+            //if (capabilities1.HasAButton)
+            //{
+            //    //Shoot
+            //    if (state.Buttons.A == ButtonState.Pressed)
+            //    {
+            //        //[TODO] shoot planet like missle
+            //    }
+            //    //Dash
+            //    if (state.Buttons.X == ButtonState.Pressed)
+            //    {
+            //        //[TODO] Dash.
+            //    }
+            //}
             //}
 
             // TODO: Add your update logic here
