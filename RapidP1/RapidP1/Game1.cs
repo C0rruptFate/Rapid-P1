@@ -21,6 +21,7 @@ namespace RapidP1
         Vector2 ball1Pos = new Vector2(0, 0);
         Vector2 ball2Pos = new Vector2(0, 0);
         Vector2[] planetPos = new Vector2[5];
+        //Planet p1;
         //Vector2 planet2Pos = new Vector2(0, 0);
 
         public Game1()
@@ -50,6 +51,11 @@ namespace RapidP1
             planetPos[2].Y = ball2Pos.Y + 90f;
             planetPos[3].X = ball1Pos.X + 80f;
             planetPos[3].Y = ball1Pos.Y + 90f;
+
+            //Planet P1 = new Planet(planet,ball1Pos);
+            //Vector2 acceleration = new Vector2(5, 5);
+            //P1.giveAcceleration(acceleration);
+
 
             base.Initialize();
         }
@@ -215,6 +221,8 @@ namespace RapidP1
 
             // TODO: Add your update logic here
 
+            //p1.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -235,6 +243,8 @@ namespace RapidP1
             spriteBatch.Draw(planet, planetPos[1], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(planet, planetPos[3], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(planet1, planetPos[2], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+
+            //p1.Draw();
 
             //spriteBatch.Draw(planet, planet2Pos, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.End();
