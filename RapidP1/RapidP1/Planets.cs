@@ -44,6 +44,7 @@ namespace RapidP1
             drawRectangle = new Rectangle((int)location.X - sprite.Width/2,             //X-coordinate of the rectangle
                                             (int)location.Y - sprite.Height / 2,        //Y-coordinate of the rectangle
                                             sprite.Width, sprite.Height);               //Height and Width of rectangle
+
         }
 
         #endregion
@@ -73,6 +74,9 @@ namespace RapidP1
 
                 acceleration.X -= 0.1f;
                 acceleration.Y -= 0.1f;
+
+                BounceLeftRight();
+                BounceTopBottom();
             }
         }
 
@@ -90,6 +94,46 @@ namespace RapidP1
         {
             //Not implemented yet
             return 0;
+        }
+
+
+        //Functions to limit the planets movement to within the playspace
+
+        private void BounceTopBottom()
+        {
+            if (drawRectangle.Y < 0)
+            {
+                // bounce off top
+                drawRectangle.Y = 0;
+                velocity.Y *= -1;
+                
+            }
+            else if ((drawRectangle.Y + drawRectangle.Height) > WindowHeight)    //Should set up seperate static class for these constants
+            {
+                // bounce off bottom
+                drawRectangle.Y = WindowHeight - drawRectangle.Height;
+                velocity.Y *= -1;
+                
+            }
+        }
+
+        private void BounceLeftRight()
+        {
+            if (drawRectangle.X < 0)
+            {
+                // bounc off left
+                drawRectangle.X = 0;
+                velocity.X *= -1;
+            }
+            else if ((drawRectangle.X + drawRectangle.Width) > WindowWidth)
+            {
+                // bounce off right
+                drawRectangle.X = WindowWidth - drawRectangle.Width;
+                velocity.X *= -1;
+                
+            }
+
+
         }
 
         #endregion
