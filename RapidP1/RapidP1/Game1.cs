@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using System;
+using System.Collections.Generic;
 
 namespace RapidP1
 {
@@ -10,19 +12,20 @@ namespace RapidP1
     /// </summary>
     public class Game1 : Game
     {
-
-        private Texture2D ball;
-        private Texture2D planet;
-        private Texture2D planet1;
+        private Texture2D sun;
+        private static Texture2D planet;
+        private static Texture2D planet1;
         private Texture2D background;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private float screenHeight, screenWidth;
         Vector2 ball1Pos = new Vector2(0, 0);
         Vector2 ball2Pos = new Vector2(0, 0);
-        Vector2[] planetPos = new Vector2[5];
-        //Planet p1;
-        //Vector2 planet2Pos = new Vector2(0, 0);
+        static Vector2[] planetPos = new Vector2[5];
+        Planet p;
+        PlayerControl control;
+
+        List<Planet> planets = new List<Planet>();
 
         public Game1()
         {
@@ -39,8 +42,8 @@ namespace RapidP1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screenHeight = GraphicsDevice.DisplayMode.Height;
-            screenWidth = GraphicsDevice.DisplayMode.Width;
+            screenHeight = GameConstants.WindowHeight;
+            screenWidth = GameConstants.WindowWidth;
             ball1Pos.X = 0;
             ball1Pos.Y = screenHeight / 2;
             ball2Pos.X = screenWidth - 100;
@@ -51,6 +54,8 @@ namespace RapidP1
             planetPos[2].Y = ball2Pos.Y + 90f;
             planetPos[3].X = ball1Pos.X + 80f;
             planetPos[3].Y = ball1Pos.Y + 90f;
+
+            
 
             //Planet P1 = new Planet(planet,ball1Pos);
             //Vector2 acceleration = new Vector2(5, 5);
@@ -72,10 +77,19 @@ namespace RapidP1
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            ball = Content.Load<Texture2D>("ball");
+            sun = Content.Load<Texture2D>("sunP2");
             planet = Content.Load<Texture2D>("planet1");
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
+            p = new Planet(planet, planetPos[1]);
+
+            p2 = new Planet(planet, planetPos[2]);
+
+            planets.Add(p);
+
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet);
+
+
 
 
             // TODO: use this.Content to load your game content here
@@ -100,316 +114,40 @@ namespace RapidP1
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
 
-            if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
+            control.Update(gameTime);
+
+            foreach (Planet planet in planets)
             {
-                ball1Pos.Y -= 5;
-                planetPos[1].Y -= 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100)) //down
-            {
-                ball1Pos.Y += 5;
-                planetPos[1].Y += 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
-            {
-                ball1Pos.X -= 5;
-                planetPos[1].X -= 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100)) //right
-            {
-                ball1Pos.X += 5;
-                planetPos[1].X += 5;
-            }
-            if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
-            {
-                ball2Pos.Y -= 5;
-                planetPos[2].Y -= 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad2) && ball2Pos.Y != (GraphicsDevice.DisplayMode.Height - 100)) //down
-            {
-                ball2Pos.Y += 5;
-                planetPos[2].Y += 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
-            {
-                ball2Pos.X -= 5;
-                planetPos[2].X -= 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad6) && ball2Pos.X != (GraphicsDevice.DisplayMode.Width - 100)) //right
-            {
-                ball2Pos.X += 5;
-                planetPos[2].X += 5;
+                planet.Update(gameTime);
             }
 
-
-            // Check the device for Player One
-            GamePadCapabilities capabilities1 = GamePad.GetCapabilities(PlayerIndex.One);
-
-            if (capabilities1.IsConnected)
+            for (int i = 0; i < planets.Count; i++)
             {
-                // Get the current state of Controller1
-                GamePadState state = GamePad.GetState(PlayerIndex.One);
-
-                // You can check explicitly if a gamepad has support for a certain feature
-                if (capabilities1.HasLeftXThumbStick)
+                for (int j = i + 1; j < planets.Count; j++)
                 {
-                    // Check for movement
-                    //Move Left
-                    if (state.ThumbSticks.Left.X < -0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
-                        ball1Pos.X -= 10.0f;
-                    //Move Right
-                    else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
-                        ball1Pos.X += 10.0f;
-                    //Move Up
-                    if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
-                        ball1Pos.Y += 10.0f;
-                    //Move Down
-                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
-                        ball1Pos.Y -= 10.0f;
-                }
+                    if (!planets[i].InOrbit && !planets[j].InOrbit)
+                    {
+                        CollisionResolutionInfo collsionInfo =
+                            CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                          GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                          planets[i].Velocity, planets[i].DrawRectangle,
+                                                          planets[j].Velocity, planets[j].DrawRectangle
+                                                          );
 
-                //Player 1 Rotation
-                if (capabilities1.HasRightXThumbStick)
-                {
-                    //Rotate Left
-                    if (state.ThumbSticks.Right.X < -0.5f)
-                    {
-                        //[TODO] Rotate Left
-                    }
-                    //Move Right
-                    else if (state.ThumbSticks.Right.X > 0.5f)
-                    {
-                        //[TODO] Rotate Right
-                    }
-                    //Rotate towards Up
-                    if (state.ThumbSticks.Right.Y < -0.5f)
-                    {
-                        //[TODO] Rotate towards Up
-                    }
-                    //Rotate towards Down
-                    else if (state.ThumbSticks.Right.Y > 0.5f)
-                    {
-                        //[TODO] Rotate towards Down
-                    }
-                }
+                        //To detect collison between planet i and planet j 
+                        if (collsionInfo != null)
+                        {
 
-                //Player shoot/dash button
-                if (capabilities1.HasAButton)
-                {
-                    //Shoot
-                    if (state.Buttons.A == ButtonState.Pressed)
-                    {
-                        //[TODO] shoot planet like missle
-                    }
-                    //Dash
-                    if (state.Buttons.X == ButtonState.Pressed)
-                    {
-                        //[TODO] Dash.
-                    }
-                }
+                            planets[i].Velocity = collsionInfo.FirstVelocity;
+                            planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
 
-            }
-            
-            // Check the device for Player Two
-            GamePadCapabilities capabilities2 = GamePad.GetCapabilities(PlayerIndex.Two);
+                            planets[j].Velocity = collsionInfo.SecondVelocity;
+                            planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
 
-            if (capabilities2.IsConnected)
-            {
-                // Get the current state of Controller1
-                GamePadState state = GamePad.GetState(PlayerIndex.Two);
-
-                // You can check explicitly if a gamepad has support for a certain feature
-                if (capabilities2.HasLeftXThumbStick)
-                {
-                    // Check for movement
-                    //Move Left
-                    if (state.ThumbSticks.Left.X < -0.5f && ball2Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
-                        ball2Pos.X -= 10.0f;
-                    //Move Right
-                    else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
-                        ball2Pos.X += 10.0f;
-                    //Move Up
-                    if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
-                        ball2Pos.Y += 10.0f;
-                    //Move Down
-                    else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
-                        ball2Pos.Y -= 10.0f;
-                }
-
-                //Player 2 Rotation
-                if (capabilities2.HasRightXThumbStick)
-                {
-                    //Rotate Left
-                    if (state.ThumbSticks.Right.X < -0.5f)
-                    {
-                        //[TODO] Rotate Left
-                    }
-                    //Move Right
-                    else if (state.ThumbSticks.Right.X > 0.5f)
-                    {
-                        //[TODO] Rotate Right
-                    }
-                    //Rotate towards Up
-                    if (state.ThumbSticks.Right.Y < -0.5f)
-                    {
-                        //[TODO] Rotate towards Up
-                    }
-                    //Rotate towards Down
-                    else if (state.ThumbSticks.Right.Y > 0.5f)
-                    {
-                        //[TODO] Rotate towards Down
-                    }
-                }
-
-                //Player shoot/Dash button
-                if (capabilities2.HasAButton)
-                {
-                    //Shoot
-                    if (state.Buttons.A == ButtonState.Pressed)
-                    {
-                        //[TODO] shoot planet like missle
-                    }
-                    //Dash
-                    if (state.Buttons.X == ButtonState.Pressed)
-                    {
-                        //[TODO] Dash.
+                        }
                     }
                 }
             }
-
-            // Check the device for Player Three
-            //GamePadCapabilities capabilities3 = GamePad.GetCapabilities(PlayerIndex.Three);
-
-            //if (capabilities3.IsConnected)
-            //{
-            //    // Get the current state of Controller1
-            //    GamePadState state = GamePad.GetState(PlayerIndex.Three);
-
-            //    // You can check explicitly if a gamepad has support for a certain feature
-            //    if (capabilities3.HasLeftXThumbStick)
-            //    {
-            //        // Check for movement
-            //        //Move Left
-            //        if (state.ThumbSticks.Left.X < -0.5f)
-            //            ball3Pos.X -= 10.0f;
-            //        //Move Right
-            //        else if (state.ThumbSticks.Left.X > 0.5f)
-            //            ball3Pos.X += 10.0f;
-            //        //Move Down
-            //        if (state.ThumbSticks.Left.Y < -0.5f)
-            //            ball3Pos.Y -= 10.0f;
-            //        //Move Up
-            //        else if (state.ThumbSticks.Left.Y > 0.5f)
-            //            ball3Pos.Y += 10.0f;
-            //    }
-
-            ////Player 3 Rotation
-            //if (capabilities3.HasRightXThumbStick)
-            //{
-            //    //Rotate Left
-            //    if (state.ThumbSticks.Right.X < -0.5f)
-            //    {
-            //        //[TODO] Rotate Left
-            //    }
-            //    //Move Right
-            //    else if (state.ThumbSticks.Right.X > 0.5f)
-            //    {
-            //        //[TODO] Rotate Right
-            //    }
-            //    //Rotate towards Up
-            //    if (state.ThumbSticks.Right.Y < -0.5f)
-            //    {
-            //        //[TODO] Rotate towards Up
-            //    }
-            //    //Rotate towards Down
-            //    else if (state.ThumbSticks.Right.Y > 0.5f)
-            //    {
-            //        //[TODO] Rotate towards Down
-            //    }
-            //}
-            ////Player shoot button
-            //if (capabilities1.HasAButton)
-            //{
-            //    //Shoot
-            //    if (state.Buttons.A == ButtonState.Pressed)
-            //    {
-            //        //[TODO] shoot planet like missle
-            //    }
-            //    //Dash
-            //    if (state.Buttons.X == ButtonState.Pressed)
-            //    {
-            //        //[TODO] Dash.
-            //    }
-            //}
-
-            //Check the device for Player Four
-            //GamePadCapabilities capabilities4 = GamePad.GetCapabilities(PlayerIndex.Four);
-
-            //if (capabilities4.IsConnected)
-            //{
-            //    // Get the current state of Controller1
-            //    GamePadState state = GamePad.GetState(PlayerIndex.Four);
-
-            //    // You can check explicitly if a gamepad has support for a certain feature
-            //    if (capabilities4.HasLeftXThumbStick)
-            //    {
-            //        // Check for movement
-            //        //Move Left
-            //        if (state.ThumbSticks.Left.X < -0.5f)
-            //            ball4Pos.X -= 10.0f;
-            //        //Move Right
-            //        else if (state.ThumbSticks.Left.X > 0.5f)
-            //            ball4Pos.X += 10.0f;
-            //        //Move Down
-            //        if (state.ThumbSticks.Left.Y < -0.5f)
-            //            ball4Pos.Y -= 10.0f;
-            //        //Move Up
-            //        else if (state.ThumbSticks.Left.Y > 0.5f)
-            //            ball4Pos.Y += 10.0f;
-            //    }
-            ////Player 4 Rotation
-            //if (capabilities4.HasRightXThumbStick)
-            //{
-            //    //Rotate Left
-            //    if (state.ThumbSticks.Right.X < -0.5f)
-            //    {
-            //        //[TODO] Rotate Left
-            //    }
-            //    //Move Right
-            //    else if (state.ThumbSticks.Right.X > 0.5f)
-            //    {
-            //        //[TODO] Rotate Right
-            //    }
-            //    //Rotate towards Up
-            //    if (state.ThumbSticks.Right.Y < -0.5f)
-            //    {
-            //        //[TODO] Rotate towards Up
-            //    }
-            //    //Rotate towards Down
-            //    else if (state.ThumbSticks.Right.Y > 0.5f)
-            //    {
-            //        //[TODO] Rotate towards Down
-            //    }
-            //}
-            ////Player shoot button
-            //if (capabilities1.HasAButton)
-            //{
-            //    //Shoot
-            //    if (state.Buttons.A == ButtonState.Pressed)
-            //    {
-            //        //[TODO] shoot planet like missle
-            //    }
-            //    //Dash
-            //    if (state.Buttons.X == ButtonState.Pressed)
-            //    {
-            //        //[TODO] Dash.
-            //    }
-            //}
-            //}
-
-            // TODO: Add your update logic here
-
-            //p1.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -422,22 +160,36 @@ namespace RapidP1
         {
             GraphicsDevice.Clear(Color.White);
 
+            
+
             // TODO: Add your drawing code here
             
             spriteBatch.Begin();
             spriteBatch.Draw(background, new Vector2(0,0),Color.White);
-            spriteBatch.Draw(ball, ball1Pos, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(ball, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(planet, planetPos[1], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(planet, planetPos[3], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(planet1, planetPos[2], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(sun, ball1Pos, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(sun, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(planet, planetPos[1], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(planet, planetPos[3], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(planet1, planetPos[2], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
 
-            //p1.Draw();
+            //p.Draw(spriteBatch);
+            control.Draw(spriteBatch);
 
             //spriteBatch.Draw(planet, planet2Pos, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        //public void Draw(GameTime gameTime, int planetCount)
+        //{
+        //    spriteBatch.Begin();
+        //    while (planetPos[1].X!=ball2Pos.X)
+        //    {
+        //        spriteBatch.Draw(planet, planetPos[planetCount], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+        //        planetPos[planetCount].X += 1;
+        //    }
+        //    spriteBatch.End();
+        //}
     }
 }
