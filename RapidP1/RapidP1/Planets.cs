@@ -29,7 +29,7 @@ namespace RapidP1
             get { return drawRectangle; }
         }
 
-        public Vector2 getVelocity
+        public Vector2 GetVelocity
         {
             get { return velocity; }
         }
@@ -51,7 +51,7 @@ namespace RapidP1
 
         #region public methods
 
-        public void giveAcceleration(Vector2 acceleration)
+        public void GiveAcceleration(Vector2 acceleration)
         {
             this.acceleration.X += acceleration.X;
             this.acceleration.Y += acceleration.Y;
@@ -84,13 +84,13 @@ namespace RapidP1
 
         #region private methods
 
-        private int getVelocityX(int xAcceleration)
+        private int GetVelocityX(int xAcceleration)
         {
             //Not implemented yet
             return 0;
         }
 
-        private int getVelocityY(int yAcceleration)
+        private int GetVelocityY(int yAcceleration)
         {
             //Not implemented yet
             return 0;
@@ -108,10 +108,10 @@ namespace RapidP1
                 velocity.Y *= -1;
                 
             }
-            else if ((drawRectangle.Y + drawRectangle.Height) > WindowHeight)    //Should set up seperate static class for these constants
+            else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WindowHeight)    //Should set up seperate static class for these constants
             {
                 // bounce off bottom
-                drawRectangle.Y = WindowHeight - drawRectangle.Height;
+                drawRectangle.Y = GameConstants.WindowHeight - drawRectangle.Height;
                 velocity.Y *= -1;
                 
             }
@@ -125,10 +125,10 @@ namespace RapidP1
                 drawRectangle.X = 0;
                 velocity.X *= -1;
             }
-            else if ((drawRectangle.X + drawRectangle.Width) > WindowWidth)
+            else if ((drawRectangle.X + drawRectangle.Width) > GameConstants.WindowWidth)
             {
                 // bounce off right
-                drawRectangle.X = WindowWidth - drawRectangle.Width;
+                drawRectangle.X = GameConstants.WindowWidth - drawRectangle.Width;
                 velocity.X *= -1;
                 
             }
