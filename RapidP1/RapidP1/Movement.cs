@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System;
 
 namespace RapidP1
 {
@@ -11,6 +11,10 @@ namespace RapidP1
         Vector2[] planetPos = new Vector2[20];
         Texture2D sunSprite1, planetSprite1;
         Game1 g1 = new Game1();
+        Vector2[] positionOffset = new Vector2[10];
+        //float angle;
+        float[] radius = new float[10];
+        float[] angle = new float[10];
         public void Update(GameTime gameTime)
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -62,6 +66,27 @@ namespace RapidP1
                 ball2Pos.X += 5;
                 planetPos[2].X += 5;
             }
+
+            radius[0] = 120;
+            angle[0] += 0.15f;
+            angle[1] += 0.1f;
+            angle[2] += 0.09f;
+
+
+            for (int i = 1; i < 3; i++)
+            {
+                radius[i] = radius[i - 1] + 50;
+            }
+
+            //angle += 0.03f;
+
+            for (int i = 0; i < 3; i++)
+            {
+                //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
+                positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
+                //positionOffset[i] = new Vector2(0, GameConstants.WindowHeight / 2) + Vector2.Transform(new Vector2(10, 0), Matrix.CreateRotationZ(1.0472f));
+            }
+
 
 
             // Check the device for Player One
@@ -153,10 +178,16 @@ namespace RapidP1
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sunSprite1, ball1Pos,  null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(sunSprite1, ball1Pos,  null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
             for (int i = 0; i < planetPos.Length; i++)
             {
-                spriteBatch.Draw(planetSprite1, planetPos[i],  null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                for (int k = 0; k < 3; k++)
+                {
+                    spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(planetSprite1, ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                }
+                
             }
         }
 
