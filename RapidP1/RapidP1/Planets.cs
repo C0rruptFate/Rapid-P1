@@ -66,14 +66,27 @@ namespace RapidP1
         {
             if (!inOrbit)
             {
-                drawRectangle.X += (int)velocity.X * gameTime.ElapsedGameTime.Milliseconds;  //Or TotalMilliseconds (need to check)
-                drawRectangle.Y += (int)velocity.Y * gameTime.ElapsedGameTime.Milliseconds;
+                drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);  //Or TotalMilliseconds (need to check)
+                drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
 
                 velocity.X += acceleration.X * gameTime.ElapsedGameTime.Milliseconds;
                 velocity.Y += acceleration.Y * gameTime.ElapsedGameTime.Milliseconds;
 
-                acceleration.X -= 0.1f;
-                acceleration.Y -= 0.1f;
+                if (acceleration.X > 0)
+                {
+                    acceleration.X -= 0.1f;
+                }
+
+                if (acceleration.Y > 0)
+                {
+                    acceleration.Y -= 0.1f;
+                }
+
+                if (acceleration.X <= 0)
+                    acceleration.X = 0;
+
+                if (acceleration.Y <= 0)
+                    acceleration.Y = 0;
 
                 BounceLeftRight();
                 BounceTopBottom();
