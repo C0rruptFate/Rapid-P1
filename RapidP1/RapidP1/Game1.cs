@@ -155,17 +155,17 @@ namespace RapidP1
                 {
                     // Check for movement
                     //Move Left
-                    if (state.ThumbSticks.Left.X < -0.5f)
+                    if (state.ThumbSticks.Left.X < -0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball1Pos.X -= 10.0f;
                     //Move Right
-                    else if (state.ThumbSticks.Left.X > 0.5f)
+                    else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball1Pos.X += 10.0f;
                     //Move Down
-                    if (state.ThumbSticks.Left.Y < -0.5f)
-                        ball1Pos.Y -= 10.0f;
-                    //Move Up
-                    else if (state.ThumbSticks.Left.Y > 0.5f)
+                    if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
                         ball1Pos.Y += 10.0f;
+                    //Move Up
+                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
+                        ball1Pos.Y -= 10.0f;
                 }
 
                 //Player shoot/dash button
@@ -199,17 +199,17 @@ namespace RapidP1
                 {
                     // Check for movement
                     //Move Left
-                    if (state.ThumbSticks.Left.X < -0.5f)
+                    if (state.ThumbSticks.Left.X < -0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball2Pos.X -= 10.0f;
                     //Move Right
-                    else if (state.ThumbSticks.Left.X > 0.5f)
+                    else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball2Pos.X += 10.0f;
                     //Move Down
-                    if (state.ThumbSticks.Left.Y < -0.5f)
-                        ball2Pos.Y -= 10.0f;
-                    //Move Up
-                    else if (state.ThumbSticks.Left.Y > 0.5f)
+                    if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
                         ball2Pos.Y += 10.0f;
+                    //Move Up
+                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
+                        ball2Pos.Y -= 10.0f;
                 }
 
                 //Player shoot/Dash button
