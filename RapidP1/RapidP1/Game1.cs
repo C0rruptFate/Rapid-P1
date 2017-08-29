@@ -160,10 +160,10 @@ namespace RapidP1
                     //Move Right
                     else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball1Pos.X += 10.0f;
-                    //Move Down
+                    //Move Up
                     if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
                         ball1Pos.Y += 10.0f;
-                    //Move Up
+                    //Move Down
                     else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
                         ball1Pos.Y -= 10.0f;
                 }
@@ -199,16 +199,16 @@ namespace RapidP1
                 {
                     // Check for movement
                     //Move Left
-                    if (state.ThumbSticks.Left.X < -0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
+                    if (state.ThumbSticks.Left.X < -0.5f && ball2Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball2Pos.X -= 10.0f;
                     //Move Right
-                    else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
+                    else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GraphicsDevice.DisplayMode.Width - 100))
                         ball2Pos.X += 10.0f;
-                    //Move Down
-                    if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
-                        ball2Pos.Y += 10.0f;
                     //Move Up
-                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
+                    if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
+                        ball2Pos.Y += 10.0f;
+                    //Move Down
+                    else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
                         ball2Pos.Y -= 10.0f;
                 }
 
