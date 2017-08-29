@@ -75,7 +75,7 @@ namespace RapidP1
             planet = Content.Load<Texture2D>("planet1");
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
-            //p = new Planet(planet, planetPos[1]);
+            p = new Planet(planet, planetPos[1]);
 
 
 
@@ -102,7 +102,7 @@ namespace RapidP1
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
 
-            //p.Update(gameTime);
+            p.Update(gameTime);
             if (planetPos[1].X <= ball1Pos.X + 200f)
             {
 
@@ -130,8 +130,8 @@ namespace RapidP1
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GraphicsDevice.DisplayMode.Width - 100)) //right
                 {
-                    //Draw(gameTime, 1);
-
+                    Vector2 acc = new Vector2(1, 1);
+                    p.GiveAcceleration(acc);
                 //shooting
                 }
             }
@@ -265,7 +265,7 @@ namespace RapidP1
             spriteBatch.Draw(planet, planetPos[3], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(planet1, planetPos[2], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
 
-            //p.Draw(spriteBatch);
+            p.Draw(spriteBatch);
 
             //spriteBatch.Draw(planet, planet2Pos, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.End();
