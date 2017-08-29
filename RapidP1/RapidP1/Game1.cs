@@ -168,6 +168,31 @@ namespace RapidP1
                         ball1Pos.Y -= 10.0f;
                 }
 
+                //Player 1 Rotation
+                if (capabilities1.HasRightXThumbStick)
+                {
+                    //Rotate Left
+                    if (state.ThumbSticks.Right.X < -0.5f)
+                    {
+                        //[TODO] Rotate Left
+                    }
+                    //Move Right
+                    else if (state.ThumbSticks.Right.X > 0.5f)
+                    {
+                        //[TODO] Rotate Right
+                    }
+                    //Rotate towards Up
+                    if (state.ThumbSticks.Right.Y < -0.5f)
+                    {
+                        //[TODO] Rotate towards Up
+                    }
+                    //Rotate towards Down
+                    else if (state.ThumbSticks.Right.Y > 0.5f)
+                    {
+                        //[TODO] Rotate towards Down
+                    }
+                }
+
                 //Player shoot/dash button
                 if (capabilities1.HasAButton)
                 {
@@ -184,8 +209,7 @@ namespace RapidP1
                 }
 
             }
-
-
+            
             // Check the device for Player Two
             GamePadCapabilities capabilities2 = GamePad.GetCapabilities(PlayerIndex.Two);
 
@@ -210,6 +234,31 @@ namespace RapidP1
                     //Move Down
                     else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != (GraphicsDevice.DisplayMode.Height - 100))
                         ball2Pos.Y -= 10.0f;
+                }
+
+                //Player 2 Rotation
+                if (capabilities2.HasRightXThumbStick)
+                {
+                    //Rotate Left
+                    if (state.ThumbSticks.Right.X < -0.5f)
+                    {
+                        //[TODO] Rotate Left
+                    }
+                    //Move Right
+                    else if (state.ThumbSticks.Right.X > 0.5f)
+                    {
+                        //[TODO] Rotate Right
+                    }
+                    //Rotate towards Up
+                    if (state.ThumbSticks.Right.Y < -0.5f)
+                    {
+                        //[TODO] Rotate towards Up
+                    }
+                    //Rotate towards Down
+                    else if (state.ThumbSticks.Right.Y > 0.5f)
+                    {
+                        //[TODO] Rotate towards Down
+                    }
                 }
 
                 //Player shoot/Dash button
@@ -253,6 +302,31 @@ namespace RapidP1
             //        else if (state.ThumbSticks.Left.Y > 0.5f)
             //            ball3Pos.Y += 10.0f;
             //    }
+
+            ////Player 3 Rotation
+            //if (capabilities3.HasRightXThumbStick)
+            //{
+            //    //Rotate Left
+            //    if (state.ThumbSticks.Right.X < -0.5f)
+            //    {
+            //        //[TODO] Rotate Left
+            //    }
+            //    //Move Right
+            //    else if (state.ThumbSticks.Right.X > 0.5f)
+            //    {
+            //        //[TODO] Rotate Right
+            //    }
+            //    //Rotate towards Up
+            //    if (state.ThumbSticks.Right.Y < -0.5f)
+            //    {
+            //        //[TODO] Rotate towards Up
+            //    }
+            //    //Rotate towards Down
+            //    else if (state.ThumbSticks.Right.Y > 0.5f)
+            //    {
+            //        //[TODO] Rotate towards Down
+            //    }
+            //}
             ////Player shoot button
             //if (capabilities1.HasAButton)
             //{
@@ -266,7 +340,6 @@ namespace RapidP1
             //    {
             //        //[TODO] Dash.
             //    }
-            //}
             //}
 
             //Check the device for Player Four
@@ -294,6 +367,30 @@ namespace RapidP1
             //        else if (state.ThumbSticks.Left.Y > 0.5f)
             //            ball4Pos.Y += 10.0f;
             //    }
+            ////Player 4 Rotation
+            //if (capabilities4.HasRightXThumbStick)
+            //{
+            //    //Rotate Left
+            //    if (state.ThumbSticks.Right.X < -0.5f)
+            //    {
+            //        //[TODO] Rotate Left
+            //    }
+            //    //Move Right
+            //    else if (state.ThumbSticks.Right.X > 0.5f)
+            //    {
+            //        //[TODO] Rotate Right
+            //    }
+            //    //Rotate towards Up
+            //    if (state.ThumbSticks.Right.Y < -0.5f)
+            //    {
+            //        //[TODO] Rotate towards Up
+            //    }
+            //    //Rotate towards Down
+            //    else if (state.ThumbSticks.Right.Y > 0.5f)
+            //    {
+            //        //[TODO] Rotate towards Down
+            //    }
+            //}
             ////Player shoot button
             //if (capabilities1.HasAButton)
             //{
