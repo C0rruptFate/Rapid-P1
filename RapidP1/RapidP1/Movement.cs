@@ -86,7 +86,7 @@ namespace RapidP1
             //angle += 0.03f;
             foreach (Planet planet in planets)
             {
-                if (planet.InOrbit)
+                if ((planet.InOrbit) && (planet.Owner != 0))
                 {
                     for (int i = 0; i < planets.Count; i++)
                     {
@@ -99,7 +99,7 @@ namespace RapidP1
 
             if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
             {
-                for (int i = 0; i < planets.Count; i++)
+                for (int i = 0; i < planets.Count - 5; i++)
                 {
                     if (planets[i].Owner == 1)
                     {
@@ -107,7 +107,7 @@ namespace RapidP1
                         planets[i].Owner = 0;
 
                         planets[i].GiveAcceleration(ball1Pos + positionOffset[i]);
-                        return;
+
                     }
                 }
                 
@@ -212,13 +212,13 @@ namespace RapidP1
             spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
             foreach (Planet planet in planets)
             {
-                if (planet.InOrbit)
-                {
                     //for (int i = 0; i < planetPos.Length; i++)
                     //{
                         for (int k = 0; k < 3; k++)
                         {
-                            spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    if (planets[k].InOrbit)
+                    {
+                        spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
                             spriteBatch.Draw(planetSprite1, ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
                         }
 
