@@ -12,10 +12,12 @@ namespace RapidP1
     /// </summary>
     public class Game1 : Game
     {
+        #region init
         private Texture2D sun;
         private static Texture2D planet;
         private static Texture2D planet1;
         private Texture2D background;
+        private static Texture2D startScreen;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private float screenHeight, screenWidth;
@@ -24,8 +26,10 @@ namespace RapidP1
         static Vector2[] planetPos = new Vector2[GameConstants.numberOfPlanets];
         Planet p;
         PlayerControl control;
-
+        GamePlay play;
+        public string gameState;
         List<Planet> planets = new List<Planet>();
+        #endregion
 
         public Game1()
         {
@@ -55,7 +59,7 @@ namespace RapidP1
             //planetPos[3].X = ball1Pos.X + 80f;
             //planetPos[3].Y = ball1Pos.Y + 90f;
 
-            
+            gameState = GameStates.GameStart.ToString();
 
             //Planet P1 = new Planet(planet,ball1Pos);
             //Vector2 acceleration = new Vector2(5, 5);
@@ -81,11 +85,14 @@ namespace RapidP1
             planet = Content.Load<Texture2D>("planet1");
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
+            startScreen = Content.Load<Texture2D>("start2");
             p = new Planet(planet, planetPos[1]);
 
             //p2 = new Planet(planet, planetPos[2]);
 
             planets.Add(p);
+
+            play = new GamePlay(gameState, startScreen);
 
             control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets);
 
@@ -114,42 +121,50 @@ namespace RapidP1
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
 
-            control.Update(gameTime);
+            GamePadState state = GamePad.GetState(PlayerIndex.One);
 
-            foreach (Planet planet in planets)
+            if ((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) //up
             {
-
-                planet.Update(gameTime);
+                gameState = GameStates.InGame.ToString();
             }
-
-            for (int i = 0; i < planets.Count; i++)
+            else
             {
-                for (int j = i + 1; j < planets.Count; j++)
+                control.Update(gameTime);
+
+                foreach (Planet planet in planets)
                 {
-                    if (!planets[i].InOrbit && !planets[j].InOrbit)
+
+                    planet.Update(gameTime);
+                }
+
+                for (int i = 0; i < planets.Count; i++)
+                {
+                    for (int j = i + 1; j < planets.Count; j++)
                     {
-                        CollisionResolutionInfo collsionInfo =
-                            CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
-                                                          GameConstants.WindowWidth, GameConstants.WindowHeight,
-                                                          planets[i].Velocity, planets[i].DrawRectangle,
-                                                          planets[j].Velocity, planets[j].DrawRectangle
-                                                          );
-
-                        //To detect collison between planet i and planet j 
-                        if (collsionInfo != null)
+                        if (!planets[i].InOrbit && !planets[j].InOrbit)
                         {
+                            CollisionResolutionInfo collsionInfo =
+                                CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                              GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                              planets[i].Velocity, planets[i].DrawRectangle,
+                                                              planets[j].Velocity, planets[j].DrawRectangle
+                                                              );
 
-                            planets[i].Velocity = collsionInfo.FirstVelocity;
-                            planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
+                            //To detect collison between planet i and planet j 
+                            if (collsionInfo != null)
+                            {
 
-                            planets[j].Velocity = collsionInfo.SecondVelocity;
-                            planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
+                                planets[i].Velocity = collsionInfo.FirstVelocity;
+                                planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
 
+                                planets[j].Velocity = collsionInfo.SecondVelocity;
+                                planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
+
+                            }
                         }
                     }
                 }
             }
-
             base.Update(gameTime);
         }
 
@@ -166,20 +181,38 @@ namespace RapidP1
             // TODO: Add your drawing code here
             
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Vector2(0,0),Color.White);
-
-            foreach(Planet planet in planets)
+            if (gameState == GameStates.GameStart.ToString())
             {
-                if (p.InOrbit)
-                    control.Draw(spriteBatch);
-                else
-                    planet.Draw(spriteBatch);
+                spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
             }
-            
+            //if (gameState == GameStates.GameOver.ToString())
+            //{
+            //    spriteBatch.Draw(screenBackground, new Vector2(0, 0), Color.White);
+            //}
+            else
+            {
+                spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+
+                foreach (Planet planet in planets)
+                {
+                    if (p.InOrbit)
+                        control.Draw(spriteBatch);
+                    else
+                        planet.Draw(spriteBatch);
+                }
+            }
+
 
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+    }
+
+    public enum GameStates
+    {
+        GameStart,
+        InGame,
+        GameOver
     }
 }
