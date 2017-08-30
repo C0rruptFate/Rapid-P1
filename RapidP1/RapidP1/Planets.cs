@@ -14,6 +14,7 @@ namespace RapidP1
         Rectangle drawRectangle;
         Vector2 velocity;
         Vector2 acceleration;
+        Vector2 location;
         #endregion
 
         #region properties
@@ -29,9 +30,16 @@ namespace RapidP1
             get { return drawRectangle; }
         }
 
-        public Vector2 GetVelocity
+        public Vector2 Velocity
         {
             get { return velocity; }
+            set { velocity = value; }
+        }
+
+        public Rectangle DrawRectangle
+        {
+            get { return drawRectangle; }
+            set { drawRectangle = value; }
         }
 
         #endregion
@@ -43,8 +51,8 @@ namespace RapidP1
             this.sprite = sprite;
             drawRectangle = new Rectangle((int)location.X - sprite.Width/2,             //X-coordinate of the rectangle
                                             (int)location.Y - sprite.Height / 2,        //Y-coordinate of the rectangle
-                                            sprite.Width, sprite.Height);               //Height and Width of rectangle
-
+                                            sprite.Width/10, sprite.Height/10);               //Height and Width of rectangle
+            this.location = location;
         }
 
         #endregion
@@ -53,8 +61,14 @@ namespace RapidP1
 
         public void GiveAcceleration(Vector2 acceleration)
         {
-            this.acceleration.X += acceleration.X;
-            this.acceleration.Y += acceleration.Y;
+            
+            this.acceleration.X = acceleration.X;
+            this.acceleration.Y = acceleration.Y;
+            
+            acceleration.Normalize();  //Gets the direction only
+
+            velocity.X = acceleration.X*GameConstants.speed;
+            velocity.Y = acceleration.Y*GameConstants.speed;
         }
 
         public void Draw (SpriteBatch spriteBatch)
@@ -69,25 +83,43 @@ namespace RapidP1
                 drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);  //Or TotalMilliseconds (need to check)
                 drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
 
-                velocity.X += acceleration.X * gameTime.ElapsedGameTime.Milliseconds;
-                velocity.Y += acceleration.Y * gameTime.ElapsedGameTime.Milliseconds;
+                //velocity.X += velocity.X * 0.01f * GetXDirection() * -1;
+                //velocity.Y += velocity.Y * 0.01f * GetYDirection() * -1;
 
-                if (acceleration.X > 0)
+                velocity.X *= 0.998f;
+                velocity.Y *= 0.998f;
+
+                /*
+                if (velocity.X != 0)
                 {
-                    acceleration.X -= 0.1f;
+                    acceleration.X -= 0.05f;
                 }
 
-                if (acceleration.Y > 0)
+                if (velocity.Y != 0)
                 {
-                    acceleration.Y -= 0.1f;
+                    acceleration.Y -= 0.05f;
                 }
 
                 if (acceleration.X <= 0)
+                {
                     acceleration.X = 0;
+                    if (velocity.X > 0.01 && velocity.X < -0.01)
+                        velocity.X /= 10;
+                    else
+                        velocity.X = 0;
+                }
+                    
 
                 if (acceleration.Y <= 0)
+                {
                     acceleration.Y = 0;
-
+                    if (velocity.Y > 0.01 && velocity.Y < -0.01)
+                        velocity.Y /= 10;
+                    else
+                        velocity.Y = 0;
+                }
+                    
+                */
                 BounceLeftRight();
                 BounceTopBottom();
             }
@@ -111,6 +143,22 @@ namespace RapidP1
 
 
         //Functions to limit the planets movement to within the playspace
+
+        private float GetXDirection()
+        {
+            Vector2 direction = velocity;
+            direction.Normalize();
+
+            return direction.X;
+        }
+
+        private float GetYDirection()
+        {
+            Vector2 direction = velocity;
+            direction.Normalize();
+
+            return direction.Y;
+        }
 
         private void BounceTopBottom()
         {
