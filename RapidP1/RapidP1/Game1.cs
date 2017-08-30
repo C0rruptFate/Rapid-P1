@@ -24,7 +24,7 @@ namespace RapidP1
         Vector2 ball1Pos = new Vector2(0, 0);
         Vector2 ball2Pos = new Vector2(0, 0);
         static Vector2[] planetPos = new Vector2[GameConstants.numberOfPlanets];
-        Planet p;
+        Planet p1,p2,p3,p4,p5,p6;
         PlayerControl control;
         GamePlay play;
         public string gameState;
@@ -86,11 +86,16 @@ namespace RapidP1
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("start2");
-            p = new Planet(planet, planetPos[1]);
+            
 
             //p2 = new Planet(planet, planetPos[2]);
 
-            planets.Add(p);
+            planets.Add(p1);
+            planets.Add(p2);
+            planets.Add(p3);
+            planets.Add(p4);
+            planets.Add(p5);
+            planets.Add(p6);
 
             play = new GamePlay(gameState, startScreen);
 
@@ -195,7 +200,7 @@ namespace RapidP1
 
                 foreach (Planet planet in planets)
                 {
-                    if (p.InOrbit)
+                    if (planet.InOrbit)
                         control.Draw(spriteBatch);
                     else
                         planet.Draw(spriteBatch);
