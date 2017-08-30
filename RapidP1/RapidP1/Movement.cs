@@ -15,6 +15,7 @@ namespace RapidP1
         //float angle;
         float[] radius = new float[10];
         float[] angle = new float[10];
+        Planet p;
         public void Update(GameTime gameTime)
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -40,12 +41,12 @@ namespace RapidP1
                 ball1Pos.X += 5;
                 planetPos[1].X += 5;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
-            {
-                Vector2 acc = new Vector2(1, 1);
-                //p.GiveAcceleration(acc);
-                //shooting
-            }
+            //if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
+            //{
+            //    Vector2 acc = new Vector2(1, 1);
+            //    p.GiveAcceleration(acc);
+            //    //shooting
+            //}
             if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
             {
                 ball2Pos.Y -= 5;
@@ -84,6 +85,14 @@ namespace RapidP1
             {
                 //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
                 positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
+                if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
+                {
+                    Vector2 acc = new Vector2(1, 1);
+                    p = new Planet(planetSprite1, planetPos[i]);
+                    p.GiveAcceleration(acc);
+                    //shooting
+                    break;
+                }
                 //positionOffset[i] = new Vector2(0, GameConstants.WindowHeight / 2) + Vector2.Transform(new Vector2(10, 0), Matrix.CreateRotationZ(1.0472f));
             }
 
@@ -201,7 +210,6 @@ namespace RapidP1
             }
             sunSprite1 = sunSprite;
             planetSprite1 = planetSprite;
-
         }
 
     }

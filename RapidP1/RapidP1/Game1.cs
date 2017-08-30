@@ -125,11 +125,6 @@ namespace RapidP1
             
             spriteBatch.Begin();
             spriteBatch.Draw(background, new Vector2(0,0),Color.White);
-            //spriteBatch.Draw(sun, ball1Pos, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
-            //spriteBatch.Draw(sun, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
-            //spriteBatch.Draw(planet, planetPos[1], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-            //spriteBatch.Draw(planet, planetPos[3], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-            //spriteBatch.Draw(planet1, planetPos[2], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
 
             //p.Draw(spriteBatch);
             control.Draw(spriteBatch);
@@ -139,16 +134,5 @@ namespace RapidP1
 
             base.Draw(gameTime);
         }
-
-        //public void Draw(GameTime gameTime, int planetCount)
-        //{
-        //    spriteBatch.Begin();
-        //    while (planetPos[1].X!=ball2Pos.X)
-        //    {
-        //        spriteBatch.Draw(planet, planetPos[planetCount], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-        //        planetPos[planetCount].X += 1;
-        //    }
-        //    spriteBatch.End();
-        //}
     }
 }
