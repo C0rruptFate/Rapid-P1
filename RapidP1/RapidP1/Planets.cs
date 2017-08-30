@@ -9,7 +9,7 @@ namespace RapidP1
     {
         #region fields
 
-        bool inOrbit = false;
+        bool inOrbit = true;
         Texture2D sprite;
         Rectangle drawRectangle;
         Vector2 velocity;

@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace RapidP1
 {
@@ -16,6 +17,7 @@ namespace RapidP1
         float[] radius = new float[10];
         float[] angle = new float[10];
         Planet p;
+        List<Planet> newPlanets = new List<Planet>();
         public void Update(GameTime gameTime)
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -79,22 +81,29 @@ namespace RapidP1
                 radius[i] = radius[i - 1] + 50;
             }
 
-            //angle += 0.03f;
+            #region RotationaAndShoot:
 
-            for (int i = 0; i < 3; i++)
+            //angle += 0.03f;
+            foreach (Planet planet in newPlanets)
             {
-                //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
-                if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
+                if (planet.InOrbit)
                 {
-                    Vector2 acc = new Vector2(1, 1);
-                    p = new Planet(planetSprite1, planetPos[i]);
-                    p.GiveAcceleration(acc);
-                    //shooting
-                    break;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
+                        positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
+                        if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
+                        {
+                            planet.GiveAcceleration(ball1Pos + positionOffset[i]);
+                            //shooting
+                            planet.InOrbit = false;
+                        }
+                    }
                 }
-                //positionOffset[i] = new Vector2(0, GameConstants.WindowHeight / 2) + Vector2.Transform(new Vector2(10, 0), Matrix.CreateRotationZ(1.0472f));
             }
+
+            #endregion
+
 
 
 
@@ -189,18 +198,25 @@ namespace RapidP1
         {
             spriteBatch.Draw(sunSprite1, ball1Pos,  null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
             spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
-            for (int i = 0; i < planetPos.Length; i++)
+            foreach (Planet planet in newPlanets)
             {
-                for (int k = 0; k < 3; k++)
+                if (planet.InOrbit)
                 {
-                    spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-                    spriteBatch.Draw(planetSprite1, ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    for (int i = 0; i < planetPos.Length; i++)
+                    {
+                        for (int k = 0; k < 3; k++)
+                        {
+                            spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                            spriteBatch.Draw(planetSprite1, ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                        }
+
+                    }
                 }
-                
             }
+            
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D planetSprite)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D planetSprite, List<Planet> planet)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -210,6 +226,12 @@ namespace RapidP1
             }
             sunSprite1 = sunSprite;
             planetSprite1 = planetSprite;
+            for (int i = 0; i < playerPos.Length; i++)
+            {
+                p = new Planet(planetSprite1, planetPos[i]);
+                planet.Add(p);
+            }
+            newPlanets = planet;
         }
 
     }

@@ -21,7 +21,7 @@ namespace RapidP1
         private float screenHeight, screenWidth;
         Vector2 ball1Pos = new Vector2(0, 0);
         Vector2 ball2Pos = new Vector2(0, 0);
-        static Vector2[] planetPos = new Vector2[5];
+        static Vector2[] planetPos = new Vector2[GameConstants.numberOfPlanets];
         Planet p;
         PlayerControl control;
 
@@ -48,12 +48,12 @@ namespace RapidP1
             ball1Pos.Y = screenHeight / 2;
             ball2Pos.X = screenWidth - 100;
             ball2Pos.Y = (screenHeight)/ 2;
-            planetPos[1].X = ball1Pos.X + 20f;
-            planetPos[1].Y = ball1Pos.Y + 100f;
-            planetPos[2].X = ball2Pos.X - 20f;
-            planetPos[2].Y = ball2Pos.Y + 90f;
-            planetPos[3].X = ball1Pos.X + 80f;
-            planetPos[3].Y = ball1Pos.Y + 90f;
+            //planetPos[1].X = ball1Pos.X + 20f;
+            //planetPos[1].Y = ball1Pos.Y + 100f;
+            //planetPos[2].X = ball2Pos.X - 20f;
+            //planetPos[2].Y = ball2Pos.Y + 90f;
+            //planetPos[3].X = ball1Pos.X + 80f;
+            //planetPos[3].Y = ball1Pos.Y + 90f;
 
             
 
@@ -83,11 +83,11 @@ namespace RapidP1
             background = Content.Load<Texture2D>("Background");
             p = new Planet(planet, planetPos[1]);
 
-            p2 = new Planet(planet, planetPos[2]);
+            //p2 = new Planet(planet, planetPos[2]);
 
             planets.Add(p);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets);
 
 
 
@@ -118,6 +118,7 @@ namespace RapidP1
 
             foreach (Planet planet in planets)
             {
+
                 planet.Update(gameTime);
             }
 
@@ -169,12 +170,13 @@ namespace RapidP1
 
             foreach(Planet planet in planets)
             {
-                planet.Draw(spriteBatch);
+                if (p.InOrbit)
+                    control.Draw(spriteBatch);
+                else
+                    planet.Draw(spriteBatch);
             }
+            
 
-            control.Draw(spriteBatch);
-
-            //spriteBatch.Draw(planet, planet2Pos, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
