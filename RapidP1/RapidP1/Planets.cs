@@ -10,6 +10,7 @@ namespace RapidP1
         #region fields
 
         bool inOrbit = true;
+        int owner;
         Texture2D sprite;
         Rectangle drawRectangle;
         Vector2 velocity;
@@ -42,17 +43,26 @@ namespace RapidP1
             set { drawRectangle = value; }
         }
 
+        public int Owner
+        {
+            get { return owner; }
+            set { owner = value; }
+        }
+
         #endregion
 
         #region constructors
 
-        public Planet(Texture2D sprite, Vector2 location)
+        public Planet(Texture2D sprite, Vector2 location, int owner, bool inOrbit)
         {
             this.sprite = sprite;
             drawRectangle = new Rectangle((int)location.X - sprite.Width/2,             //X-coordinate of the rectangle
                                             (int)location.Y - sprite.Height / 2,        //Y-coordinate of the rectangle
                                             sprite.Width/10, sprite.Height/10);               //Height and Width of rectangle
             this.location = location;
+
+            this.owner = owner;
+            this.inOrbit = inOrbit;
         }
 
         #endregion
@@ -62,8 +72,8 @@ namespace RapidP1
         public void GiveAcceleration(Vector2 acceleration)
         {
             
-            this.acceleration.X = acceleration.X;
-            this.acceleration.Y = acceleration.Y;
+            drawRectangle.X = (int)acceleration.X;
+            drawRectangle.Y = (int)acceleration.Y;
             
             acceleration.Normalize();  //Gets the direction only
 
@@ -78,7 +88,7 @@ namespace RapidP1
 
         public void Update(GameTime gameTime)
         {
-            if (!inOrbit)
+            if (!inOrbit && owner == 0)
             {
                 drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);  //Or TotalMilliseconds (need to check)
                 drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);

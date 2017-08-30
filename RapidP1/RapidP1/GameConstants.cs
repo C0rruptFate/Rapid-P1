@@ -20,7 +20,7 @@ namespace RapidP1
         public static int numberOfPlanets = 3;
 
         //Planet launch speed
-        public const int speed = 20;
+        public const int speed = 2;
 
     }
 }
