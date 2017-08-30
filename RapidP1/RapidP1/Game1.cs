@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using System;
+using System.Collections.Generic;
 
 namespace RapidP1
 {
@@ -22,6 +24,8 @@ namespace RapidP1
         static Vector2[] planetPos = new Vector2[5];
         Planet p;
         PlayerControl control;
+
+        List<Planet> planets = new List<Planet>();
 
         public Game1()
         {
@@ -79,6 +83,10 @@ namespace RapidP1
             background = Content.Load<Texture2D>("Background");
             p = new Planet(planet, planetPos[1]);
 
+            p2 = new Planet(planet, planetPos[2]);
+
+            planets.Add(p);
+
             control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet);
 
 
@@ -106,8 +114,41 @@ namespace RapidP1
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
 
-            p.Update(gameTime);
             control.Update(gameTime);
+
+            foreach (Planet planet in planets)
+            {
+                planet.Update(gameTime);
+            }
+
+            for (int i = 0; i < planets.Count; i++)
+            {
+                for (int j = i + 1; j < planets.Count; j++)
+                {
+                    if (!planets[i].InOrbit && !planets[j].InOrbit)
+                    {
+                        CollisionResolutionInfo collsionInfo =
+                            CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                          GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                          planets[i].Velocity, planets[i].DrawRectangle,
+                                                          planets[j].Velocity, planets[j].DrawRectangle
+                                                          );
+
+                        //To detect collison between planet i and planet j 
+                        if (collsionInfo != null)
+                        {
+
+                            planets[i].Velocity = collsionInfo.FirstVelocity;
+                            planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
+
+                            planets[j].Velocity = collsionInfo.SecondVelocity;
+                            planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
+
+                        }
+                    }
+                }
+            }
+
             base.Update(gameTime);
         }
 
