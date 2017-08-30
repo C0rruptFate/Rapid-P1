@@ -167,7 +167,11 @@ namespace RapidP1
             spriteBatch.Begin();
             spriteBatch.Draw(background, new Vector2(0,0),Color.White);
 
-            //p.Draw(spriteBatch);
+            foreach(Planet planet in planets)
+            {
+                planet.Draw(spriteBatch);
+            }
+
             control.Draw(spriteBatch);
 
             //spriteBatch.Draw(planet, planet2Pos, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
