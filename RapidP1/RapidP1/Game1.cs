@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace RapidP1
 {
@@ -29,6 +31,10 @@ namespace RapidP1
         //GamePlay play;
         public string gameState;
         List<Planet> planets = new List<Planet>();
+
+        Song backgroundMusic;//Need to attach the BG music to this variable.
+        SoundEffect bounce;
+        SoundEffect hitPlayer;
         #endregion
 
         public Game1()
@@ -86,6 +92,9 @@ namespace RapidP1
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("start2");
+
+            //Sound
+            MediaPlayer.Play(backgroundMusic);
             
 
             //p2 = new Planet(planet, planetPos[2]);
@@ -149,11 +158,15 @@ namespace RapidP1
                     if (planet.CollisionRectangle.Intersects(control.CollisionRectangle1) && planet.Owner != 1)
                     {
                         control.IsAlive1 = false;
+                        //Play Audio
+                        hitPlayer.Play();
                     }
 
                     if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2)
                     {
                         control.IsAlive2 = false;
+                        //Play Audio
+                        hitPlayer.Play();
                     }
                 }
 
@@ -204,6 +217,8 @@ namespace RapidP1
 
                                 planets[i].Velocity = collsionInfo.FirstVelocity;
                                 planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
+                                //Play Audio
+                                bounce.Play();
 
                                 //planets[j].Velocity = collsionInfo.SecondVelocity;
                                 //planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
