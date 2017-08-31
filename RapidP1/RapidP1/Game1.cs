@@ -32,15 +32,15 @@ namespace RapidP1
         public string gameState;
         List<Planet> planets = new List<Planet>();
 
-        Song backgroundMusic;//Need to attach the BG music to this variable.
-        SoundEffect bounce;
-        SoundEffect hitPlayer;
+        Song backgroundMusic;
+        List<SoundEffect> soundEffects;
         #endregion
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
         }
 
         /// <summary>
@@ -92,10 +92,13 @@ namespace RapidP1
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("start2");
+            backgroundMusic = Content.Load<Song>("BackgroundMusic");
+            soundEffects.Add(Content.Load<SoundEffect>("Bounce"));
+            soundEffects.Add(Content.Load<SoundEffect>("HitPlayer"));
 
             //Sound
             MediaPlayer.Play(backgroundMusic);
-            
+
 
             //p2 = new Planet(planet, planetPos[2]);
 
@@ -159,14 +162,14 @@ namespace RapidP1
                     {
                         control.IsAlive1 = false;
                         //Play Audio
-                        hitPlayer.Play();
+                        soundEffects[1].Play();
                     }
 
                     if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2)
                     {
                         control.IsAlive2 = false;
                         //Play Audio
-                        hitPlayer.Play();
+                        soundEffects[1].Play();
                     }
                 }
 
@@ -218,7 +221,7 @@ namespace RapidP1
                                 planets[i].Velocity = collsionInfo.FirstVelocity;
                                 planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
                                 //Play Audio
-                                bounce.Play();
+                                soundEffects[0].Play();
 
                                 //planets[j].Velocity = collsionInfo.SecondVelocity;
                                 //planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
