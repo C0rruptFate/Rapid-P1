@@ -242,8 +242,6 @@ namespace RapidP1
             #endregion
 
 
-
-
             // Check the device for Player One
 
             if (capabilities1.IsConnected)
@@ -262,15 +260,15 @@ namespace RapidP1
                     //else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
                     //    ball1Pos.X += 10.0f;
                     //Move Up
-                    if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != 0)
+                    if (state.ThumbSticks.Left.Y < -0.5f  && ball1Pos.Y != (GameConstants.WindowHeight - 100))
                     {
-                        ball1Pos.Y -= 5;
+                        ball1Pos.Y += 5;
                         drawRectangle1.Y += 5;
                     }
                     //Move Down
-                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
+                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != 0 )
                     {
-                        ball1Pos.Y += 5;
+                        ball1Pos.Y -= 5;
                         drawRectangle1.Y -= 5;
                     }
                 }
@@ -288,16 +286,16 @@ namespace RapidP1
                             Vector2 direction = state.ThumbSticks.Right;
                             direction.Y *= -1;
 
-                            if (state.ThumbSticks.Right.X < -0.5f)
-                                direction.X -= 1;
+                            //if (state.ThumbSticks.Right.X < -0.5f)
+                             //   direction.X -= 1;
                             //Move Right
-                            else if (state.ThumbSticks.Right.X > 0.5f)
-                                direction.X += 1;
+                            //else if (state.ThumbSticks.Right.X > 0.5f)
+                              //  direction.X += 1;
                             //Move Up
-                            if (state.ThumbSticks.Right.Y < -0.5f)
+                            if (state.ThumbSticks.Left.Y < -0.5f)
                                 direction.Y -= 1;
                             //Move Down
-                            else if (state.ThumbSticks.Right.Y > 0.5f)
+                            else if (state.ThumbSticks.Left.Y > 0.5f)
                                 direction.Y += 1;
                             Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
                             planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[planetCount1], direction);
