@@ -205,6 +205,8 @@ namespace RapidP1
                     else
                         planet.Draw(spriteBatch);
                 }
+
+                control.Draw(spriteBatch);
             }
 
 
