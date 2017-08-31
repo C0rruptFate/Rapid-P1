@@ -22,11 +22,41 @@ namespace RapidP1
         int planetCount2 = 3;
         List<Planet> planets = new List<Planet>();
         List<int> countList = new List<int>();
+        Rectangle drawRectangle1;
+        Rectangle drawRectangle2;
+
 
         float nextFire;
         float fireRate = 50f;
         double currentGameTime;
         #endregion
+
+        #region Properties
+
+        public Rectangle CollisionRectangle1
+        {
+            get { return drawRectangle1; }
+        }
+
+        public Rectangle CollisionRectangle2
+        {
+            get { return drawRectangle2; }
+        }
+
+        public Rectangle DrawRectangle1
+        {
+            get { return drawRectangle1; }
+            set { drawRectangle1 = value; }
+        }
+
+        public Rectangle DrawRectangle2
+        {
+            get { return drawRectangle2; }
+            set { drawRectangle2 = value; }
+        }
+
+        #endregion
+
 
         public void Update(GameTime gameTime)
         {
@@ -39,22 +69,22 @@ namespace RapidP1
             if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
             {
                 ball1Pos.Y -= 5;
-                planetPos[1].Y -= 5;
+                drawRectangle1.Y -= 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GameConstants.WindowHeight - 100)) //down
             {
                 ball1Pos.Y += 5;
-                planetPos[1].Y += 5;
+                drawRectangle1.Y += 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
             {
                 ball1Pos.X -= 5;
-                planetPos[1].X -= 5;
+                drawRectangle1.X -= 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
             {
                 ball1Pos.X += 5;
-                planetPos[1].X += 5;
+                drawRectangle1.X += 5;
             }
             //if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
             //{
@@ -65,22 +95,22 @@ namespace RapidP1
             if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
             {
                 ball2Pos.Y -= 5;
-                planetPos[2].Y -= 5;
+                drawRectangle2.Y -= 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.NumPad2) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
             {
                 ball2Pos.Y += 5;
-                planetPos[2].Y += 5;
+                drawRectangle2.Y += 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
             {
                 ball2Pos.X -= 5;
-                planetPos[2].X -= 5;
+                drawRectangle2.X -= 5;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.NumPad6) && ball2Pos.X != (GameConstants.WindowWidth - 100)) //right
             {
                 ball2Pos.X += 5;
-                planetPos[2].X += 5;
+                drawRectangle2.X += 5;
             }
 
             radius[0] = 120;
@@ -241,6 +271,9 @@ namespace RapidP1
         {
             spriteBatch.Draw(sunSprite1, ball1Pos,  null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
             spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(sunSprite1, drawRectangle1, Color.White);
+            //spriteBatch.Draw(sunSprite1, drawRectangle2, Color.White);
+
             foreach (Planet planet in planets)
             {
                 if (planet.InOrbit)
@@ -294,6 +327,9 @@ namespace RapidP1
             planetSprite1 = planetSprite;
 
             this.planets = planets;
+
+            drawRectangle1 = new Rectangle((int)sun1Pos.X, (int)sun1Pos.Y, sunSprite.Width*(8/100), sunSprite.Height * (8 / 100));
+            drawRectangle2 = new Rectangle((int)sun2Pos.X, (int)sun2Pos.Y, sunSprite.Width * (8 / 100), sunSprite.Height * (8 / 100));
 
             planets[0] = new Planet(planetSprite, ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite, ball1Pos + positionOffset[1], 1, true);

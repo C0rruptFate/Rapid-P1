@@ -18,6 +18,7 @@ namespace RapidP1
         public const int WindowHeight = 1080;
         public const int numberOfPlayers = 2;
         public static int numberOfPlanets = 3;
+        public const int playerShootCooldownMilliseconds = 500;
 
         //Planet launch speed
         public const int speed = 2;
