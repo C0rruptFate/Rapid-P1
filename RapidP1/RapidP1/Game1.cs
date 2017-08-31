@@ -26,7 +26,7 @@ namespace RapidP1
         static Vector2[] planetPos = new Vector2[GameConstants.numberOfPlanets];
         Planet p1,p2,p3,p4,p5,p6;
         PlayerControl control;
-        GamePlay play;
+        //GamePlay play;
         public string gameState;
         List<Planet> planets = new List<Planet>();
         #endregion
@@ -97,7 +97,7 @@ namespace RapidP1
             planets.Add(p5);
             planets.Add(p6);
 
-            play = new GamePlay(gameState, startScreen);
+            //play = new GamePlay(gameState, startScreen);
 
             control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets);
 
