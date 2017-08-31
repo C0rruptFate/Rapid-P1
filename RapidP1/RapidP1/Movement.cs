@@ -20,6 +20,10 @@ namespace RapidP1
         Planet p;
         int planetCount = 0;
         List<Planet> planets = new List<Planet>();
+        List<int> countList = new List<int>();
+
+        float nextFire;
+        float fireRate = 0.0005f;
         #endregion
 
         public void Update(GameTime gameTime)
@@ -101,16 +105,17 @@ namespace RapidP1
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Q)) //p1 shoot
+            if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFire <= gameTime.ElapsedGameTime.TotalMilliseconds) //p1 shoot
             {
                 //for (int i = 0; i < 1; i++)
                 //{
-                    if (planets[0].Owner == 1 && planets[0].InOrbit)
+                    if (planets[countList.Count].Owner == 1 && planets[countList.Count].InOrbit)
                     {
-                        planets[0].InOrbit = false;
-                        planets[0].Owner = 0;
-                        planets[0].GiveAcceleration(ball1Pos + positionOffset[0]);
-                    planetCount++;
+                        planets[countList.Count].InOrbit = false;
+                        planets[countList.Count].Owner = 0;
+                        planets[countList.Count].GiveAcceleration(ball1Pos + positionOffset[countList.Count]);
+                    countList.Add(1);
+                    nextFire = fireRate + (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 }
                 //}
                 //planetCount++;
