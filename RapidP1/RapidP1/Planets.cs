@@ -80,6 +80,28 @@ namespace RapidP1
             velocity.X = acceleration.X*GameConstants.speed;
             velocity.Y = acceleration.Y*GameConstants.speed;
         }
+        public void GiveAcceleration(Vector2 acceleration, Vector2 velocityOffset)
+        {
+
+            drawRectangle.X = (int)acceleration.X;
+            drawRectangle.Y = (int)acceleration.Y;
+
+            velocityOffset.Normalize();  //Gets the direction only
+
+            velocity.X = velocityOffset.X * GameConstants.speed;
+            velocity.Y = velocityOffset.Y * GameConstants.speed;
+        }
+        public void GiveAcceleration(Vector2 acceleration, float vel)
+        {
+
+            drawRectangle.X = (int)acceleration.X;
+            drawRectangle.Y = (int)acceleration.Y;
+
+            acceleration.Normalize();  //Gets the direction only
+
+            velocity.X = acceleration.X * vel * 0.01f;
+            velocity.Y = acceleration.Y * vel * 0.01f;
+        }
 
         public void Draw (SpriteBatch spriteBatch)
         {

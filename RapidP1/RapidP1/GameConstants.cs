@@ -21,7 +21,7 @@ namespace RapidP1
         public const int playerShootCooldownMilliseconds = 500;
 
         //Planet launch speed
-        public const int speed = 2;
+        public const int speed = 1;
 
     }
 }

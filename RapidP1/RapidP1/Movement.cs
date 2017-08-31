@@ -18,12 +18,13 @@ namespace RapidP1
         float[] radius = new float[10];
         float[] angle = new float[10];
         Planet p;
-        int planetCount1 = 0;
-        int planetCount2 = 3;
+        int planetCount1 = 2;
+        int planetCount2 = 5;
         List<Planet> planets = new List<Planet>();
         List<int> countList = new List<int>();
         Rectangle drawRectangle1;
         Rectangle drawRectangle2;
+        float[] velocity = new float[10];
 
         bool isAlive1 = true;
         bool isAlive2 = true;
@@ -93,16 +94,16 @@ namespace RapidP1
                     ball1Pos.Y += 5;
                     drawRectangle1.Y += 5;
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
-                {
-                    ball1Pos.X -= 5;
-                    drawRectangle1.X -= 5;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.D) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
-                {
-                    ball1Pos.X += 5;
-                    drawRectangle1.X += 5;
-                }
+                //if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
+                //{
+                //    ball1Pos.X -= 5;
+                //    drawRectangle1.X -= 5;
+                //}
+                //if (Keyboard.GetState().IsKeyDown(Keys.D) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
+                //{
+                //    ball1Pos.X += 5;
+                //    drawRectangle1.X += 5;
+                //}
             }
             else
             {
@@ -138,16 +139,16 @@ namespace RapidP1
                     ball2Pos.Y += 5;
                     drawRectangle2.Y += 5;
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
-                {
-                    ball2Pos.X -= 5;
-                    drawRectangle2.X -= 5;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.NumPad6) && ball2Pos.X != (GameConstants.WindowWidth - 100)) //right
-                {
-                    ball2Pos.X += 5;
-                    drawRectangle2.X += 5;
-                }
+                //if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
+                //{
+                //    ball2Pos.X -= 5;
+                //    drawRectangle2.X -= 5;
+                //}
+                //if (Keyboard.GetState().IsKeyDown(Keys.NumPad6) && ball2Pos.X != (GameConstants.WindowWidth - 100)) //right
+                //{
+                //    ball2Pos.X += 5;
+                //    drawRectangle2.X += 5;
+                //}
             }
             else
             {
@@ -165,15 +166,23 @@ namespace RapidP1
 
 
             radius[0] = 120;
-            angle[0] += 0.15f;
-            angle[1] += 0.1f;
-            angle[2] += 0.09f;
-
+            angle[0] += 0.1f;
+            angle[1] += 0.08f;
+            angle[2] += 0.06f;
+            //angle[0] += ((float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f);
+            //angle[1] += ((float)gameTime.ElapsedGameTime.TotalSeconds * 0.8f);
+            //angle[2] += ((float)gameTime.ElapsedGameTime.TotalSeconds * 0.1f);
+            
 
             for (int i = 1; i < 3; i++)
             {
                 radius[i] = radius[i - 1] + 50;
             }
+
+            velocity[0] = radius[0] * 0.5f;
+            velocity[1] = radius[1] * 0.8f;
+            velocity[2] = radius[2] * 0.1f;
+
 
             #region RotationaAndShoot:
 
@@ -199,10 +208,11 @@ namespace RapidP1
                     {
                         planets[planetCount1].InOrbit = false;
                         planets[planetCount1].Owner = 0;
-                        planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[planetCount1]);
-                    if (planetCount1 <= planets.Count - 3)
+                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                        planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[planetCount1], velocityOffset);
+                    if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0 ))
                     {
-                        planetCount1++;
+                        planetCount1--;
                     }
 
                     nextFire = fireRate + (float)currentGameTime;
@@ -216,10 +226,11 @@ namespace RapidP1
                     {
                         planets[planetCount2].InOrbit = false;
                         planets[planetCount2].Owner = 0;
-                        planets[planetCount2].GiveAcceleration(ball2Pos + positionOffset[planetCount2]);
-                    if (planetCount2 <= planets.Count)
+                    Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                    planets[planetCount2].GiveAcceleration(ball2Pos + positionOffset[planetCount2 - 3], velocityOffset);
+                    if (planetCount2 <= planets.Count && !(planetCount2 < 3))
                     {
-                        planetCount2++;
+                        planetCount2--;
                     }
                     nextFire = fireRate + (float)currentGameTime;
 
@@ -249,12 +260,12 @@ namespace RapidP1
                     //Move Right
                     else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
                         ball1Pos.X += 10.0f;
-                    //Move Up
-                    if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
-                        ball1Pos.Y += 10.0f;
-                    //Move Down
-                    else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
-                        ball1Pos.Y -= 10.0f;
+                    ////Move Up
+                    //if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
+                    //    ball1Pos.Y += 10.0f;
+                    ////Move Down
+                    //else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
+                    //    ball1Pos.Y -= 10.0f;
                 }
 
                 //Player shoot/dash button
@@ -293,12 +304,12 @@ namespace RapidP1
                     //Move Right
                     else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
                         ball2Pos.X += 10.0f;
-                    //Move Up
-                    if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
-                        ball2Pos.Y += 10.0f;
-                    //Move Down
-                    else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
-                        ball2Pos.Y -= 10.0f;
+                    ////Move Up
+                    //if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
+                    //    ball2Pos.Y += 10.0f;
+                    ////Move Down
+                    //else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
+                    //    ball2Pos.Y -= 10.0f;
                 }
 
                 //Player shoot/Dash button
