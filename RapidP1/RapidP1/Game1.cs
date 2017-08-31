@@ -136,6 +136,27 @@ namespace RapidP1
             {
                 control.Update(gameTime);
 
+                //Collison between players
+
+                if (control.CollisionRectangle1.Intersects(control.CollisionRectangle2))
+                {
+                    //do Something
+                }
+
+                //Collisions between planet and players
+                foreach(Planet planet in planets)
+                {
+                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle1) && planet.Owner != 1)
+                    {
+                        control.IsAlive1 = false;
+                    }
+
+                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2)
+                    {
+                        control.IsAlive2 = false;
+                    }
+                }
+
                 foreach (Planet planet in planets)
                 {
 

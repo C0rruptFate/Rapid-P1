@@ -25,6 +25,8 @@ namespace RapidP1
         Rectangle drawRectangle1;
         Rectangle drawRectangle2;
 
+        bool isAlive1 = true;
+        bool isAlive2 = true;
 
         float nextFire;
         float fireRate = 50f;
@@ -55,6 +57,18 @@ namespace RapidP1
             set { drawRectangle2 = value; }
         }
 
+        public bool IsAlive1
+        {
+            get { return isAlive1; }
+            set { isAlive1 = value; }
+        }
+
+        public bool IsAlive2
+        {
+            get { return isAlive2; }
+            set { isAlive2 = value; }
+        }
+
         #endregion
 
 
@@ -66,52 +80,89 @@ namespace RapidP1
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
             //Planet p;
-            if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
+
+            if (isAlive1)
             {
-                ball1Pos.Y -= 5;
-                drawRectangle1.Y -= 5;
+                if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
+                {
+                    ball1Pos.Y -= 5;
+                    drawRectangle1.Y -= 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GameConstants.WindowHeight - 100)) //down
+                {
+                    ball1Pos.Y += 5;
+                    drawRectangle1.Y += 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
+                {
+                    ball1Pos.X -= 5;
+                    drawRectangle1.X -= 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
+                {
+                    ball1Pos.X += 5;
+                    drawRectangle1.X += 5;
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GameConstants.WindowHeight - 100)) //down
+            else
             {
-                ball1Pos.Y += 5;
-                drawRectangle1.Y += 5;
+                foreach (Planet planet in planets)
+                {
+                    if (planet.Owner == 1)
+                    {
+                        planet.InOrbit = false;
+                        planet.Owner = 0;
+                        planet.GiveAcceleration(ball1Pos + new Vector2(new Random().Next(1,3), new Random().Next(1, 3)));
+                    }
+                    
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
-            {
-                ball1Pos.X -= 5;
-                drawRectangle1.X -= 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
-            {
-                ball1Pos.X += 5;
-                drawRectangle1.X += 5;
-            }
+
+            
             //if (Keyboard.GetState().IsKeyDown(Keys.Q) && ball1Pos.X != (GameConstants.WindowWidth - 100)) //right
             //{
             //    Vector2 acc = new Vector2(1, 1);
             //    p.GiveAcceleration(acc);
             //    //shooting
             //}
-            if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
+
+            if (isAlive2)
             {
-                ball2Pos.Y -= 5;
-                drawRectangle2.Y -= 5;
+                if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
+                {
+                    ball2Pos.Y -= 5;
+                    drawRectangle2.Y -= 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.NumPad2) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
+                {
+                    ball2Pos.Y += 5;
+                    drawRectangle2.Y += 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
+                {
+                    ball2Pos.X -= 5;
+                    drawRectangle2.X -= 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.NumPad6) && ball2Pos.X != (GameConstants.WindowWidth - 100)) //right
+                {
+                    ball2Pos.X += 5;
+                    drawRectangle2.X += 5;
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad2) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
+            else
             {
-                ball2Pos.Y += 5;
-                drawRectangle2.Y += 5;
+                foreach (Planet planet in planets)
+                {
+                    if (planet.Owner == 2)
+                    {
+                        planet.InOrbit = false;
+                        planet.Owner = 0;
+                        planet.GiveAcceleration(ball2Pos + new Vector2(new Random().Next(1, 3), new Random().Next(1, 3)));
+                    }
+
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
-            {
-                ball2Pos.X -= 5;
-                drawRectangle2.X -= 5;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad6) && ball2Pos.X != (GameConstants.WindowWidth - 100)) //right
-            {
-                ball2Pos.X += 5;
-                drawRectangle2.X += 5;
-            }
+
 
             radius[0] = 120;
             angle[0] += 0.15f;
@@ -269,8 +320,11 @@ namespace RapidP1
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sunSprite1, ball1Pos,  null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            if (isAlive1)
+                spriteBatch.Draw(sunSprite1, ball1Pos,  null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+
+            if (IsAlive2)
+                spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
             //spriteBatch.Draw(sunSprite1, drawRectangle1, Color.White);
             //spriteBatch.Draw(sunSprite1, drawRectangle2, Color.White);
 
@@ -328,8 +382,8 @@ namespace RapidP1
 
             this.planets = planets;
 
-            drawRectangle1 = new Rectangle((int)sun1Pos.X, (int)sun1Pos.Y, sunSprite.Width*(8/100), sunSprite.Height * (8 / 100));
-            drawRectangle2 = new Rectangle((int)sun2Pos.X, (int)sun2Pos.Y, sunSprite.Width * (8 / 100), sunSprite.Height * (8 / 100));
+            drawRectangle1 = new Rectangle((int)sun1Pos.X, (int)sun1Pos.Y, sunSprite.Width/10 , sunSprite.Height/10 );
+            drawRectangle2 = new Rectangle((int)sun2Pos.X, (int)sun2Pos.Y, sunSprite.Width/10 , sunSprite.Height/10 );
 
             planets[0] = new Planet(planetSprite, ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite, ball1Pos + positionOffset[1], 1, true);
