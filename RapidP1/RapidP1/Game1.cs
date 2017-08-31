@@ -48,9 +48,9 @@ namespace RapidP1
             // TODO: Add your initialization logic here
             screenHeight = GameConstants.WindowHeight;
             screenWidth = GameConstants.WindowWidth;
-            ball1Pos.X = 0;
+            ball1Pos.X = 230;
             ball1Pos.Y = screenHeight / 2;
-            ball2Pos.X = screenWidth - 100;
+            ball2Pos.X = screenWidth - 250;
             ball2Pos.Y = (screenHeight)/ 2;
             //planetPos[1].X = ball1Pos.X + 20f;
             //planetPos[1].Y = ball1Pos.Y + 100f;
@@ -185,6 +185,28 @@ namespace RapidP1
 
                                 planets[j].Velocity = collsionInfo.SecondVelocity;
                                 planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
+
+                            }
+                        }
+
+                        if (!planets[i].InOrbit && planets[j].InOrbit)
+                        {
+                            CollisionResolutionInfo collsionInfo =
+                                CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                              GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                              planets[i].Velocity, planets[i].DrawRectangle,
+                                                              planets[j].Velocity, planets[j].DrawRectangle
+                                                              );
+
+                            //To detect collison between planet i and planet j 
+                            if (collsionInfo != null)
+                            {
+
+                                planets[i].Velocity = collsionInfo.FirstVelocity;
+                                planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
+
+                                //planets[j].Velocity = collsionInfo.SecondVelocity;
+                                //planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
 
                             }
                         }
