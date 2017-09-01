@@ -16,7 +16,7 @@ namespace RapidP1
     {
         #region init
         private Texture2D sun;
-        private static Texture2D planet;
+        private static Texture2D[] planet = new Texture2D[10];
         private static Texture2D planet1;
         private Texture2D background;
         private static Texture2D startScreen;
@@ -84,11 +84,16 @@ namespace RapidP1
             // Create a new SpriteBatch, which can be used to draw textures.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             spriteBatch = new SpriteBatch(GraphicsDevice);
             sun = Content.Load<Texture2D>("sunP2");
-            planet = Content.Load<Texture2D>("planet1");
+            for (int i = 0; i < 4; i++)
+            {
+                int k = i + 1;
+                planet[i] = Content.Load<Texture2D>("Button" + k);
+            }
+            //planet = Content.Load<Texture2D>("planet1");
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("start2");
