@@ -86,6 +86,8 @@ namespace RapidP1
             drawRectangle.X = (int)acceleration.X;
             drawRectangle.Y = (int)acceleration.Y;
 
+            velocityOffset = acceleration - velocityOffset;
+
             velocityOffset.Normalize();  //Gets the direction only
 
             velocity.X = velocityOffset.X * GameConstants.speed;

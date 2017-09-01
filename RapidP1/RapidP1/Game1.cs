@@ -33,7 +33,7 @@ namespace RapidP1
         List<Planet> planets = new List<Planet>();
 
         Song backgroundMusic;
-        List<SoundEffect> soundEffects;
+        List<SoundEffect> soundEffects = new List<SoundEffect>();
         #endregion
 
         public Game1()
