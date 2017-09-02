@@ -20,6 +20,8 @@ namespace RapidP1
 
 
         public float myNewSpeed = 1;
+        float maxNewSpeed = 5;
+        float minNewSpeed = 0.3f;
         #endregion
 
         #region properties
@@ -109,7 +111,20 @@ namespace RapidP1
 
             velocity.X = velocityOffset.X * GameConstants.speed;
             velocity.Y = velocityOffset.Y * GameConstants.speed;
-            myNewSpeed = newSpeed;
+
+            if (newSpeed>=maxNewSpeed)
+            {
+                myNewSpeed = maxNewSpeed;
+            }
+            else if (myNewSpeed <= minNewSpeed)
+            {
+                myNewSpeed = minNewSpeed;
+            }
+            else
+            {
+                myNewSpeed = newSpeed;
+            }
+            
         }
         public void GiveAcceleration(Vector2 acceleration, float vel)
         {
@@ -132,10 +147,6 @@ namespace RapidP1
         {
             if (!inOrbit && owner == 0)
             {
-                if (myNewSpeed <=0.3f)
-                {
-                    myNewSpeed = 0.3f;
-                }
 
                 drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);  //Or TotalMilliseconds (need to check)
                 drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);

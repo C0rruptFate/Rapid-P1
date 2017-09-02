@@ -281,30 +281,31 @@ namespace RapidP1
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    if (capabilities1.HasRightXThumbStick)
+                    if (capabilities1.HasRightXThumbStick)//Maybe change this to triggers or something 
                     {
                         if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
                         {
                             newSpeed = newSpeed + 1f;
-                            nextSpeedLose = speedLose + (float)currentGameTime;
                             joyStickRight = true;
                         }
                         else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
                         {
                             newSpeed = newSpeed + 1f;
-                            nextSpeedLose = speedLose + (float)currentGameTime;
                             joyStickRight = false;
                         }
 
                         if (speedLose <= nextSpeedLose)
                         {
                             newSpeed = newSpeed - 0.2f;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
                             if (newSpeed <= 1)
                             {
                                 newSpeed = 1;
                             }
                         }
                     }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     //Player shoot/dash button
                     if (capabilities1.HasAButton)
@@ -462,6 +463,33 @@ namespace RapidP1
                             drawRectangle2.Y -= 5;
                         }
                     }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (capabilities2.HasRightXThumbStick)//Maybe change this to triggers or something 
+                    {
+                        if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
+                        {
+                            newSpeed = newSpeed + 1f;
+                            joyStickRight = true;
+                        }
+                        else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
+                        {
+                            newSpeed = newSpeed + 1f;
+                            joyStickRight = false;
+                        }
+
+                        if (speedLose <= nextSpeedLose)
+                        {
+                            newSpeed = newSpeed - 0.2f;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
+                            if (newSpeed <= 1)
+                            {
+                                newSpeed = 1;
+                            }
+                        }
+                    }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     //Player shoot/Dash button
                     if (capabilities2.HasAButton)
