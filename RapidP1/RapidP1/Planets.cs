@@ -22,6 +22,7 @@ namespace RapidP1
         public float myNewSpeed = 1;
         float maxNewSpeed = 3;
         float minNewSpeed = 0.3f;
+        float minVelocity = 0.1f;
         #endregion
 
         #region properties
@@ -154,8 +155,15 @@ namespace RapidP1
                 //velocity.X += velocity.X * 0.01f * GetXDirection() * -1;
                 //velocity.Y += velocity.Y * 0.01f * GetYDirection() * -1;
 
-                velocity.X *= 0.998f;
-                velocity.Y *= 0.998f;
+                if (velocity.X > minVelocity)
+                {
+                    velocity.X *= 0.998f;
+                }
+
+                if (velocity.Y > minVelocity)
+                {
+                    velocity.Y *= 0.998f;
+                }
 
                 /*
                 if (velocity.X != 0)
