@@ -41,9 +41,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Circle.cs" />
     <Compile Include="CollisionUtils.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="CollisionResoultionInfo.cs" />
+    <Compile Include="GameConstants.cs" />
+    <Compile Include="Movement.cs" />
     <Compile Include="Planets.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,12 +4,25 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/ball.png</File>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet1.png</File>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet2.png</File>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet3.png</File>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet4.png</File>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet5.png</File>
-    <File>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Background.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/ball.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet1.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet2.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet3.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet4.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet5.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Background.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/sunP1.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/sunP2.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/sunP3.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/sunP4.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Score.spritefont</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/start2.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/BackgroundMusic.mp3</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/HitPlayer.wav</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Bounce.wav</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Button1.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Button2.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Button3.png</File>
+    <File>D:/GitHub/Rapid-P1/RapidP1/RapidP1/Content/Button4.png</File>
   </SourceFiles>
 </SourceFileCollection>

@@ -33,7 +33,8 @@ namespace RapidP1
         List<Planet> planets = new List<Planet>();
 
         Song backgroundMusic;
-        List<SoundEffect> soundEffects = new List<SoundEffect>();
+        public static List<SoundEffect> soundEffects = new List<SoundEffect>();
+
         #endregion
 
         public Game1()
@@ -163,14 +164,14 @@ namespace RapidP1
                 //Collisions between planet and players
                 foreach(Planet planet in planets)
                 {
-                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle1) && planet.Owner != 1)
+                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle1) && planet.Owner != 1 && control.IsAlive1)
                     {
                         control.IsAlive1 = false;
                         //Play Audio
                         soundEffects[1].Play();
                     }
 
-                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2)
+                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2 && control.IsAlive2)
                     {
                         control.IsAlive2 = false;
                         //Play Audio

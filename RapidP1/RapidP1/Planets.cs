@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections;
+using Microsoft.Xna.Framework.Audio;
 
 namespace RapidP1
 {
@@ -16,6 +17,7 @@ namespace RapidP1
         Vector2 velocity;
         Vector2 acceleration;
         Vector2 location;
+
 
         public float myNewSpeed = 1;
         #endregion
@@ -222,14 +224,14 @@ namespace RapidP1
                 // bounce off top
                 drawRectangle.Y = 0;
                 velocity.Y *= -1;
-                
+                Game1.soundEffects[0].Play();
             }
             else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WindowHeight)    //Should set up seperate static class for these constants
             {
                 // bounce off bottom
                 drawRectangle.Y = GameConstants.WindowHeight - drawRectangle.Height;
                 velocity.Y *= -1;
-                
+                Game1.soundEffects[0].Play();
             }
         }
 
@@ -240,13 +242,14 @@ namespace RapidP1
                 // bounc off left
                 drawRectangle.X = 0;
                 velocity.X *= -1;
+                Game1.soundEffects[0].Play();
             }
             else if ((drawRectangle.X + drawRectangle.Width) > GameConstants.WindowWidth)
             {
                 // bounce off right
                 drawRectangle.X = GameConstants.WindowWidth - drawRectangle.Width;
                 velocity.X *= -1;
-                
+                Game1.soundEffects[0].Play();
             }
 
 
