@@ -33,6 +33,11 @@ namespace RapidP1
         float nextFire;
         float fireRate = 50f;
         double currentGameTime;
+
+        float newSpeed;
+        bool joyStickRight;
+        float nextSpeedLose;
+        float speedLose = 10f;
         #endregion
 
         #region Properties
@@ -199,7 +204,6 @@ namespace RapidP1
                         {
                             //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
                             positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
-
                         }
                     }
                 }
@@ -275,6 +279,32 @@ namespace RapidP1
                             drawRectangle1.Y -= 5;
                         }
                     }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (capabilities1.HasRightXThumbStick)
+                    {
+                        if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
+                        {
+                            newSpeed = newSpeed + 1f;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
+                            joyStickRight = true;
+                        }
+                        else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
+                        {
+                            newSpeed = newSpeed + 1f;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
+                            joyStickRight = false;
+                        }
+
+                        if (speedLose <= nextSpeedLose)
+                        {
+                            newSpeed = newSpeed - 0.2f;
+                            if (newSpeed <= 1)
+                            {
+                                newSpeed = 1;
+                            }
+                        }
+                    }
 
                     //Player shoot/dash button
                     if (capabilities1.HasAButton)
@@ -303,7 +333,7 @@ namespace RapidP1
                                 if (direction.Y == 0)
                                 {
                                     Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                    planets[0].GiveAcceleration(ball1Pos + positionOffset[0], velocityOffset);
+                                    planets[0].GiveAcceleration(ball1Pos + positionOffset[0], velocityOffset, newSpeed);
                                 }
                                 else
                                     planets[0].GiveAcceleration(ball1Pos + positionOffset[0], direction);
@@ -342,7 +372,7 @@ namespace RapidP1
                                 if (direction.Y == 0)
                                 {
                                     Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                    planets[1].GiveAcceleration(ball1Pos + positionOffset[1], velocityOffset);
+                                    planets[1].GiveAcceleration(ball1Pos + positionOffset[1], velocityOffset, newSpeed);
                                 }
                                 else
                                     planets[1].GiveAcceleration(ball1Pos + positionOffset[1], direction);
@@ -381,7 +411,7 @@ namespace RapidP1
                                 if (direction.Y == 0)
                                 {
                                     Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                    planets[2].GiveAcceleration(ball1Pos + positionOffset[2], velocityOffset);
+                                    planets[2].GiveAcceleration(ball1Pos + positionOffset[2], velocityOffset, newSpeed);
                                 }
                                 else
                                     planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[2], direction);

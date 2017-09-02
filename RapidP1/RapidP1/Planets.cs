@@ -16,6 +16,8 @@ namespace RapidP1
         Vector2 velocity;
         Vector2 acceleration;
         Vector2 location;
+
+        public float myNewSpeed = 1;
         #endregion
 
         #region properties
@@ -93,6 +95,20 @@ namespace RapidP1
             velocity.X = velocityOffset.X * GameConstants.speed;
             velocity.Y = velocityOffset.Y * GameConstants.speed;
         }
+        public void GiveAcceleration(Vector2 acceleration, Vector2 velocityOffset, float newSpeed)
+        {
+
+            drawRectangle.X = (int)acceleration.X;
+            drawRectangle.Y = (int)acceleration.Y;
+
+            velocityOffset = acceleration - velocityOffset;
+
+            velocityOffset.Normalize();  //Gets the direction only
+
+            velocity.X = velocityOffset.X * GameConstants.speed;
+            velocity.Y = velocityOffset.Y * GameConstants.speed;
+            myNewSpeed = newSpeed;
+        }
         public void GiveAcceleration(Vector2 acceleration, float vel)
         {
 
@@ -114,8 +130,13 @@ namespace RapidP1
         {
             if (!inOrbit && owner == 0)
             {
-                drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);  //Or TotalMilliseconds (need to check)
-                drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
+                if (myNewSpeed <=0.3f)
+                {
+                    myNewSpeed = 0.3f;
+                }
+
+                drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);  //Or TotalMilliseconds (need to check)
+                drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);
 
                 //velocity.X += velocity.X * 0.01f * GetXDirection() * -1;
                 //velocity.Y += velocity.Y * 0.01f * GetYDirection() * -1;
