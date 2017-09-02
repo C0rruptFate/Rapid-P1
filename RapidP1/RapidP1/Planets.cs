@@ -112,11 +112,11 @@ namespace RapidP1
             velocity.X = velocityOffset.X * GameConstants.speed;
             velocity.Y = velocityOffset.Y * GameConstants.speed;
 
-            if (newSpeed>=maxNewSpeed)
+            if (newSpeed >= maxNewSpeed)
             {
                 myNewSpeed = maxNewSpeed;
             }
-            else if (myNewSpeed <= minNewSpeed)
+            else if (newSpeed <= minNewSpeed)
             {
                 myNewSpeed = minNewSpeed;
             }

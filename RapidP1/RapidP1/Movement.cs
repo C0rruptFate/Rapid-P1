@@ -38,6 +38,7 @@ namespace RapidP1
         bool joyStickRight;
         float nextSpeedLose;
         float speedLose = 10f;
+        float speedLoseIncreaseAmount = 0.3f;
         #endregion
 
         #region Properties
@@ -285,7 +286,7 @@ namespace RapidP1
                     {
                         if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
                         {
-                            newSpeed = newSpeed + 1f;
+                            newSpeed = newSpeed + speedLoseIncreaseAmount;
                             joyStickRight = true;
                         }
                         else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
@@ -296,7 +297,7 @@ namespace RapidP1
 
                         if (speedLose <= nextSpeedLose)
                         {
-                            newSpeed = newSpeed - 0.2f;
+                            newSpeed = newSpeed - speedLoseIncreaseAmount * 2;
                             nextSpeedLose = speedLose + (float)currentGameTime;
                             if (newSpeed <= 1)
                             {
@@ -469,7 +470,7 @@ namespace RapidP1
                     {
                         if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
                         {
-                            newSpeed = newSpeed + 1f;
+                            newSpeed = newSpeed + speedLoseIncreaseAmount;
                             joyStickRight = true;
                         }
                         else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
@@ -480,7 +481,7 @@ namespace RapidP1
 
                         if (speedLose <= nextSpeedLose)
                         {
-                            newSpeed = newSpeed - 0.2f;
+                            newSpeed = newSpeed - speedLoseIncreaseAmount * 2;
                             nextSpeedLose = speedLose + (float)currentGameTime;
                             if (newSpeed <= 1)
                             {
