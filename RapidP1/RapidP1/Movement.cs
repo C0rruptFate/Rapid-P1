@@ -287,21 +287,24 @@ namespace RapidP1
                         if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
                         {
                             newSpeed = newSpeed + speedLoseIncreaseAmount;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
                             joyStickRight = true;
                         }
                         else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
                         {
                             newSpeed = newSpeed + 1f;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
                             joyStickRight = false;
+                            
                         }
 
-                        if (speedLose <= nextSpeedLose)
+                        if ((float)currentGameTime >= nextSpeedLose)
                         {
-                            newSpeed = newSpeed - speedLoseIncreaseAmount * 2;
-                            nextSpeedLose = speedLose + (float)currentGameTime;
-                            if (newSpeed <= 1)
+                            newSpeed = newSpeed - speedLoseIncreaseAmount * 1.5f;
+                            
+                            if (newSpeed <= 0.3f)
                             {
-                                newSpeed = 1;
+                                newSpeed = 0.3f;
                             }
                         }
                     }
@@ -471,21 +474,24 @@ namespace RapidP1
                         if (state.ThumbSticks.Right.X < -0.5f && !joyStickRight)
                         {
                             newSpeed = newSpeed + speedLoseIncreaseAmount;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
                             joyStickRight = true;
                         }
                         else if (state.ThumbSticks.Right.X > 0.5f && joyStickRight)
                         {
                             newSpeed = newSpeed + 1f;
+                            nextSpeedLose = speedLose + (float)currentGameTime;
                             joyStickRight = false;
+
                         }
 
-                        if (speedLose <= nextSpeedLose)
+                        if ((float)currentGameTime >= nextSpeedLose)
                         {
-                            newSpeed = newSpeed - speedLoseIncreaseAmount * 2;
-                            nextSpeedLose = speedLose + (float)currentGameTime;
-                            if (newSpeed <= 1)
+                            newSpeed = newSpeed - speedLoseIncreaseAmount * 1.5f;
+
+                            if (newSpeed <= 0.3f)
                             {
-                                newSpeed = 1;
+                                newSpeed = 0.3f;
                             }
                         }
                     }

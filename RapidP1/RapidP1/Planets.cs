@@ -20,7 +20,7 @@ namespace RapidP1
 
 
         public float myNewSpeed = 1;
-        float maxNewSpeed = 5;
+        float maxNewSpeed = 3;
         float minNewSpeed = 0.3f;
         #endregion
 
