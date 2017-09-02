@@ -32,6 +32,8 @@ namespace RapidP1
         //GamePlay play;
         public string gameState;
         List<Planet> planets = new List<Planet>();
+        List<Planet> p1Planets = new List<Planet>();
+        List<Planet> p2Planets = new List<Planet>();
 
         Song backgroundMusic;
         public static List<SoundEffect> soundEffects = new List<SoundEffect>();
@@ -116,9 +118,17 @@ namespace RapidP1
             planets.Add(p5);
             planets.Add(p6);
 
+            p1Planets.Add(p1);
+            p1Planets.Add(p2);
+            p1Planets.Add(p3);
+
+            p2Planets.Add(p4);
+            p2Planets.Add(p5);
+            p2Planets.Add(p6);
+
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets /*,p1Planets, p2Planets*/);
 
 
 

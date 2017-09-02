@@ -30,24 +30,30 @@ namespace RapidP1
         bool isAlive1 = true;
         bool isAlive2 = true;
 
-        float nextFire;
+        
         float fireRate = 50f;
         double currentGameTime;
 
+        float nextFireP1;
         float newSpeedP1;
         bool joyStickRightP1;
         float nextSpeedLoseP1;
         float speedLose = 100f;
         float speedLoseIncreaseAmount = 0.1f;
+        bool orbitClockWiseP1 = false;
+        List<Planet> p1Planets = new List<Planet>();
 
+        float nextFireP2;
         float newSpeedP2;
         bool joyStickRightP2;
         float nextSpeedLoseP2;
+        bool orbitClockWiseP2 = false;
+        List<Planet> p2Planets = new List<Planet>();
 
         float maxNewSpeed = 2;
         float minNewSpeed = 0.3f;
 
-        float minOrbit = 0.9f;
+        float minOrbit = 1f;
         float maxOrbit = 3f;
         #endregion
 
@@ -206,7 +212,7 @@ namespace RapidP1
 
                 #region RotationaAndShoot:
 
-                //angle += 0.03f;
+                ////angle += 0.03f;
                 foreach (Planet planet in planets)
                 {
                     if ((planet.InOrbit) && (planet.Owner != 0))
@@ -214,9 +220,9 @@ namespace RapidP1
                         for (int i = 0; i < planets.Count; i++)
                         {
                             //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                            ///////////////////////////////////////////////////////////////////////////////
-                            ///////////////////////////////////////////////////////////////
-                            ///////////////////////////////////////////////////////////////
+                            /////////////////////////////////////////////////////////////////////////////
+                            /////////////////////////////////////////////////////////////
+                            /////////////////////////////////////////////////////////////
                             float orbitSpeed = newSpeedP1 / 2;
                             if (orbitSpeed <= minOrbit)
                             {
@@ -226,64 +232,87 @@ namespace RapidP1
                             {
                                 orbitSpeed = maxOrbit;
                             }
-                            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
-                            ///////////////////////////////////////////////////////////////
-                            ///////////////////////////////////////////////////////////////
-                            ///////////////////////////////////////////////////////////////
+                            //////Comment this out to avoid orbit direction change.
+                            //float orbitDirection = 1;
+                            //if (orbitClockWiseP1)
+                            //{
+                            //    orbitDirection = -1;
+                            //}
+                            positionOffset[i] = new Vector2(radius[i] /** orbitDirection*/ * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
+                            /////////////////////////////////////////////////////////////
+                            /////////////////////////////////////////////////////////////
+                            /////////////////////////////////////////////////////////////
                         }
                     }
-
-                    //Working on Changing planet orbit.
-                    //if ((planet.InOrbit) && (planet.Owner == 1))
-                    //{
-                    //    for (int i = 0; i < planets.Count; i++)
-                    //    {
-                    //        //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                    //        ///////////////////////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //        float orbitSpeed = newSpeedP1 / 2;
-                    //        if (orbitSpeed <= minOrbit)
-                    //        {
-                    //            orbitSpeed = minOrbit;
-                    //        }
-                    //        else if (orbitSpeed >= maxOrbit)
-                    //        {
-                    //            orbitSpeed = maxOrbit;
-                    //        }
-                    //        positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
-                    //        ///////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //    }
-                    //}
-
-                    //if ((planet.InOrbit) && (planet.Owner == 2))
-                    //{
-                    //    for (int i = 0; i < planets.Count; i++)
-                    //    {
-                    //        //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                    //        ///////////////////////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //        float orbitSpeed = newSpeedP2 / 2;
-                    //        if (orbitSpeed <= minOrbit)
-                    //        {
-                    //            orbitSpeed = minOrbit;
-                    //        }
-                    //        else if (orbitSpeed >= maxOrbit)
-                    //        {
-                    //            orbitSpeed = maxOrbit;
-                    //        }
-                    //        positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
-                    //        ///////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //        ///////////////////////////////////////////////////////////////
-                    //    }
-                    //}
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFire <= currentGameTime) //p1 shoot
+                //Working on Changing planet orbit.
+                //foreach (Planet planet in p1Planets)
+                //{
+                //    if ((planet.InOrbit) && (planet.Owner == 1))
+                //    {
+                //        for (int i = 0; i < p1Planets.Count; i++)
+                //        {
+                //            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
+                //            ///////////////////////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //            float orbitSpeed = newSpeedP1 / 2;
+                //            if (orbitSpeed <= minOrbit)
+                //            {
+                //                orbitSpeed = minOrbit;
+                //            }
+                //            else if (orbitSpeed >= maxOrbit)
+                //            {
+                //                orbitSpeed = maxOrbit;
+                //            }
+                //            float orbitDirectionP1 = 1;
+                //            if (orbitClockWiseP1)
+                //            {
+                //                orbitDirectionP1 = -1;
+                //            }
+                //            positionOffset[i] = new Vector2(radius[i] * orbitDirectionP1 * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
+                //            ///////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //        }
+                //    }
+                //}
+
+                //foreach (Planet planet in p2Planets)
+                //{
+                //    if ((planet.InOrbit) && (planet.Owner == 2))
+                //    {
+                //        for (int i = 0; i < p2Planets.Count; i++)
+                //        {
+                //            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
+                //            ///////////////////////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //            float orbitSpeed = newSpeedP2 / 2;
+                //            if (orbitSpeed <= minOrbit)
+                //            {
+                //                orbitSpeed = minOrbit;
+                //            }
+                //            else if (orbitSpeed >= maxOrbit)
+                //            {
+                //                orbitSpeed = maxOrbit;
+                //            }
+                //            float orbitDirectionP2 = -1;
+                //            if (orbitClockWiseP2)
+                //            {
+                //                orbitDirectionP2 = -1;
+                //            }
+                //            positionOffset[i] = new Vector2(radius[i] * orbitDirectionP2 * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
+                //            ///////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //            ///////////////////////////////////////////////////////////////
+                //        }
+                //    }
+                //}
+
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFireP1 <= currentGameTime) //p1 shoot
                     {
                         //for (int i = 0; i < 1; i++)
                         //{
@@ -298,13 +327,13 @@ namespace RapidP1
                                 planetCount1--;
                             }
 
-                            nextFire = fireRate + (float)currentGameTime;
+                            nextFireP1 = fireRate + (float)currentGameTime;
                         }
                         //}
                         //planetCount++;
                     }
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.NumPad0) && nextFire <= currentGameTime) //p2 shoot
+                    if (Keyboard.GetState().IsKeyDown(Keys.NumPad0) && nextFireP2 <= currentGameTime) //p2 shoot
                     {
                         if (planets[planetCount2].Owner == 2 && planets[planetCount2].InOrbit)
                         {
@@ -316,7 +345,7 @@ namespace RapidP1
                             {
                                 planetCount2--;
                             }
-                            nextFire = fireRate + (float)currentGameTime;
+                            nextFireP2 = fireRate + (float)currentGameTime;
 
                         }
                     }
@@ -341,8 +370,17 @@ namespace RapidP1
                             ////Move Right
                             //else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
                             //    ball1Pos.X += 10.0f;
-                            //Move Up
-                            if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
+
+                        if (state.ThumbSticks.Left.X < -0.5f)
+                        {
+                            orbitClockWiseP1 = false;
+                        }
+                        else if (state.ThumbSticks.Left.X > 0.5f)
+                        {
+                            orbitClockWiseP1 = true;
+                        }
+                        //Move Up
+                        if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
                             {
                                 ball1Pos.Y += 5;
                                 drawRectangle1.Y += 5;
@@ -413,7 +451,7 @@ namespace RapidP1
                         if (capabilities1.HasAButton)
                         {
                             //Shoot
-                            if (state.Buttons.A == ButtonState.Pressed && nextFire <= currentGameTime)
+                            if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                             {
                                 if (planets[0].Owner == 1 && planets[0].InOrbit)
                                 {
@@ -445,14 +483,14 @@ namespace RapidP1
                                     //    planetCount1--;
                                     //}
 
-                                    nextFire = fireRate + (float)currentGameTime;
+                                    nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
                         }
                         if (capabilities1.HasBButton)
                         {
                             //Shoot
-                            if (state.Buttons.B == ButtonState.Pressed && nextFire <= currentGameTime)
+                            if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                             {
                                 if (planets[1].Owner == 1 && planets[1].InOrbit)
                                 {
@@ -484,14 +522,14 @@ namespace RapidP1
                                     //    planetCount1--;
                                     //}
 
-                                    nextFire = fireRate + (float)currentGameTime;
+                                    nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
                         }
                         if (capabilities1.HasXButton)
                         {
                             //Shoot
-                            if (state.Buttons.X == ButtonState.Pressed && nextFire <= currentGameTime)
+                            if (state.Buttons.X == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                             {
                                 if (planets[2].Owner == 1 && planets[2].InOrbit)
                                 {
@@ -523,7 +561,7 @@ namespace RapidP1
                                     //    planetCount1--;
                                     //}
 
-                                    nextFire = fireRate + (float)currentGameTime;
+                                    nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
                         }
@@ -545,15 +583,23 @@ namespace RapidP1
                         // You can check explicitly if a gamepad has support for a certain feature
                         if (capabilities2.HasLeftXThumbStick)
                         {
-                            // Check for movement
-                            ////Move Left
-                            //if (state.ThumbSticks.Left.X < -0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
-                            //    ball2Pos.X -= 10.0f;
-                            ////Move Right
-                            //else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
-                            //    ball2Pos.X += 10.0f;
-                            //Move Up
-                            if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
+                        // Check for movement
+                        ////Move Left
+                        //if (state.ThumbSticks.Left.X < -0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
+                        //    ball2Pos.X -= 10.0f;
+                        ////Move Right
+                        //else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
+                        //    ball2Pos.X += 10.0f;
+                        if (state.ThumbSticks.Left.X < -0.5f)
+                        {
+                            orbitClockWiseP2 = false;
+                        }
+                        else if (state.ThumbSticks.Left.X > 0.5f)
+                        {
+                            orbitClockWiseP2 = true;
+                        }
+                        //Move Up
+                        if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
                             {
                                 ball2Pos.Y += 5;
                                 drawRectangle2.Y += 5;
@@ -624,7 +670,7 @@ namespace RapidP1
                         if (capabilities2.HasAButton)
                         {
                             //Shoot
-                            if (state.Buttons.A == ButtonState.Pressed && nextFire <= currentGameTime)
+                            if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                             {
                                 if (planets[3].Owner == 2 && planets[3].InOrbit)
                                 {
@@ -655,7 +701,7 @@ namespace RapidP1
                                     //{
                                     //    planetCount2--;
                                     //}
-                                    nextFire = fireRate + (float)currentGameTime;
+                                    nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
                             }
@@ -663,7 +709,7 @@ namespace RapidP1
                         if (capabilities2.HasBButton)
                         {
                             //Shoot
-                            if (state.Buttons.B == ButtonState.Pressed && nextFire <= currentGameTime)
+                            if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                             {
                                 if (planets[4].Owner == 2 && planets[4].InOrbit)
                                 {
@@ -694,7 +740,7 @@ namespace RapidP1
                                     //{
                                     //    planetCount2--;
                                     //}
-                                    nextFire = fireRate + (float)currentGameTime;
+                                    nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
                             }
@@ -702,7 +748,7 @@ namespace RapidP1
                         if (capabilities2.HasXButton)
                         {
                             //Shoot
-                            if (state.Buttons.X == ButtonState.Pressed && nextFire <= currentGameTime)
+                            if (state.Buttons.X == ButtonState.Pressed && nextFireP2 <= currentGameTime)
                             {
                                 if (planets[5].Owner == 2 && planets[5].InOrbit)
                                 {
@@ -733,7 +779,7 @@ namespace RapidP1
                                     //{
                                     //    planetCount2--;
                                     //}
-                                    nextFire = fireRate + (float)currentGameTime;
+                                    nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
                             }
@@ -803,7 +849,7 @@ namespace RapidP1
 
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -815,16 +861,26 @@ namespace RapidP1
             planetSprite1 = planetSprite;
 
             this.planets = planets;
-
+            //this.p1Planets = p1Planets;
+            //this.p2Planets = p2Planets;
             drawRectangle1 = new Rectangle((int)sun1Pos.X, (int)sun1Pos.Y, sunSprite.Width / 10, sunSprite.Height / 10);
             drawRectangle2 = new Rectangle((int)sun2Pos.X, (int)sun2Pos.Y, sunSprite.Width / 10, sunSprite.Height / 10);
 
             planets[0] = new Planet(planetSprite[0], ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite[1], ball1Pos + positionOffset[1], 1, true);
             planets[2] = new Planet(planetSprite[2], ball1Pos + positionOffset[2], 1, true);
+
+            p1Planets.Add(planets[0]);
+            p1Planets.Add(planets[1]);
+            p1Planets.Add(planets[2]);
+
             planets[3] = new Planet(planetSprite[0], ball2Pos + positionOffset[0], 2, true);
             planets[4] = new Planet(planetSprite[1], ball2Pos + positionOffset[1], 2, true);
             planets[5] = new Planet(planetSprite[2], ball2Pos + positionOffset[2], 2, true);
+
+            p2Planets.Add(planets[3]);
+            p2Planets.Add(planets[4]);
+            p2Planets.Add(planets[5]);
         }
     }
 }
