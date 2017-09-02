@@ -20,6 +20,7 @@ namespace RapidP1
         private static Texture2D planet1;
         private Texture2D background;
         private static Texture2D startScreen;
+        bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private float screenHeight, screenWidth;
@@ -146,20 +147,14 @@ namespace RapidP1
 
             GamePadState state = GamePad.GetState(PlayerIndex.One);
 
-            if ((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) //up
+            if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) && !isPlayable) //up
             {
                 gameState = GameStates.InGame.ToString();
+                isPlayable = true;
             }
-            else
+            else if (isPlayable)
             {
                 control.Update(gameTime);
-
-                //Collison between players
-
-                if (control.CollisionRectangle1.Intersects(control.CollisionRectangle2))
-                {
-                    //do Something
-                }
 
                 //Collisions between planet and players
                 foreach(Planet planet in planets)
