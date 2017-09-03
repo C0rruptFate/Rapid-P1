@@ -34,24 +34,26 @@ namespace RapidP1
         float fireRate = 50f;
         double currentGameTime;
 
-        float nextFireP1;
-        float newSpeedP1;
-        bool joyStickRightP1;
-        float nextSpeedLoseP1;
-        float speedLose = 10f;
-        float speedLoseIncreaseAmount = 0.1f;
-        List<Planet> p1Planets = new List<Planet>();
-        float[] p1Angles = new float[10];
+        float nextFireP1; //When player 1 can next shoot
+        float newSpeedP1; //Multiplier for player 1's planets
+        bool joyStickRightP1; //Used to track the players right stick movement.
+        float nextSpeedLoseP1; //When player 1 will next lose some speed.
+        float speedLose = 10f; //How quickly players lose speed
+        float speedLoseIncreaseAmount = 0.1f; //How much speed is lost per tick.
+        List<Planet> p1Planets = new List<Planet>(); //List of all player 1's planets.
+        float[] p1Angles = new float[10]; //used to track the speed of player 1's orbit speed.
 
-        float nextFireP2;
-        float newSpeedP2;
-        bool joyStickRightP2;
-        float nextSpeedLoseP2;
-        List<Planet> p2Planets = new List<Planet>();
-        float[] p2Angles = new float[10];
+        float nextFireP2; //When player 2 can next shoot
+        float newSpeedP2; //Multiplier for player 2's planets
+        bool joyStickRightP2; //Used to track the players right stick movement.
+        float nextSpeedLoseP2; //When player 2 will next lose some speed.
+        List<Planet> p2Planets = new List<Planet>(); //the list of all player 2's planets
+        float[] p2Angles = new float[10]; //used to track the speed of player 2's orbit speed.
 
-        float maxNewSpeed = 2;
-        float minNewSpeed = 0.3f;
+
+        
+        float maxNewSpeed = 2; //The max speed the planets can fly at.
+        float minNewSpeed = 0.3f; //The min speed they fly at.
 
         float minOrbit = 1f;
         float maxOrbit = 3f;
@@ -141,7 +143,6 @@ namespace RapidP1
                             planet.Owner = 0;
                             planet.GiveAcceleration(ball1Pos + new Vector2(new Random().Next(1, 3), new Random().Next(1, 3)));
                         }
-
                     }
                 }
 
@@ -198,11 +199,11 @@ namespace RapidP1
                 //angle[2] += 0.06f;
 
 
-                angle[0] += 0.1f * newSpeedP1;
-                angle[1] += 0.08f * newSpeedP1;
-                angle[2] += 0.06f * newSpeedP1;
+                //angle[0] += 0.1f * newSpeedP1;
+                //angle[1] += 0.08f * newSpeedP1;
+                //angle[2] += 0.06f * newSpeedP1;
 
-                p1Angles[0] += 0.1f * newSpeedP1;
+                p1Angles[0] += 0.1f * newSpeedP1; //Used to increase the speed of each players orbit.
                 p1Angles[1] += 0.08f * newSpeedP1;
                 p1Angles[2] += 0.06f * newSpeedP1;
 
@@ -228,43 +229,45 @@ namespace RapidP1
                 #region RotationaAndShoot:
 
                 ////angle += 0.03f;
-                foreach (Planet planet in planets)
+                //Sai's orbit code
+                //foreach (Planet planet in planets)
+                //{
+                //    if ((planet.InOrbit) && (planet.Owner != 0))
+                //    {
+                //        for (int i = 0; i < planets.Count; i++)
+                //        {
+                //            ////positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
+                //            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
+
+                //        }
+                //    }
+                //}
+
+                //Working on Changing planet orbit per player.
+                //Just like Sai's code but changes to allow variable speed increase.
+                foreach (Planet planet in p1Planets)
                 {
-                    if ((planet.InOrbit) && (planet.Owner != 0))
+                    if ((planet.InOrbit) && (planet.Owner == 1))
                     {
-                        for (int i = 0; i < planets.Count; i++)
+                        for (int i = 0; i < p1Planets.Count; i++)
                         {
                             //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
-
+                            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(p1Angles[i]), radius[i] * (float)Math.Cos(p1Angles[i]));
                         }
                     }
                 }
 
-                //Working on Changing planet orbit per player.
-                //foreach (Planet planet in p1Planets)
-                //{
-                //    if ((planet.InOrbit) && (planet.Owner == 1))
-                //    {
-                //        for (int i = 0; i < p1Planets.Count; i++)
-                //        {
-                //            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                //            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(p1Angles[i]), radius[i] * (float)Math.Cos(p1Angles[i]));
-                //        }
-                //    }
-                //}
-
-                //foreach (Planet planet in p2Planets)
-                //{
-                //    if ((planet.InOrbit) && (planet.Owner == 2))
-                //    {
-                //        for (int i = 0; i < p2Planets.Count; i++)
-                //        {
-                //            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                //            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(p2Angles[i]), radius[i] * (float)Math.Cos(p2Angles[i]));
-                //        }
-                //    }
-                //}
+                foreach (Planet planet in p2Planets)
+                {
+                    if ((planet.InOrbit) && (planet.Owner == 2))
+                    {
+                        for (int i = 0; i < p2Planets.Count; i++)
+                        {
+                            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
+                            positionOffset[i + 3] = new Vector2(radius[i] * (float)Math.Sin(p2Angles[i]), radius[i] * (float)Math.Cos(p2Angles[i]));
+                        }
+                    }
+                }
 
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFireP1 <= currentGameTime) //p1 shoot
@@ -342,19 +345,19 @@ namespace RapidP1
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         if (capabilities1.HasRightXThumbStick)//Maybe change this to triggers or something 
                         {
-                            if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP1)
+                            if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP1)//Tracks the movement of p1's right joystick
                             {
-                                newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount;
-                                if (newSpeedP1 >= maxNewSpeed)
+                                newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
+                                if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
                                 {
                                     newSpeedP1 = maxNewSpeed;
                                 }
-                                else if (newSpeedP1 <= minNewSpeed)
+                                else if (newSpeedP1 <= minNewSpeed) //Makes sure we can't go below the min speed.
                                 {
                                     newSpeedP1 = minNewSpeed;
                                 }
-                                nextSpeedLoseP1 = speedLose + (float)currentGameTime;
-                                joyStickRightP1 = true;
+                                nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
+                            joyStickRightP1 = true; //Makes sure you need to move to the other side first.
                             }
                             else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP1)
                             {
@@ -372,7 +375,7 @@ namespace RapidP1
 
                             }
 
-                            if ((float)currentGameTime >= nextSpeedLoseP1)
+                            if ((float)currentGameTime >= nextSpeedLoseP1)//Ticks down move speed of planets if you arn't moving the joystick.
                             {
                                 newSpeedP1 = newSpeedP1 - speedLoseIncreaseAmount;
                                 if (newSpeedP1 >= maxNewSpeed)
@@ -789,7 +792,7 @@ namespace RapidP1
 
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets , List<Planet> p1Planets, List<Planet> p2Planets)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -811,6 +814,7 @@ namespace RapidP1
             planets[1] = new Planet(planetSprite[1], ball1Pos + positionOffset[1], 1, true);
             planets[2] = new Planet(planetSprite[2], ball1Pos + positionOffset[2], 1, true);
 
+            //Adds the planets to player 1's list
             p1Planets.Add(planets[0]);
             p1Planets.Add(planets[1]);
             p1Planets.Add(planets[2]);
@@ -819,6 +823,7 @@ namespace RapidP1
             planets[4] = new Planet(planetSprite[1], ball2Pos + positionOffset[1], 2, true);
             planets[5] = new Planet(planetSprite[2], ball2Pos + positionOffset[2], 2, true);
 
+            //Adds the planets to player 2's list
             p2Planets.Add(planets[3]);
             p2Planets.Add(planets[4]);
             p2Planets.Add(planets[5]);
