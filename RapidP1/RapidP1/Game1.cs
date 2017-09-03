@@ -128,10 +128,8 @@ namespace RapidP1
 
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets /*,p1Planets, p2Planets*/);
-
-
-
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets ,p1Planets, p2Planets);
+            
 
             // TODO: use this.Content to load your game content here
         }

@@ -38,17 +38,17 @@ namespace RapidP1
         float newSpeedP1;
         bool joyStickRightP1;
         float nextSpeedLoseP1;
-        float speedLose = 100f;
+        float speedLose = 10f;
         float speedLoseIncreaseAmount = 0.1f;
-        bool orbitClockWiseP1 = false;
         List<Planet> p1Planets = new List<Planet>();
+        float[] p1Angles = new float[10];
 
         float nextFireP2;
         float newSpeedP2;
         bool joyStickRightP2;
         float nextSpeedLoseP2;
-        bool orbitClockWiseP2 = false;
         List<Planet> p2Planets = new List<Planet>();
+        float[] p2Angles = new float[10];
 
         float maxNewSpeed = 2;
         float minNewSpeed = 0.3f;
@@ -192,9 +192,24 @@ namespace RapidP1
 
 
                 radius[0] = 120;
-                angle[0] += 0.1f;
-                angle[1] += 0.08f;
-                angle[2] += 0.06f;
+                //Default orbit speed values.
+                //angle[0] += 0.1f;
+                //angle[1] += 0.08f;
+                //angle[2] += 0.06f;
+
+
+                angle[0] += 0.1f * newSpeedP1;
+                angle[1] += 0.08f * newSpeedP1;
+                angle[2] += 0.06f * newSpeedP1;
+
+                p1Angles[0] += 0.1f * newSpeedP1;
+                p1Angles[1] += 0.08f * newSpeedP1;
+                p1Angles[2] += 0.06f * newSpeedP1;
+
+                p2Angles[0] += 0.1f * newSpeedP2;
+                p2Angles[1] += 0.08f * newSpeedP2;
+                p2Angles[2] += 0.06f * newSpeedP2;
+
                 //angle[0] += ((float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f);
                 //angle[1] += ((float)gameTime.ElapsedGameTime.TotalSeconds * 0.8f);
                 //angle[2] += ((float)gameTime.ElapsedGameTime.TotalSeconds * 0.1f);
@@ -220,33 +235,13 @@ namespace RapidP1
                         for (int i = 0; i < planets.Count; i++)
                         {
                             //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                            /////////////////////////////////////////////////////////////////////////////
-                            /////////////////////////////////////////////////////////////
-                            /////////////////////////////////////////////////////////////
-                            float orbitSpeed = newSpeedP1 / 2;
-                            if (orbitSpeed <= minOrbit)
-                            {
-                                orbitSpeed = minOrbit;
-                            }
-                            else if (orbitSpeed >= maxOrbit)
-                            {
-                                orbitSpeed = maxOrbit;
-                            }
-                            //////Comment this out to avoid orbit direction change.
-                            //float orbitDirection = 1;
-                            //if (orbitClockWiseP1)
-                            //{
-                            //    orbitDirection = -1;
-                            //}
-                            positionOffset[i] = new Vector2(radius[i] /** orbitDirection*/ * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
-                            /////////////////////////////////////////////////////////////
-                            /////////////////////////////////////////////////////////////
-                            /////////////////////////////////////////////////////////////
+                            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle[i]), radius[i] * (float)Math.Cos(angle[i]));
+
                         }
                     }
                 }
 
-                //Working on Changing planet orbit.
+                //Working on Changing planet orbit per player.
                 //foreach (Planet planet in p1Planets)
                 //{
                 //    if ((planet.InOrbit) && (planet.Owner == 1))
@@ -254,27 +249,7 @@ namespace RapidP1
                 //        for (int i = 0; i < p1Planets.Count; i++)
                 //        {
                 //            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                //            ///////////////////////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
-                //            float orbitSpeed = newSpeedP1 / 2;
-                //            if (orbitSpeed <= minOrbit)
-                //            {
-                //                orbitSpeed = minOrbit;
-                //            }
-                //            else if (orbitSpeed >= maxOrbit)
-                //            {
-                //                orbitSpeed = maxOrbit;
-                //            }
-                //            float orbitDirectionP1 = 1;
-                //            if (orbitClockWiseP1)
-                //            {
-                //                orbitDirectionP1 = -1;
-                //            }
-                //            positionOffset[i] = new Vector2(radius[i] * orbitDirectionP1 * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
-                //            ///////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
+                //            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(p1Angles[i]), radius[i] * (float)Math.Cos(p1Angles[i]));
                 //        }
                 //    }
                 //}
@@ -286,27 +261,7 @@ namespace RapidP1
                 //        for (int i = 0; i < p2Planets.Count; i++)
                 //        {
                 //            //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
-                //            ///////////////////////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
-                //            float orbitSpeed = newSpeedP2 / 2;
-                //            if (orbitSpeed <= minOrbit)
-                //            {
-                //                orbitSpeed = minOrbit;
-                //            }
-                //            else if (orbitSpeed >= maxOrbit)
-                //            {
-                //                orbitSpeed = maxOrbit;
-                //            }
-                //            float orbitDirectionP2 = -1;
-                //            if (orbitClockWiseP2)
-                //            {
-                //                orbitDirectionP2 = -1;
-                //            }
-                //            positionOffset[i] = new Vector2(radius[i] * orbitDirectionP2 * (float)Math.Sin(angle[i]) * orbitSpeed, radius[i] * (float)Math.Cos(angle[i]) * orbitSpeed);
-                //            ///////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
-                //            ///////////////////////////////////////////////////////////////
+                //            positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(p2Angles[i]), radius[i] * (float)Math.Cos(p2Angles[i]));
                 //        }
                 //    }
                 //}
@@ -370,15 +325,6 @@ namespace RapidP1
                             ////Move Right
                             //else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
                             //    ball1Pos.X += 10.0f;
-
-                        if (state.ThumbSticks.Left.X < -0.5f)
-                        {
-                            orbitClockWiseP1 = false;
-                        }
-                        else if (state.ThumbSticks.Left.X > 0.5f)
-                        {
-                            orbitClockWiseP1 = true;
-                        }
                         //Move Up
                         if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
                             {
@@ -442,7 +388,8 @@ namespace RapidP1
                                 {
                                     newSpeedP1 = 0.3f;
                                 }
-                            }
+                            nextSpeedLoseP1 = speedLose + (float)currentGameTime;
+                        }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -590,14 +537,6 @@ namespace RapidP1
                         ////Move Right
                         //else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
                         //    ball2Pos.X += 10.0f;
-                        if (state.ThumbSticks.Left.X < -0.5f)
-                        {
-                            orbitClockWiseP2 = false;
-                        }
-                        else if (state.ThumbSticks.Left.X > 0.5f)
-                        {
-                            orbitClockWiseP2 = true;
-                        }
                         //Move Up
                         if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
                             {
@@ -661,7 +600,8 @@ namespace RapidP1
                                 {
                                     newSpeedP2 = 0.3f;
                                 }
-                            }
+                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
+                        }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -849,7 +789,7 @@ namespace RapidP1
 
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets , List<Planet> p1Planets, List<Planet> p2Planets)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -861,6 +801,7 @@ namespace RapidP1
             planetSprite1 = planetSprite;
 
             this.planets = planets;
+            ////Commented out cause these break the playermovement.
             //this.p1Planets = p1Planets;
             //this.p2Planets = p2Planets;
             drawRectangle1 = new Rectangle((int)sun1Pos.X, (int)sun1Pos.Y, sunSprite.Width / 10, sunSprite.Height / 10);
