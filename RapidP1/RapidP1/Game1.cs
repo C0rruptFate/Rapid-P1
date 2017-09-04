@@ -15,7 +15,7 @@ namespace RapidP1
     public class Game1 : Game
     {
         #region init
-        private Texture2D sun;
+        private Texture2D sun, win;
         private static Texture2D[] planet = new Texture2D[10];
         private static Texture2D planet1;
         private Texture2D background;
@@ -34,6 +34,7 @@ namespace RapidP1
         List<Planet> planets = new List<Planet>();
         List<Planet> p1Planets = new List<Planet>();
         List<Planet> p2Planets = new List<Planet>();
+        private static Texture2D[] playerWinImages = new Texture2D[5];
 
         Song backgroundMusic;
         public static List<SoundEffect> soundEffects = new List<SoundEffect>();
@@ -96,16 +97,20 @@ namespace RapidP1
             {
                 int k = i + 1;
                 planet[i] = Content.Load<Texture2D>("Button" + k);
+                playerWinImages[i] = Content.Load<Texture2D>("win_player" + k);
             }
             //planet = Content.Load<Texture2D>("planet1");
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
-            startScreen = Content.Load<Texture2D>("start2");
+            startScreen = Content.Load<Texture2D>("logo_solarSlayers");
+            win = Content.Load<Texture2D>("win_wins");
+            //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
             soundEffects.Add(Content.Load<SoundEffect>("Bounce"));
             soundEffects.Add(Content.Load<SoundEffect>("HitPlayer"));
+            //soundEffects.Add(Content.Load<SoundEffect>("PlayerShoot"));
 
-            //Sound
+            //Music
             MediaPlayer.Play(backgroundMusic);
 
 
@@ -128,7 +133,7 @@ namespace RapidP1
 
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets /*,p1Planets, p2Planets*/);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win  /*,p1Planets, p2Planets*/);
             
 
             // TODO: use this.Content to load your game content here
@@ -157,28 +162,59 @@ namespace RapidP1
 
             if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) && !isPlayable) //up
             {
-                gameState = GameStates.InGame.ToString();
-                isPlayable = true;
+                if (gameState == GameStates.GameStart.ToString() || gameState == GameStates.GameOver.ToString())
+                {
+                    gameState = GameStates.InGame.ToString();
+                    isPlayable = true;
+                }
+
             }
             else if (isPlayable)
             {
                 control.Update(gameTime);
 
                 //Collisions between planet and players
-                foreach(Planet planet in planets)
+                foreach (Planet planet in planets)
                 {
-                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle1) && planet.Owner != 1 && control.IsAlive1)
+
+                    CollisionResolutionInfo collsionInfo1 =
+                                CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                              GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                              planet.Velocity, planet.DrawRectangle,
+                                                              Vector2.Zero, control.DrawRectangle1
+                                                              );
+
+                    if (collsionInfo1 != null)
                     {
-                        control.IsAlive1 = false;
-                        //Play Audio
-                        soundEffects[1].Play();
+                        planet.Velocity = collsionInfo1.FirstVelocity;
+                        planet.DrawRectangle = collsionInfo1.FirstDrawRectangle;
+
+                        if (planet.Owner != 1 && control.IsAlive1)
+                        {
+                            control.IsAlive1 = false;
+                            //Play Audio
+                            soundEffects[1].Play();
+                        }
                     }
 
-                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2 && control.IsAlive2)
+                    CollisionResolutionInfo collsionInfo2 =
+                                CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                              GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                              planet.Velocity, planet.DrawRectangle,
+                                                              Vector2.Zero, control.DrawRectangle2
+                                                              );
+
+                    if (collsionInfo2 != null)
                     {
-                        control.IsAlive2 = false;
-                        //Play Audio
-                        soundEffects[1].Play();
+                        planet.Velocity = collsionInfo2.FirstVelocity;
+                        planet.DrawRectangle = collsionInfo2.FirstDrawRectangle;
+
+                        if (planet.Owner != 1 && control.IsAlive2)
+                        {
+                            control.IsAlive2 = false;
+                            //Play Audio
+                            soundEffects[1].Play();
+                        }
                     }
                 }
 
@@ -258,6 +294,7 @@ namespace RapidP1
             spriteBatch.Begin();
             if (gameState == GameStates.GameStart.ToString())
             {
+                spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
             }
             //if (gameState == GameStates.GameOver.ToString())

@@ -17,7 +17,9 @@ namespace RapidP1
         Vector2 velocity;
         Vector2 acceleration;
         Vector2 location;
-
+        const float ownerDelay = 1;
+        float remainingDelay = ownerDelay;
+        bool startTimer = false;
 
         public float myNewSpeed = 1;
         float maxNewSpeed = 3;
@@ -48,6 +50,16 @@ namespace RapidP1
         {
             get { return drawRectangle; }
             set { drawRectangle = value; }
+        }
+
+        public void SetDrawX(int X)
+        {
+            drawRectangle.X = X;
+        }
+
+        public void SetDrawY(int Y)
+        {
+            drawRectangle.Y = Y;
         }
 
         public int Owner
@@ -139,6 +151,11 @@ namespace RapidP1
             velocity.Y = acceleration.Y * vel * 0.01f;
         }
 
+        public void StartOwnerDelay()
+        {
+            startTimer = true;
+        }
+
         public void Draw (SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, drawRectangle, Color.White);
@@ -146,7 +163,19 @@ namespace RapidP1
 
         public void Update(GameTime gameTime)
         {
-            if (!inOrbit && owner == 0)
+
+            var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if(startTimer)
+                remainingDelay -= timer;
+
+            if(remainingDelay <= 0)
+            {
+                owner = 0;
+                remainingDelay = ownerDelay;
+                startTimer = false;
+            }
+
+            if (!inOrbit)
             {
 
                 drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);  //Or TotalMilliseconds (need to check)
