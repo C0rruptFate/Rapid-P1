@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections;
+using Microsoft.Xna.Framework.Audio;
 
 namespace RapidP1
 {
@@ -16,6 +17,12 @@ namespace RapidP1
         Vector2 velocity;
         Vector2 acceleration;
         Vector2 location;
+
+
+        public float myNewSpeed = 1;
+        float maxNewSpeed = 3;
+        float minNewSpeed = 0.3f;
+        float minVelocity = 0.1f;
         #endregion
 
         #region properties
@@ -58,7 +65,7 @@ namespace RapidP1
             this.sprite = sprite;
             drawRectangle = new Rectangle((int)location.X - sprite.Width/2,             //X-coordinate of the rectangle
                                             (int)location.Y - sprite.Height / 2,        //Y-coordinate of the rectangle
-                                            sprite.Width/10, sprite.Height/10);               //Height and Width of rectangle
+                                            (int)(sprite.Width*0.2f), (int)(sprite.Height*0.2f));               //Height and Width of rectangle
             this.location = location;
 
             this.owner = owner;
@@ -86,10 +93,39 @@ namespace RapidP1
             drawRectangle.X = (int)acceleration.X;
             drawRectangle.Y = (int)acceleration.Y;
 
+            velocityOffset = acceleration - velocityOffset;
+
             velocityOffset.Normalize();  //Gets the direction only
 
             velocity.X = velocityOffset.X * GameConstants.speed;
             velocity.Y = velocityOffset.Y * GameConstants.speed;
+        }
+        public void GiveAcceleration(Vector2 acceleration, Vector2 velocityOffset, float newSpeed)
+        {
+
+            drawRectangle.X = (int)acceleration.X;
+            drawRectangle.Y = (int)acceleration.Y;
+
+            velocityOffset = acceleration - velocityOffset;
+
+            velocityOffset.Normalize();  //Gets the direction only
+
+            velocity.X = velocityOffset.X * GameConstants.speed;
+            velocity.Y = velocityOffset.Y * GameConstants.speed;
+
+            if (newSpeed >= maxNewSpeed)
+            {
+                myNewSpeed = maxNewSpeed;
+            }
+            else if (newSpeed <= minNewSpeed)
+            {
+                myNewSpeed = minNewSpeed;
+            }
+            else
+            {
+                myNewSpeed = newSpeed;
+            }
+            
         }
         public void GiveAcceleration(Vector2 acceleration, float vel)
         {
@@ -112,14 +148,22 @@ namespace RapidP1
         {
             if (!inOrbit && owner == 0)
             {
-                drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);  //Or TotalMilliseconds (need to check)
-                drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
+
+                drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);  //Or TotalMilliseconds (need to check)
+                drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds * myNewSpeed);
 
                 //velocity.X += velocity.X * 0.01f * GetXDirection() * -1;
                 //velocity.Y += velocity.Y * 0.01f * GetYDirection() * -1;
 
-                velocity.X *= 0.998f;
-                velocity.Y *= 0.998f;
+                if (velocity.X > minVelocity)
+                {
+                    velocity.X *= 0.998f;
+                }
+
+                if (velocity.Y > minVelocity)
+                {
+                    velocity.Y *= 0.998f;
+                }
 
                 /*
                 if (velocity.X != 0)
@@ -199,14 +243,14 @@ namespace RapidP1
                 // bounce off top
                 drawRectangle.Y = 0;
                 velocity.Y *= -1;
-                
+                Game1.soundEffects[0].Play();
             }
             else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WindowHeight)    //Should set up seperate static class for these constants
             {
                 // bounce off bottom
                 drawRectangle.Y = GameConstants.WindowHeight - drawRectangle.Height;
                 velocity.Y *= -1;
-                
+                Game1.soundEffects[0].Play();
             }
         }
 
@@ -217,13 +261,14 @@ namespace RapidP1
                 // bounc off left
                 drawRectangle.X = 0;
                 velocity.X *= -1;
+                Game1.soundEffects[0].Play();
             }
             else if ((drawRectangle.X + drawRectangle.Width) > GameConstants.WindowWidth)
             {
                 // bounce off right
                 drawRectangle.X = GameConstants.WindowWidth - drawRectangle.Width;
                 velocity.X *= -1;
-                
+                Game1.soundEffects[0].Play();
             }
 
 

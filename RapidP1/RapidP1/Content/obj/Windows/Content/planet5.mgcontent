@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/planet5.png</SourceFile>
-  <SourceTime>2017-08-24T10:44:39.763787-06:00</SourceTime>
+  <SourceTime>2017-08-29T10:46:29.8936148-06:00</SourceTime>
   <DestFile>C:/Users/u1141834/Documents/GitHub/Rapid-P1/RapidP1/RapidP1/Content/bin/Windows/Content/planet5.xnb</DestFile>
-  <DestTime>2017-08-28T18:14:28.4049136-06:00</DestTime>
+  <DestTime>2017-09-04T11:33:16.9369125-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-08-22T10:48:40-06:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
