@@ -12,14 +12,18 @@ namespace RapidP1
 
         bool inOrbit = true;
         int owner;
+        int previousOwner;
         Texture2D sprite;
         Rectangle drawRectangle;
         Vector2 velocity;
         Vector2 acceleration;
         Vector2 location;
         const float ownerDelay = 1;
-        float remainingDelay = ownerDelay;
-        bool startTimer = false;
+        const float returnDelay = 10;
+        float remainingShootDelay = ownerDelay;
+        float remainingReturnDelay = returnDelay;
+        bool delayTimer = false;
+        bool returnTimer = false;
 
         public float myNewSpeed = 1;
         float maxNewSpeed = 3;
@@ -81,6 +85,7 @@ namespace RapidP1
             this.location = location;
 
             this.owner = owner;
+            previousOwner = owner;
             this.inOrbit = inOrbit;
         }
 
@@ -153,7 +158,8 @@ namespace RapidP1
 
         public void StartOwnerDelay()
         {
-            startTimer = true;
+            delayTimer = true;
+            returnTimer = true;
         }
 
         public void Draw (SpriteBatch spriteBatch)
@@ -165,15 +171,29 @@ namespace RapidP1
         {
 
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if(startTimer)
-                remainingDelay -= timer;
 
-            if(remainingDelay <= 0)
+            if(delayTimer)
+                remainingShootDelay -= timer;
+
+            if (returnTimer)
+                remainingReturnDelay -= timer;
+
+            if(remainingShootDelay <= 0)
             {
                 owner = 0;
-                remainingDelay = ownerDelay;
-                startTimer = false;
+                remainingShootDelay = ownerDelay;
+                delayTimer = false;
             }
+
+            if(remainingReturnDelay <= 0)
+            {
+                owner = previousOwner;
+                inOrbit = true;
+                remainingReturnDelay = returnDelay;
+                returnTimer = false;
+            }
+
+
 
             if (!inOrbit)
             {
