@@ -112,6 +112,7 @@ namespace RapidP1
             soundEffects.Add(Content.Load<SoundEffect>("Teleport2")); //3
 
             //Music
+            MediaPlayer.Stop();
             MediaPlayer.Play(backgroundMusic);
 
 
