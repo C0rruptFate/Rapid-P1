@@ -19,11 +19,14 @@ namespace RapidP1
         Vector2 acceleration;
         Vector2 location;
         const float ownerDelay = 1;
-        const float returnDelay = 10;
+        const float returnDelay = 3;
+        const float teleportDelay = 500;
         float remainingShootDelay = ownerDelay;
         float remainingReturnDelay = returnDelay;
+        float remainingTeleportDelay = teleportDelay;
         bool delayTimer = false;
         bool returnTimer = false;
+        bool teleportTimer = false;
 
         public float myNewSpeed = 1;
         float maxNewSpeed = 3;
@@ -171,12 +174,16 @@ namespace RapidP1
         {
 
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var millisecondTimer = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if(delayTimer)
+            if (delayTimer)
                 remainingShootDelay -= timer;
 
             if (returnTimer)
                 remainingReturnDelay -= timer;
+
+            if (teleportTimer)
+                remainingTeleportDelay -= millisecondTimer;
 
             if(remainingShootDelay <= 0)
             {
@@ -188,12 +195,18 @@ namespace RapidP1
             if(remainingReturnDelay <= 0)
             {
                 owner = previousOwner;
-                inOrbit = true;
                 remainingReturnDelay = returnDelay;
                 returnTimer = false;
                 Game1.soundEffects[3].Play();
+                teleportTimer = true;
             }
 
+            if (remainingTeleportDelay <= 0)
+            {
+                inOrbit = true;
+                remainingTeleportDelay = teleportDelay;
+                teleportTimer = false;
+            }
 
 
             if (!inOrbit)
