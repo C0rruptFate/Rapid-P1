@@ -174,22 +174,47 @@ namespace RapidP1
                 control.Update(gameTime);
 
                 //Collisions between planet and players
-                foreach(Planet planet in planets)
+                foreach (Planet planet in planets)
                 {
-                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle1) && planet.Owner != 1 && control.IsAlive1)
+
+                    CollisionResolutionInfo collsionInfo1 =
+                                CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                              GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                              planet.Velocity, planet.DrawRectangle,
+                                                              Vector2.Zero, control.DrawRectangle1
+                                                              );
+
+                    if (collsionInfo1 != null)
                     {
-                        control.IsAlive1 = false;
-                        //Play Audio
-                        soundEffects[1].Play();
-                        gameState = GameStates.GameOver.ToString();
+                        planet.Velocity = collsionInfo1.FirstVelocity;
+                        planet.DrawRectangle = collsionInfo1.FirstDrawRectangle;
+
+                        if (planet.Owner != 1 && control.IsAlive1)
+                        {
+                            control.IsAlive1 = false;
+                            //Play Audio
+                            soundEffects[1].Play();
+                        }
                     }
 
-                    if (planet.CollisionRectangle.Intersects(control.CollisionRectangle2) && planet.Owner != 2 && control.IsAlive2)
+                    CollisionResolutionInfo collsionInfo2 =
+                                CollisionUtils.CheckCollision((int)gameTime.ElapsedGameTime.TotalMilliseconds,
+                                                              GameConstants.WindowWidth, GameConstants.WindowHeight,
+                                                              planet.Velocity, planet.DrawRectangle,
+                                                              Vector2.Zero, control.DrawRectangle2
+                                                              );
+
+                    if (collsionInfo2 != null)
                     {
-                        control.IsAlive2 = false;
-                        //Play Audio
-                        soundEffects[1].Play();
-                        gameState = GameStates.GameOver.ToString();
+                        planet.Velocity = collsionInfo2.FirstVelocity;
+                        planet.DrawRectangle = collsionInfo2.FirstDrawRectangle;
+
+                        if (planet.Owner != 1 && control.IsAlive2)
+                        {
+                            control.IsAlive2 = false;
+                            //Play Audio
+                            soundEffects[1].Play();
+                        }
                     }
                 }
 
