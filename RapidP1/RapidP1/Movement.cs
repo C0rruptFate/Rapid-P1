@@ -767,12 +767,12 @@ namespace RapidP1
                             //spriteBatch.Draw(planetSprite1, ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
                         }
                     }
-                    for (int k = 0; k < 6; k++)
+                    for (int k = 3; k < 6; k++)
                     {
                         if (planets[k].InOrbit && planets[k].Owner == 2)
                         {
                             //spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-                            spriteBatch.Draw(planetSprite1[k-3], ball2Pos + positionOffset[k - 3], null, Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+                            spriteBatch.Draw(planetSprite1[k-3], ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
                         }
 
                         //}
