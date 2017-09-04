@@ -253,6 +253,7 @@ namespace RapidP1
                         {
                             //positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(angle * 0.1f), radius[i] * (float)Math.Cos(angle * 0.1f));
                             positionOffset[i] = new Vector2(radius[i] * (float)Math.Sin(p1Angles[i]), radius[i] * (float)Math.Cos(p1Angles[i]));
+                            
                         }
                     }
                 }
@@ -269,6 +270,24 @@ namespace RapidP1
                     }
                 }
 
+                //Code to also rotate the draw rectangles of a planet
+
+                for (int i = 0; i< planets.Count; i++)
+                {
+                    if (planets[i].InOrbit)
+                    {
+                        if (planets[i].Owner == 1)
+                        {
+                            planets[i].SetDrawX((int)(positionOffset[i].X + ball1Pos.X));
+                            planets[i].SetDrawY((int)(positionOffset[i].Y + ball1Pos.Y));
+                        }
+                        else
+                        {
+                            planets[i].SetDrawX((int)(positionOffset[i].X + ball2Pos.X));
+                            planets[i].SetDrawY((int)(positionOffset[i].Y + ball2Pos.Y));
+                        }
+                    }
+                }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFireP1 <= currentGameTime) //p1 shoot
                     {
