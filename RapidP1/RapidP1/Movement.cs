@@ -358,6 +358,40 @@ namespace RapidP1
                         }
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        if (capabilities1.HasLeftTrigger)
+                    {
+                        if (state.Triggers.Left >= 1f && !joyStickRightP1 && state.Triggers.Right <= 0 && state.ThumbSticks.Right.X <= 0.5f)//Tracks the movement of p1's right joystick
+                        {
+                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
+                            if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
+                            {
+                                newSpeedP1 = maxNewSpeed;
+                            }
+                            else if (newSpeedP1 <= minNewSpeed) //Makes sure we can't go below the min speed.
+                            {
+                                newSpeedP1 = minNewSpeed;
+                            }
+                            nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
+                            joyStickRightP1 = true; //Makes sure you need to move to the other side first.
+                        }
+                        else if (state.Triggers.Right >= 1f && joyStickRightP1 && state.Triggers.Left <= 0 && state.ThumbSticks.Right.X >= -0.5f)
+                        {
+                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount;
+                            if (newSpeedP1 >= maxNewSpeed)
+                            {
+                                newSpeedP1 = maxNewSpeed;
+                            }
+                            else if (newSpeedP1 <= minNewSpeed)
+                            {
+                                newSpeedP1 = minNewSpeed;
+                            }
+                            nextSpeedLoseP1 = speedLose + (float)currentGameTime;
+                            joyStickRightP1 = false;
+
+                        }
+                    }
+
+
                         if (capabilities1.HasRightXThumbStick)//Maybe change this to triggers or something 
                         {
                             if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP1)//Tracks the movement of p1's right joystick
@@ -570,6 +604,39 @@ namespace RapidP1
                         }
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        if (capabilities2.HasLeftTrigger)
+                    {
+                        if (state.Triggers.Left >= 1f && !joyStickRightP2 && state.Triggers.Right <= 0 && state.ThumbSticks.Right.X <= 0.5f)//Tracks the movement of p1's right joystick
+                        {
+                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount; //increase speed
+                            if (newSpeedP2 >= maxNewSpeed) //Makes sure we can't go above the max speed.
+                            {
+                                newSpeedP2 = maxNewSpeed;
+                            }
+                            else if (newSpeedP2 <= minNewSpeed) //Makes sure we can't go below the min speed.
+                            {
+                                newSpeedP2 = minNewSpeed;
+                            }
+                            nextSpeedLoseP2 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
+                            joyStickRightP2 = true; //Makes sure you need to move to the other side first.
+                        }
+                        else if (state.Triggers.Right >= 1f && joyStickRightP2 && state.Triggers.Left <= 0 && state.ThumbSticks.Right.X >= -0.5f)
+                        {
+                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
+                            if (newSpeedP2 >= maxNewSpeed)
+                            {
+                                newSpeedP2 = maxNewSpeed;
+                            }
+                            else if (newSpeedP2 <= minNewSpeed)
+                            {
+                                newSpeedP2 = minNewSpeed;
+                            }
+                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
+                            joyStickRightP2 = false;
+
+                        }
+                    }
+
                         if (capabilities2.HasRightXThumbStick)//Maybe change this to triggers or something 
                         {
                             if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP2)
