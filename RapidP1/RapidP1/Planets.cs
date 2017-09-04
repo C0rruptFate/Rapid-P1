@@ -50,6 +50,16 @@ namespace RapidP1
             set { drawRectangle = value; }
         }
 
+        public void SetDrawX(int X)
+        {
+            drawRectangle.X = X;
+        }
+
+        public void SetDrawY(int Y)
+        {
+            drawRectangle.Y = Y;
+        }
+
         public int Owner
         {
             get { return owner; }
