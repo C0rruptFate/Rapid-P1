@@ -106,9 +106,10 @@ namespace RapidP1
             win = Content.Load<Texture2D>("win_wins");
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
-            soundEffects.Add(Content.Load<SoundEffect>("Bounce"));
-            soundEffects.Add(Content.Load<SoundEffect>("HitPlayer"));
-            //soundEffects.Add(Content.Load<SoundEffect>("PlayerShoot"));
+            soundEffects.Add(Content.Load<SoundEffect>("Bounce")); //0
+            soundEffects.Add(Content.Load<SoundEffect>("HitPlayer")); //1
+            soundEffects.Add(Content.Load<SoundEffect>("PlayerShoot")); //2
+            soundEffects.Add(Content.Load<SoundEffect>("Teleport2")); //3
 
             //Music
             MediaPlayer.Play(backgroundMusic);

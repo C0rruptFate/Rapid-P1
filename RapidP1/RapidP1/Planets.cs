@@ -191,6 +191,7 @@ namespace RapidP1
                 inOrbit = true;
                 remainingReturnDelay = returnDelay;
                 returnTimer = false;
+                Game1.soundEffects[3].Play();
             }
 
 
