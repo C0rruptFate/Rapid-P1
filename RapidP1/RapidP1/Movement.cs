@@ -11,7 +11,7 @@ namespace RapidP1
         #region Declarations
         Vector2 ball1Pos, ball2Pos;
         Vector2[] planetPos = new Vector2[20];
-        Texture2D sunSprite1;
+        Texture2D sunSprite1, finalWinSprite;
         Texture2D[] planetSprite1 = new Texture2D[10];
         Game1 g1 = new Game1();
         Vector2[] positionOffset = new Vector2[10];
@@ -26,14 +26,10 @@ namespace RapidP1
         Rectangle drawRectangle1;
         Rectangle drawRectangle2;
         float[] velocity = new float[10];
-
         bool isAlive1 = true;
         bool isAlive2 = true;
-
-        
         float fireRate = 50f;
         double currentGameTime;
-
         float nextFireP1; //When player 1 can next shoot
         float newSpeedP1; //Multiplier for player 1's planets
         bool joyStickRightP1; //Used to track the players right stick movement.
@@ -49,7 +45,7 @@ namespace RapidP1
         float nextSpeedLoseP2; //When player 2 will next lose some speed.
         List<Planet> p2Planets = new List<Planet>(); //the list of all player 2's planets
         float[] p2Angles = new float[10]; //used to track the speed of player 2's orbit speed.
-
+        Texture2D[] playerWins = new Texture2D[5];
 
         
         float maxNewSpeed = 2; //The max speed the planets can fly at.
@@ -769,6 +765,20 @@ namespace RapidP1
 
             if (IsAlive2)
                 spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+
+            if (!isAlive2)
+            {
+                spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
+                spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
+
+            }
+            else if (!isAlive1)
+            {
+                spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
+                spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
+
+            }
+
             //spriteBatch.Draw(sunSprite1, drawRectangle1, Color.White);
             //spriteBatch.Draw(sunSprite1, drawRectangle2, Color.White);
 
@@ -814,7 +824,7 @@ namespace RapidP1
 
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -824,6 +834,8 @@ namespace RapidP1
             }
             sunSprite1 = sunSprite;
             planetSprite1 = planetSprite;
+            playerWins = winSprites;
+            finalWinSprite = winSprite;
 
             this.planets = planets;
             ////Commented out cause these break the playermovement.
