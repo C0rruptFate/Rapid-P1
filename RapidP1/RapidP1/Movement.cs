@@ -810,8 +810,8 @@ namespace RapidP1
             ////Commented out cause these break the playermovement.
             //this.p1Planets = p1Planets;
             //this.p2Planets = p2Planets;
-            drawRectangle1 = new Rectangle((int)sun1Pos.X, (int)sun1Pos.Y, sunSprite.Width / 10, sunSprite.Height / 10);
-            drawRectangle2 = new Rectangle((int)sun2Pos.X, (int)sun2Pos.Y, sunSprite.Width / 10, sunSprite.Height / 10);
+            drawRectangle1 = new Rectangle((int)sun1Pos.X + 10, (int)sun1Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
+            drawRectangle2 = new Rectangle((int)sun2Pos.X + 10, (int)sun2Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
 
             planets[0] = new Planet(planetSprite[0], ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite[1], ball1Pos + positionOffset[1], 1, true);
