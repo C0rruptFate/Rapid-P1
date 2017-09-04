@@ -455,7 +455,7 @@ namespace RapidP1
                                 if (planets[0].Owner == 1 && planets[0].InOrbit)
                                 {
                                     planets[0].InOrbit = false;
-                                    planets[0].Owner = 0;
+                                    planets[0].StartOwnerDelay();
                                     Vector2 direction = state.ThumbSticks.Right;
                                     direction.Y *= -1;
 
@@ -494,7 +494,7 @@ namespace RapidP1
                                 if (planets[1].Owner == 1 && planets[1].InOrbit)
                                 {
                                     planets[1].InOrbit = false;
-                                    planets[1].Owner = 0;
+                                    planets[1].StartOwnerDelay();
                                     Vector2 direction = state.ThumbSticks.Right;
                                     direction.Y *= -1;
 
@@ -533,7 +533,7 @@ namespace RapidP1
                                 if (planets[2].Owner == 1 && planets[2].InOrbit)
                                 {
                                     planets[2].InOrbit = false;
-                                    planets[2].Owner = 0;
+                                    planets[2].StartOwnerDelay();
                                     Vector2 direction = state.ThumbSticks.Right;
                                     direction.Y *= -1;
 
@@ -700,7 +700,7 @@ namespace RapidP1
                                 if (planets[3].Owner == 2 && planets[3].InOrbit)
                                 {
                                     planets[3].InOrbit = false;
-                                    planets[3].Owner = 0;
+                                    planets[3].StartOwnerDelay();
                                     Vector2 direction = state.ThumbSticks.Right;
                                     direction.Y *= -1;
 
@@ -740,7 +740,7 @@ namespace RapidP1
                                 if (planets[4].Owner == 2 && planets[4].InOrbit)
                                 {
                                     planets[4].InOrbit = false;
-                                    planets[4].Owner = 0;
+                                    planets[4].StartOwnerDelay();
                                     Vector2 direction = state.ThumbSticks.Right;
                                     direction.Y *= -1;
 
@@ -780,7 +780,7 @@ namespace RapidP1
                                 if (planets[5].Owner == 2 && planets[5].InOrbit)
                                 {
                                     planets[5].InOrbit = false;
-                                    planets[5].Owner = 0;
+                                    planets[5].StartOwnerDelay();
                                     Vector2 direction = state.ThumbSticks.Right;
                                     direction.Y *= -1;
 
