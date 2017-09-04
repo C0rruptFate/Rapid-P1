@@ -101,11 +101,13 @@ namespace RapidP1
             planet1 = Content.Load<Texture2D>("planet2");
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("start2");
+            //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
             soundEffects.Add(Content.Load<SoundEffect>("Bounce"));
             soundEffects.Add(Content.Load<SoundEffect>("HitPlayer"));
+            soundEffects.Add(Content.Load<SoundEffect>("PlayerShoot"));
 
-            //Sound
+            //Music
             MediaPlayer.Play(backgroundMusic);
 
 

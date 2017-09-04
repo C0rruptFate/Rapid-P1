@@ -428,12 +428,12 @@ namespace RapidP1
                                     }
                                     else
                                         planets[0].GiveAcceleration(ball1Pos + positionOffset[0], direction);
-                                    //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
-                                    //{
-                                    //    planetCount1--;
-                                    //}
-
-                                    nextFireP1 = fireRate + (float)currentGameTime;
+                                //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
+                                //{
+                                //    planetCount1--;
+                                //}
+                                Game1.soundEffects[2].Play();
+                                nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
                         }
@@ -467,12 +467,12 @@ namespace RapidP1
                                     }
                                     else
                                         planets[1].GiveAcceleration(ball1Pos + positionOffset[1], direction);
-                                    //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
-                                    //{
-                                    //    planetCount1--;
-                                    //}
-
-                                    nextFireP1 = fireRate + (float)currentGameTime;
+                                //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
+                                //{
+                                //    planetCount1--;
+                                //}
+                                Game1.soundEffects[2].Play();
+                                nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
                         }
@@ -506,12 +506,12 @@ namespace RapidP1
                                     }
                                     else
                                         planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[2], direction);
-                                    //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
-                                    //{
-                                    //    planetCount1--;
-                                    //}
-
-                                    nextFireP1 = fireRate + (float)currentGameTime;
+                                //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
+                                //{
+                                //    planetCount1--;
+                                //}
+                                Game1.soundEffects[2].Play();
+                                nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
                         }
@@ -640,11 +640,12 @@ namespace RapidP1
                                     }
                                     else
                                         planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], direction);
-                                    //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
-                                    //{
-                                    //    planetCount2--;
-                                    //}
-                                    nextFireP2 = fireRate + (float)currentGameTime;
+                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
+                                //{
+                                //    planetCount2--;
+                                //}
+                                Game1.soundEffects[2].Play();
+                                nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
                             }
@@ -679,11 +680,12 @@ namespace RapidP1
                                     }
                                     else
                                         planets[4].GiveAcceleration(ball2Pos + positionOffset[4 - 3], direction);
-                                    //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
-                                    //{
-                                    //    planetCount2--;
-                                    //}
-                                    nextFireP2 = fireRate + (float)currentGameTime;
+                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
+                                //{
+                                //    planetCount2--;
+                                //}
+                                Game1.soundEffects[2].Play();
+                                nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
                             }
@@ -718,11 +720,12 @@ namespace RapidP1
                                     }
                                     else
                                         planets[5].GiveAcceleration(ball2Pos + positionOffset[5 - 3], direction);
-                                    //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
-                                    //{
-                                    //    planetCount2--;
-                                    //}
-                                    nextFireP2 = fireRate + (float)currentGameTime;
+                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
+                                //{
+                                //    planetCount2--;
+                                //}
+                                Game1.soundEffects[2].Play();
+                                nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
                             }
