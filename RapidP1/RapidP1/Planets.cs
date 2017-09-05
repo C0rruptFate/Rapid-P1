@@ -12,14 +12,21 @@ namespace RapidP1
 
         bool inOrbit = true;
         int owner;
+        int previousOwner;
         Texture2D sprite;
         Rectangle drawRectangle;
         Vector2 velocity;
         Vector2 acceleration;
         Vector2 location;
         const float ownerDelay = 1;
-        float remainingDelay = ownerDelay;
-        bool startTimer = false;
+        const float returnDelay = 3;
+        const float teleportDelay = 500;
+        float remainingShootDelay = ownerDelay;
+        float remainingReturnDelay = returnDelay;
+        float remainingTeleportDelay = teleportDelay;
+        bool delayTimer = false;
+        bool returnTimer = false;
+        bool teleportTimer = false;
 
         public float myNewSpeed = 1;
         float maxNewSpeed = 3;
@@ -81,6 +88,7 @@ namespace RapidP1
             this.location = location;
 
             this.owner = owner;
+            previousOwner = owner;
             this.inOrbit = inOrbit;
         }
 
@@ -153,7 +161,8 @@ namespace RapidP1
 
         public void StartOwnerDelay()
         {
-            startTimer = true;
+            delayTimer = true;
+            returnTimer = true;
         }
 
         public void Draw (SpriteBatch spriteBatch)
@@ -165,15 +174,40 @@ namespace RapidP1
         {
 
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if(startTimer)
-                remainingDelay -= timer;
+            var millisecondTimer = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if(remainingDelay <= 0)
+            if (delayTimer)
+                remainingShootDelay -= timer;
+
+            if (returnTimer)
+                remainingReturnDelay -= timer;
+
+            if (teleportTimer)
+                remainingTeleportDelay -= millisecondTimer;
+
+            if(remainingShootDelay <= 0)
             {
                 owner = 0;
-                remainingDelay = ownerDelay;
-                startTimer = false;
+                remainingShootDelay = ownerDelay;
+                delayTimer = false;
             }
+
+            if(remainingReturnDelay <= 0)
+            {
+                owner = previousOwner;
+                remainingReturnDelay = returnDelay;
+                returnTimer = false;
+                Game1.soundEffects[3].Play();
+                teleportTimer = true;
+            }
+
+            if (remainingTeleportDelay <= 0)
+            {
+                inOrbit = true;
+                remainingTeleportDelay = teleportDelay;
+                teleportTimer = false;
+            }
+
 
             if (!inOrbit)
             {
