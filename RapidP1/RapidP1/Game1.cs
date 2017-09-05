@@ -15,18 +15,18 @@ namespace RapidP1
     public class Game1 : Game
     {
         #region init
-        private Texture2D sun, win;
-        private static Texture2D[] planet = new Texture2D[10];
-        private static Texture2D planet1;
+        private Texture2D sun, win, pressStart;
+        private Texture2D[] planet = new Texture2D[10];
+        private Texture2D planet1;
         private Texture2D background;
-        private static Texture2D startScreen;
+        private Texture2D startScreen;
         bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private float screenHeight, screenWidth;
         Vector2 ball1Pos = new Vector2(0, 0);
         Vector2 ball2Pos = new Vector2(0, 0);
-        static Vector2[] planetPos = new Vector2[GameConstants.numberOfPlanets];
+        static Vector2[] planetPos = new Vector2[3];
         Planet p1,p2,p3,p4,p5,p6;
         PlayerControl control;
         //GamePlay play;
@@ -34,10 +34,10 @@ namespace RapidP1
         List<Planet> planets = new List<Planet>();
         List<Planet> p1Planets = new List<Planet>();
         List<Planet> p2Planets = new List<Planet>();
-        private static Texture2D[] playerWinImages = new Texture2D[5];
+        private Texture2D[] playerWinImages = new Texture2D[5];
 
         Song backgroundMusic;
-        public static List<SoundEffect> soundEffects = new List<SoundEffect>();
+        public List<SoundEffect> soundEffects = new List<SoundEffect>();
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace RapidP1
             // Create a new SpriteBatch, which can be used to draw textures.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             spriteBatch = new SpriteBatch(GraphicsDevice);
             sun = Content.Load<Texture2D>("sunP2");
@@ -104,6 +104,7 @@ namespace RapidP1
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("logo_solarSlayers");
             win = Content.Load<Texture2D>("win_wins");
+            pressStart = Content.Load<Texture2D>("pressStart");
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
             soundEffects.Add(Content.Load<SoundEffect>("Bounce")); //0
@@ -135,7 +136,7 @@ namespace RapidP1
 
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win  /*,p1Planets, p2Planets*/);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects  /*,p1Planets, p2Planets*/);
             
 
             // TODO: use this.Content to load your game content here
@@ -171,6 +172,17 @@ namespace RapidP1
                 }
 
             }
+            else if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed))
+            {
+                if (gameState == GameStates.GameOver.ToString())
+                {
+                    restart();
+                }
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Escape) || state.Buttons.Back == ButtonState.Pressed)
+            {
+                this.Exit();
+            }
             else if (isPlayable)
             {
                 control.Update(gameTime);
@@ -195,7 +207,8 @@ namespace RapidP1
                         {
                             control.IsAlive1 = false;
                             //Play Audio
-                            soundEffects[1].Play();
+                            //soundEffects[1].Play();
+                            gameState = GameStates.GameOver.ToString();
                         }
                     }
 
@@ -215,7 +228,8 @@ namespace RapidP1
                         {
                             control.IsAlive2 = false;
                             //Play Audio
-                            soundEffects[1].Play();
+                            //soundEffects[1].Play();
+                            gameState = GameStates.GameOver.ToString();
                         }
                     }
                 }
@@ -268,7 +282,7 @@ namespace RapidP1
                                 planets[i].Velocity = collsionInfo.FirstVelocity;
                                 planets[i].DrawRectangle = collsionInfo.FirstDrawRectangle;
                                 //Play Audio
-                                soundEffects[0].Play();
+                                //soundEffects[0].Play();
 
                                 //planets[j].Velocity = collsionInfo.SecondVelocity;
                                 //planets[j].DrawRectangle = collsionInfo.SecondDrawRectangle;
@@ -298,6 +312,9 @@ namespace RapidP1
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
+                //spriteBatch.Draw(pressStart, new Vector2(900, 700), Color.White);
+                spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+
             }
             //if (gameState == GameStates.GameOver.ToString())
             //{
@@ -322,6 +339,12 @@ namespace RapidP1
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void restart()
+        {
+            Program.shouldRestart = true;
+            this.Exit();
         }
     }
 

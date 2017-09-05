@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -13,7 +14,7 @@ namespace RapidP1
         Vector2[] planetPos = new Vector2[20];
         Texture2D sunSprite1, finalWinSprite;
         Texture2D[] planetSprite1 = new Texture2D[10];
-        Game1 g1 = new Game1();
+        List<SoundEffect> soundEffects = new List<SoundEffect>();
         Vector2[] positionOffset = new Vector2[10];
         //float angle;
         float[] radius = new float[10];
@@ -50,7 +51,7 @@ namespace RapidP1
         
         float maxNewSpeed = 2; //The max speed the planets can fly at.
         float minNewSpeed = 0.3f; //The min speed they fly at.
-
+        float boostTimer = 0f;
         float minOrbit = 1f;
         float maxOrbit = 3f;
         #endregion
@@ -98,6 +99,7 @@ namespace RapidP1
         {
             try
             {
+                boostTimer += 1;
                 GamePadCapabilities capabilities1 = GamePad.GetCapabilities(PlayerIndex.One);
                 GamePadCapabilities capabilities2 = GamePad.GetCapabilities(PlayerIndex.Two);
                 //currentGameTime = DateTime.Now.Millisecond;
@@ -323,42 +325,42 @@ namespace RapidP1
                         }
                     }
 
-                    #endregion
+                #endregion
 
 
-                    // Check the device for Player One
+                // Check the device for Player One
 
-                    if (capabilities1.IsConnected)
+                if (capabilities1.IsConnected)
+                {
+                    // Get the current state of Controller1
+                    GamePadState state = GamePad.GetState(PlayerIndex.One);
+
+                    // You can check explicitly if a gamepad has support for a certain feature
+                    if (capabilities1.HasLeftXThumbStick)
                     {
-                        // Get the current state of Controller1
-                        GamePadState state = GamePad.GetState(PlayerIndex.One);
-
-                        // You can check explicitly if a gamepad has support for a certain feature
-                        if (capabilities1.HasLeftXThumbStick)
-                        {
-                            // Check for movement
-                            ////Move Left
-                            //if (state.ThumbSticks.Left.X < -0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
-                            //    ball1Pos.X -= 10.0f;
-                            ////Move Right
-                            //else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
-                            //    ball1Pos.X += 10.0f;
+                        // Check for movement
+                        ////Move Left
+                        //if (state.ThumbSticks.Left.X < -0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
+                        //    ball1Pos.X -= 10.0f;
+                        ////Move Right
+                        //else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
+                        //    ball1Pos.X += 10.0f;
                         //Move Up
                         if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
-                            {
-                                ball1Pos.Y += 5;
-                                drawRectangle1.Y += 5;
-                            }
-                            //Move Down
-                            else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != 0)
-                            {
-                                ball1Pos.Y -= 5;
-                                drawRectangle1.Y -= 5;
-                            }
+                        {
+                            ball1Pos.Y += 5;
+                            drawRectangle1.Y += 5;
                         }
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        if (capabilities1.HasLeftTrigger)
+                        //Move Down
+                        else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != 0)
+                        {
+                            ball1Pos.Y -= 5;
+                            drawRectangle1.Y -= 5;
+                        }
+                    }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (capabilities1.HasLeftTrigger)
                     {
                         if (state.Triggers.Left >= 1f && !joyStickRightP1 && state.Triggers.Right <= 0 && state.ThumbSticks.Right.X <= 0.5f)//Tracks the movement of p1's right joystick
                         {
@@ -392,196 +394,209 @@ namespace RapidP1
                     }
 
 
-                        if (capabilities1.HasRightXThumbStick)//Maybe change this to triggers or something 
+                    if (capabilities1.HasRightXThumbStick)//Maybe change this to triggers or something 
+                    {
+                        if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP1)//Tracks the movement of p1's right joystick
                         {
-                            if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP1)//Tracks the movement of p1's right joystick
+                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
+                            if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
                             {
-                                newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
-                                if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
-                                {
-                                    newSpeedP1 = maxNewSpeed;
-                                }
-                                else if (newSpeedP1 <= minNewSpeed) //Makes sure we can't go below the min speed.
-                                {
-                                    newSpeedP1 = minNewSpeed;
-                                }
-                                nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
+                                newSpeedP1 = maxNewSpeed;
+                            }
+                            else if (newSpeedP1 <= minNewSpeed) //Makes sure we can't go below the min speed.
+                            {
+                                newSpeedP1 = minNewSpeed;
+                            }
+                            nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
                             joyStickRightP1 = true; //Makes sure you need to move to the other side first.
-                            }
-                            else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP1)
+                        }
+                        else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP1)
+                        {
+                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount;
+                            if (newSpeedP1 >= maxNewSpeed)
                             {
-                                newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount;
-                                if (newSpeedP1 >= maxNewSpeed)
-                                {
-                                    newSpeedP1 = maxNewSpeed;
-                                }
-                                else if (newSpeedP1 <= minNewSpeed)
-                                {
-                                    newSpeedP1 = minNewSpeed;
-                                }
-                                nextSpeedLoseP1 = speedLose + (float)currentGameTime;
-                                joyStickRightP1 = false;
+                                newSpeedP1 = maxNewSpeed;
+                            }
+                            else if (newSpeedP1 <= minNewSpeed)
+                            {
+                                newSpeedP1 = minNewSpeed;
+                            }
+                            nextSpeedLoseP1 = speedLose + (float)currentGameTime;
+                            joyStickRightP1 = false;
 
+                        }
+
+                        if ((float)currentGameTime >= nextSpeedLoseP1)//Ticks down move speed of planets if you arn't moving the joystick.
+                        {
+                            newSpeedP1 = newSpeedP1 - speedLoseIncreaseAmount;
+                            if (newSpeedP1 >= maxNewSpeed)
+                            {
+                                newSpeedP1 = maxNewSpeed;
+                            }
+                            else if (newSpeedP1 <= minNewSpeed)
+                            {
+                                newSpeedP1 = minNewSpeed;
                             }
 
-                            if ((float)currentGameTime >= nextSpeedLoseP1)//Ticks down move speed of planets if you arn't moving the joystick.
+                            if (newSpeedP1 <= 0.3f)
                             {
-                                newSpeedP1 = newSpeedP1 - speedLoseIncreaseAmount;
-                                if (newSpeedP1 >= maxNewSpeed)
-                                {
-                                    newSpeedP1 = maxNewSpeed;
-                                }
-                                else if (newSpeedP1 <= minNewSpeed)
-                                {
-                                    newSpeedP1 = minNewSpeed;
-                                }
-
-                                if (newSpeedP1 <= 0.3f)
-                                {
-                                    newSpeedP1 = 0.3f;
-                                }
+                                newSpeedP1 = 0.3f;
+                            }
                             nextSpeedLoseP1 = speedLose + (float)currentGameTime;
                         }
-                        }
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                        //Player shoot/dash button
-                        if (capabilities1.HasAButton)
+                    //Player shoot/dash button
+                    if (capabilities1.HasAButton)
+                    {
+                        //Shoot
+                        if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                         {
-                            //Shoot
-                            if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                            if (planets[0].Owner == 1 && planets[0].InOrbit)
                             {
-                                if (planets[0].Owner == 1 && planets[0].InOrbit)
-                                {
-                                    planets[0].InOrbit = false;
-                                    planets[0].StartOwnerDelay();
-                                    Vector2 direction = state.ThumbSticks.Right;
-                                    direction.Y *= -1;
+                                planets[0].InOrbit = false;
+                                planets[0].StartOwnerDelay();
+                                Vector2 direction = state.ThumbSticks.Right;
+                                direction.Y *= -1;
 
-                                    //if (state.ThumbSticks.Right.X < -0.5f)
-                                    //   direction.X -= 1;
-                                    //Move Right
-                                    //else if (state.ThumbSticks.Right.X > 0.5f)
-                                    //  direction.X += 1;
-                                    //Move Up
-                                    if (state.ThumbSticks.Left.Y < -0.5f)
-                                        direction.Y -= 1;
-                                    //Move Down
-                                    else if (state.ThumbSticks.Left.Y > 0.5f)
-                                        direction.Y += 1;
-                                    if (direction.Y == 0)
-                                    {
-                                        Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[0].GiveAcceleration(ball1Pos + positionOffset[0], velocityOffset, newSpeedP1);
-                                    }
-                                    else
-                                        planets[0].GiveAcceleration(ball1Pos + positionOffset[0], direction);
+                                //if (state.ThumbSticks.Right.X < -0.5f)
+                                //   direction.X -= 1;
+                                //Move Right
+                                //else if (state.ThumbSticks.Right.X > 0.5f)
+                                //  direction.X += 1;
+                                //Move Up
+                                if (state.ThumbSticks.Left.Y < -0.5f)
+                                    direction.Y -= 1;
+                                //Move Down
+                                else if (state.ThumbSticks.Left.Y > 0.5f)
+                                    direction.Y += 1;
+                                if (direction.Y == 0)
+                                {
+                                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                    planets[0].GiveAcceleration(ball1Pos + positionOffset[0], velocityOffset, newSpeedP1);
+                                }
+                                else
+                                    planets[0].GiveAcceleration(ball1Pos + positionOffset[0], direction);
                                 //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
                                 //{
                                 //    planetCount1--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
-                                }
                             }
                         }
-                        if (capabilities1.HasBButton)
+                    }
+                    if (capabilities1.HasBButton)
+                    {
+                        //Shoot
+                        if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                         {
-                            //Shoot
-                            if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                            if (planets[1].Owner == 1 && planets[1].InOrbit)
                             {
-                                if (planets[1].Owner == 1 && planets[1].InOrbit)
-                                {
-                                    planets[1].InOrbit = false;
-                                    planets[1].StartOwnerDelay();
-                                    Vector2 direction = state.ThumbSticks.Right;
-                                    direction.Y *= -1;
+                                planets[1].InOrbit = false;
+                                planets[1].StartOwnerDelay();
+                                Vector2 direction = state.ThumbSticks.Right;
+                                direction.Y *= -1;
 
-                                    //if (state.ThumbSticks.Right.X < -0.5f)
-                                    //   direction.X -= 1;
-                                    //Move Right
-                                    //else if (state.ThumbSticks.Right.X > 0.5f)
-                                    //  direction.X += 1;
-                                    //Move Up
-                                    if (state.ThumbSticks.Left.Y < -0.5f)
-                                        direction.Y -= 1;
-                                    //Move Down
-                                    else if (state.ThumbSticks.Left.Y > 0.5f)
-                                        direction.Y += 1;
-                                    if (direction.Y == 0)
-                                    {
-                                        Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[1].GiveAcceleration(ball1Pos + positionOffset[1], velocityOffset, newSpeedP1);
-                                    }
-                                    else
-                                        planets[1].GiveAcceleration(ball1Pos + positionOffset[1], direction);
+                                //if (state.ThumbSticks.Right.X < -0.5f)
+                                //   direction.X -= 1;
+                                //Move Right
+                                //else if (state.ThumbSticks.Right.X > 0.5f)
+                                //  direction.X += 1;
+                                //Move Up
+                                if (state.ThumbSticks.Left.Y < -0.5f)
+                                    direction.Y -= 1;
+                                //Move Down
+                                else if (state.ThumbSticks.Left.Y > 0.5f)
+                                    direction.Y += 1;
+                                if (direction.Y == 0)
+                                {
+                                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                    planets[1].GiveAcceleration(ball1Pos + positionOffset[1], velocityOffset, newSpeedP1);
+                                }
+                                else
+                                    planets[1].GiveAcceleration(ball1Pos + positionOffset[1], direction);
                                 //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
                                 //{
                                 //    planetCount1--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
-                                }
                             }
                         }
-                        if (capabilities1.HasXButton)
+                    }
+                    if (capabilities1.HasXButton)
+                    {
+                        //Shoot
+                        if (state.Buttons.X == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                         {
-                            //Shoot
-                            if (state.Buttons.X == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                            if (planets[2].Owner == 1 && planets[2].InOrbit)
                             {
-                                if (planets[2].Owner == 1 && planets[2].InOrbit)
-                                {
-                                    planets[2].InOrbit = false;
-                                    planets[2].StartOwnerDelay();
-                                    Vector2 direction = state.ThumbSticks.Right;
-                                    direction.Y *= -1;
+                                planets[2].InOrbit = false;
+                                planets[2].StartOwnerDelay();
+                                Vector2 direction = state.ThumbSticks.Right;
+                                direction.Y *= -1;
 
-                                    //if (state.ThumbSticks.Right.X < -0.5f)
-                                    //   direction.X -= 1;
-                                    //Move Right
-                                    //else if (state.ThumbSticks.Right.X > 0.5f)
-                                    //  direction.X += 1;
-                                    //Move Up
-                                    if (state.ThumbSticks.Left.Y < -0.5f)
-                                        direction.Y -= 1;
-                                    //Move Down
-                                    else if (state.ThumbSticks.Left.Y > 0.5f)
-                                        direction.Y += 1;
-                                    if (direction.Y == 0)
-                                    {
-                                        Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[2].GiveAcceleration(ball1Pos + positionOffset[2], velocityOffset, newSpeedP1);
-                                    }
-                                    else
-                                        planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[2], direction);
+                                //if (state.ThumbSticks.Right.X < -0.5f)
+                                //   direction.X -= 1;
+                                //Move Right
+                                //else if (state.ThumbSticks.Right.X > 0.5f)
+                                //  direction.X += 1;
+                                //Move Up
+                                if (state.ThumbSticks.Left.Y < -0.5f)
+                                    direction.Y -= 1;
+                                //Move Down
+                                else if (state.ThumbSticks.Left.Y > 0.5f)
+                                    direction.Y += 1;
+                                if (direction.Y == 0)
+                                {
+                                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                    planets[2].GiveAcceleration(ball1Pos + positionOffset[2], velocityOffset, newSpeedP1);
+                                }
+                                else
+                                    planets[planetCount1].GiveAcceleration(ball1Pos + positionOffset[2], direction);
                                 //if (planetCount1 <= planets.Count - 3 && !(planetCount1 < 0))
                                 //{
                                 //    planetCount1--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
-                                }
                             }
                         }
-
-                        if (state.Buttons.LeftShoulder == ButtonState.Pressed)
-                        {
-                            //[TODO] Dash.
-                        }
-
                     }
 
-                    // Check the device for Player Two
-
-                    if (capabilities2.IsConnected)
+                    //boost
+                    if (capabilities1.HasYButton)
                     {
-                        // Get the current state of Controller1
-                        GamePadState state = GamePad.GetState(PlayerIndex.Two);
-
-                        // You can check explicitly if a gamepad has support for a certain feature
-                        if (capabilities2.HasLeftXThumbStick)
+                        if ((state.Buttons.Y==ButtonState.Pressed && state.ThumbSticks.Left.Y > -0.5f ) && ball1Pos.Y != 0) //up
                         {
+                            ball1Pos.Y -= 20;
+                        }
+                        else if((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0.5f) && ball1Pos.Y != (GameConstants.WindowHeight - 100) ) //down
+                        {
+                            ball1Pos.Y += 20;
+                        }
+                    }
+
+                    if (state.Buttons.LeftShoulder == ButtonState.Pressed)
+                    {
+                        //[TODO] Dash.
+                    }
+
+                }
+
+                // Check the device for Player Two
+
+                if (capabilities2.IsConnected)
+                {
+                    // Get the current state of Controller1
+                    GamePadState state = GamePad.GetState(PlayerIndex.Two);
+
+                    // You can check explicitly if a gamepad has support for a certain feature
+                    if (capabilities2.HasLeftXThumbStick)
+                    {
                         // Check for movement
                         ////Move Left
                         //if (state.ThumbSticks.Left.X < -0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
@@ -591,20 +606,20 @@ namespace RapidP1
                         //    ball2Pos.X += 10.0f;
                         //Move Up
                         if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
-                            {
-                                ball2Pos.Y += 5;
-                                drawRectangle2.Y += 5;
-                            }
-                            //Move Down
-                            else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != 0)
-                            {
-                                ball2Pos.Y -= 5;
-                                drawRectangle2.Y -= 5;
-                            }
+                        {
+                            ball2Pos.Y += 5;
+                            drawRectangle2.Y += 5;
                         }
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        if (capabilities2.HasLeftTrigger)
+                        //Move Down
+                        else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != 0)
+                        {
+                            ball2Pos.Y -= 5;
+                            drawRectangle2.Y -= 5;
+                        }
+                    }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (capabilities2.HasLeftTrigger)
                     {
                         if (state.Triggers.Left >= 1f && !joyStickRightP2 && state.Triggers.Right <= 0 && state.ThumbSticks.Right.X <= 0.5f)//Tracks the movement of p1's right joystick
                         {
@@ -637,187 +652,200 @@ namespace RapidP1
                         }
                     }
 
-                        if (capabilities2.HasRightXThumbStick)//Maybe change this to triggers or something 
+                    if (capabilities2.HasRightXThumbStick)//Maybe change this to triggers or something 
+                    {
+                        if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP2)
                         {
-                            if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP2)
+                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
+                            if (newSpeedP2 >= maxNewSpeed)
                             {
-                                newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
-                                if (newSpeedP2 >= maxNewSpeed)
-                                {
-                                    newSpeedP2 = maxNewSpeed;
-                                }
-                                else if (newSpeedP2 <= minNewSpeed)
-                                {
-                                    newSpeedP2 = minNewSpeed;
-                                }
-                                nextSpeedLoseP2 = speedLose + (float)currentGameTime;
-                                joyStickRightP2 = true;
+                                newSpeedP2 = maxNewSpeed;
                             }
-                            else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP2)
+                            else if (newSpeedP2 <= minNewSpeed)
                             {
-                                newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
-                                if (newSpeedP2 >= maxNewSpeed)
-                                {
-                                    newSpeedP2 = maxNewSpeed;
-                                }
-                                else if (newSpeedP2 <= minNewSpeed)
-                                {
-                                    newSpeedP2 = minNewSpeed;
-                                }
-                                nextSpeedLoseP2 = speedLose + (float)currentGameTime;
-                                joyStickRightP2 = false;
+                                newSpeedP2 = minNewSpeed;
+                            }
+                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
+                            joyStickRightP2 = true;
+                        }
+                        else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP2)
+                        {
+                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
+                            if (newSpeedP2 >= maxNewSpeed)
+                            {
+                                newSpeedP2 = maxNewSpeed;
+                            }
+                            else if (newSpeedP2 <= minNewSpeed)
+                            {
+                                newSpeedP2 = minNewSpeed;
+                            }
+                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
+                            joyStickRightP2 = false;
 
+                        }
+
+                        if ((float)currentGameTime >= nextSpeedLoseP2)
+                        {
+                            newSpeedP2 = newSpeedP2 - speedLoseIncreaseAmount;
+                            if (newSpeedP2 >= maxNewSpeed)
+                            {
+                                newSpeedP2 = maxNewSpeed;
+                            }
+                            else if (newSpeedP2 <= minNewSpeed)
+                            {
+                                newSpeedP2 = minNewSpeed;
                             }
 
-                            if ((float)currentGameTime >= nextSpeedLoseP2)
+                            if (newSpeedP2 <= 0.3f)
                             {
-                                newSpeedP2 = newSpeedP2 - speedLoseIncreaseAmount;
-                                if (newSpeedP2 >= maxNewSpeed)
-                                {
-                                    newSpeedP2 = maxNewSpeed;
-                                }
-                                else if (newSpeedP2 <= minNewSpeed)
-                                {
-                                    newSpeedP2 = minNewSpeed;
-                                }
-
-                                if (newSpeedP2 <= 0.3f)
-                                {
-                                    newSpeedP2 = 0.3f;
-                                }
+                                newSpeedP2 = 0.3f;
+                            }
                             nextSpeedLoseP2 = speedLose + (float)currentGameTime;
                         }
-                        }
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                        //Player shoot/Dash button
-                        if (capabilities2.HasAButton)
+                    //Player shoot/Dash button
+                    if (capabilities2.HasAButton)
+                    {
+                        //Shoot
+                        if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
                         {
-                            //Shoot
-                            if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                            if (planets[3].Owner == 2 && planets[3].InOrbit)
                             {
-                                if (planets[3].Owner == 2 && planets[3].InOrbit)
-                                {
-                                    planets[3].InOrbit = false;
-                                    planets[3].StartOwnerDelay();
-                                    Vector2 direction = state.ThumbSticks.Right;
-                                    direction.Y *= -1;
+                                planets[3].InOrbit = false;
+                                planets[3].StartOwnerDelay();
+                                Vector2 direction = state.ThumbSticks.Right;
+                                direction.Y *= -1;
 
-                                    //if (state.ThumbSticks.Right.X < -0.5f)
-                                    // direction.X -= 1;
-                                    //Move Right
-                                    //else if (state.ThumbSticks.Right.X > 0.5f)
-                                    // direction.X += 1;
-                                    //Move Up
-                                    if (state.ThumbSticks.Left.Y < -0.5f)
-                                        direction.Y -= 1;
-                                    //Move Down
-                                    else if (state.ThumbSticks.Left.Y > 0.5f)
-                                        direction.Y += 1;
-                                    if (direction.Y == 0)
-                                    {
-                                        Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], velocityOffset, newSpeedP2);
-                                    }
-                                    else
-                                        planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], direction);
+                                //if (state.ThumbSticks.Right.X < -0.5f)
+                                // direction.X -= 1;
+                                //Move Right
+                                //else if (state.ThumbSticks.Right.X > 0.5f)
+                                // direction.X += 1;
+                                //Move Up
+                                if (state.ThumbSticks.Left.Y < -0.5f)
+                                    direction.Y -= 1;
+                                //Move Down
+                                else if (state.ThumbSticks.Left.Y > 0.5f)
+                                    direction.Y += 1;
+                                if (direction.Y == 0)
+                                {
+                                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                    planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], -velocityOffset, newSpeedP2);
+                                }
+                                else
+                                    planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], direction);
                                 //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
                                 //{
                                 //    planetCount2--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
-                                }
                             }
-                        }
-                        if (capabilities2.HasBButton)
-                        {
-                            //Shoot
-                            if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
-                            {
-                                if (planets[4].Owner == 2 && planets[4].InOrbit)
-                                {
-                                    planets[4].InOrbit = false;
-                                    planets[4].StartOwnerDelay();
-                                    Vector2 direction = state.ThumbSticks.Right;
-                                    direction.Y *= -1;
-
-                                    //if (state.ThumbSticks.Right.X < -0.5f)
-                                    // direction.X -= 1;
-                                    //Move Right
-                                    //else if (state.ThumbSticks.Right.X > 0.5f)
-                                    // direction.X += 1;
-                                    //Move Up
-                                    if (state.ThumbSticks.Left.Y < -0.5f)
-                                        direction.Y -= 1;
-                                    //Move Down
-                                    else if (state.ThumbSticks.Left.Y > 0.5f)
-                                        direction.Y += 1;
-                                    if (direction.Y == 0)
-                                    {
-                                        Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[4].GiveAcceleration(ball2Pos + positionOffset[4 - 3], velocityOffset, newSpeedP2);
-                                    }
-                                    else
-                                        planets[4].GiveAcceleration(ball2Pos + positionOffset[4 - 3], direction);
-                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
-                                //{
-                                //    planetCount2--;
-                                //}
-                                Game1.soundEffects[2].Play();
-                                nextFireP2 = fireRate + (float)currentGameTime;
-
-                                }
-                            }
-                        }
-                        if (capabilities2.HasXButton)
-                        {
-                            //Shoot
-                            if (state.Buttons.X == ButtonState.Pressed && nextFireP2 <= currentGameTime)
-                            {
-                                if (planets[5].Owner == 2 && planets[5].InOrbit)
-                                {
-                                    planets[5].InOrbit = false;
-                                    planets[5].StartOwnerDelay();
-                                    Vector2 direction = state.ThumbSticks.Right;
-                                    direction.Y *= -1;
-
-                                    //if (state.ThumbSticks.Right.X < -0.5f)
-                                    // direction.X -= 1;
-                                    //Move Right
-                                    //else if (state.ThumbSticks.Right.X > 0.5f)
-                                    // direction.X += 1;
-                                    //Move Up
-                                    if (state.ThumbSticks.Left.Y < -0.5f)
-                                        direction.Y -= 1;
-                                    //Move Down
-                                    else if (state.ThumbSticks.Left.Y > 0.5f)
-                                        direction.Y += 1;
-                                    if (direction.Y == 0)
-                                    {
-                                        Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[5].GiveAcceleration(ball2Pos + positionOffset[5 - 3], velocityOffset, newSpeedP2);
-                                    }
-                                    else
-                                        planets[5].GiveAcceleration(ball2Pos + positionOffset[5 - 3], direction);
-                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
-                                //{
-                                //    planetCount2--;
-                                //}
-                                Game1.soundEffects[2].Play();
-                                nextFireP2 = fireRate + (float)currentGameTime;
-
-                                }
-                            }
-                        }
-                        //Dash
-                        if (state.Buttons.LeftShoulder == ButtonState.Pressed)
-                        {
-                            //[TODO] Dash.
                         }
                     }
+                    if (capabilities2.HasBButton)
+                    {
+                        //Shoot
+                        if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                        {
+                            if (planets[4].Owner == 2 && planets[4].InOrbit)
+                            {
+                                planets[4].InOrbit = false;
+                                planets[4].StartOwnerDelay();
+                                Vector2 direction = state.ThumbSticks.Right;
+                                direction.Y *= -1;
+
+                                //if (state.ThumbSticks.Right.X < -0.5f)
+                                // direction.X -= 1;
+                                //Move Right
+                                //else if (state.ThumbSticks.Right.X > 0.5f)
+                                // direction.X += 1;
+                                //Move Up
+                                if (state.ThumbSticks.Left.Y < -0.5f)
+                                    direction.Y -= 1;
+                                //Move Down
+                                else if (state.ThumbSticks.Left.Y > 0.5f)
+                                    direction.Y += 1;
+                                if (direction.Y == 0)
+                                {
+                                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                    planets[4].GiveAcceleration(ball2Pos + positionOffset[4 - 3], velocityOffset, newSpeedP2);
+                                }
+                                else
+                                    planets[4].GiveAcceleration(ball2Pos + positionOffset[4 - 3], direction);
+                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
+                                //{
+                                //    planetCount2--;
+                                //}
+                                //soundEffects[2].Play();
+                                nextFireP2 = fireRate + (float)currentGameTime;
+
+                            }
+                        }
+                    }
+                    if (capabilities2.HasXButton)
+                    {
+                        //Shoot
+                        if (state.Buttons.X == ButtonState.Pressed && nextFireP2 <= currentGameTime)
+                        {
+                            if (planets[5].Owner == 2 && planets[5].InOrbit)
+                            {
+                                planets[5].InOrbit = false;
+                                planets[5].StartOwnerDelay();
+                                Vector2 direction = state.ThumbSticks.Right;
+                                direction.Y *= -1;
+
+                                //if (state.ThumbSticks.Right.X < -0.5f)
+                                // direction.X -= 1;
+                                //Move Right
+                                //else if (state.ThumbSticks.Right.X > 0.5f)
+                                // direction.X += 1;
+                                //Move Up
+                                if (state.ThumbSticks.Left.Y < -0.5f)
+                                    direction.Y -= 1;
+                                //Move Down
+                                else if (state.ThumbSticks.Left.Y > 0.5f)
+                                    direction.Y += 1;
+                                if (direction.Y == 0)
+                                {
+                                    Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                    planets[5].GiveAcceleration(ball2Pos + positionOffset[5 - 3], velocityOffset, newSpeedP2);
+                                }
+                                else
+                                    planets[5].GiveAcceleration(ball2Pos + positionOffset[5 - 3], direction);
+                                //if (planetCount2 <= planets.Count && !(planetCount2 < 3))
+                                //{
+                                //    planetCount2--;
+                                //}
+                                //soundEffects[2].Play();
+                                nextFireP2 = fireRate + (float)currentGameTime;
+
+                            }
+                        }
+                    }
+
+                    //player2 boost
+                    if (capabilities2.HasYButton)
+                    {
+                        if ((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y > -0.5f) && ball2Pos.Y != 0) //up
+                        {
+                            ball2Pos.Y -= 20;
+                        }
+                        else if ((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0.5f) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
+                        {
+                            ball2Pos.Y += 20;
+                        }
+                    }
+                    //Dash
+                    if (state.Buttons.LeftShoulder == ButtonState.Pressed)
+                    {
+                        //[TODO] Dash.
+                    }
+                }
                 }
                 catch (Exception e)
             {
@@ -833,21 +861,18 @@ namespace RapidP1
             if (IsAlive2)
                 spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
 
-            if (!isAlive2)
+            if (!isAlive2 && isAlive1)
             {
                 spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
-            else if (!isAlive1)
+            if (!isAlive1 && isAlive2)
             {
                 spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
-
-            //spriteBatch.Draw(sunSprite1, drawRectangle1, Color.White);
-            //spriteBatch.Draw(sunSprite1, drawRectangle2, Color.White);
 
             foreach (Planet planet in planets)
             {
@@ -863,14 +888,12 @@ namespace RapidP1
                         {
 
                             spriteBatch.Draw(planetSprite1[k], ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
-                            //spriteBatch.Draw(planetSprite1, ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
                         }
                     }
                     for (int k = 3; k < 6; k++)
                     {
                         if (planets[k].InOrbit && planets[k].Owner == 2)
                         {
-                            //spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
                             spriteBatch.Draw(planetSprite1[k-3], ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
                         }
 
@@ -878,20 +901,9 @@ namespace RapidP1
                     }
                 }
             }
-
-            /*
-            for (int i = 0; i < planetPos.Length; i++)
-            {
-                foreach (Planet planet in planets)
-                {
-                    spriteBatch.Draw(planetSprite1, ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
-                }
-            }
-            */
-
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite, List<SoundEffect> sounds /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -903,6 +915,7 @@ namespace RapidP1
             planetSprite1 = planetSprite;
             playerWins = winSprites;
             finalWinSprite = winSprite;
+            soundEffects = sounds;
 
             this.planets = planets;
             ////Commented out cause these break the playermovement.
