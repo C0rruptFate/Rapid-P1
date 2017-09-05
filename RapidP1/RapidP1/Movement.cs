@@ -30,6 +30,8 @@ namespace RapidP1
         bool isAlive1 = true;
         bool isAlive2 = true;
         float fireRate = 50f;
+        float dashCoolDown = 20f;
+        float dashDistance = 30f;
 
         double currentGameTime;
         float nextFireP1; //When player 1 can next shoot
@@ -41,6 +43,7 @@ namespace RapidP1
         float speedLoseIncreaseAmount = 0.1f; //How much speed is lost per tick.
         List<Planet> p1Planets = new List<Planet>(); //List of all player 1's planets.
         float[] p1Angles = new float[10]; //used to track the speed of player 1's orbit speed.
+        float P1NextDash;
 
         float nextFireP2; //When player 2 can next shoot
         float newSpeedP2; //Multiplier for player 2's planets
@@ -50,6 +53,7 @@ namespace RapidP1
         List<Planet> p2Planets = new List<Planet>(); //the list of all player 2's planets
         float[] p2Angles = new float[10]; //used to track the speed of player 2's orbit speed.
         Texture2D[] playerWins = new Texture2D[5];
+        float P2NextDash;
 
         
         float maxNewSpeed = 2; //The max speed the planets can fly at.
@@ -437,7 +441,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                //soundEffects[2].Play();
+                                soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -476,7 +480,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                //soundEffects[2].Play();
+                                soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -515,24 +519,26 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                //soundEffects[2].Play();
+                                soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
                     }
 
                     //boost
-                    if (capabilities1.HasYButton)
-                    {
-                        if ((state.Buttons.Y==ButtonState.Pressed && state.ThumbSticks.Left.Y > -0.5f ) && ball1Pos.Y != 0) //up
-                        {
-                            ball1Pos.Y -= 20;
-                        }
-                        else if((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0.5f) && ball1Pos.Y != (GameConstants.WindowHeight - 100) ) //down
-                        {
-                            ball1Pos.Y += 20;
-                        }
-                    }
+                    //if (capabilities1.HasYButton)
+                    //{
+                    //    if ((state.Buttons.Y==ButtonState.Pressed && state.ThumbSticks.Left.Y > -0.5f ) && ball1Pos.Y != 0 && (float)currentGameTime >= P1NextDash) //up
+                    //    {
+                    //        ball1Pos.Y -= dashDistance;
+                    //        P1NextDash = dashCoolDown + (float)currentGameTime;
+                    //    }
+                    //    else if((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0.5f) && ball1Pos.Y != (GameConstants.WindowHeight - 100) && (float)currentGameTime >= P1NextDash) //down
+                    //    {
+                    //        ball1Pos.Y += dashDistance;
+                    //        P1NextDash = dashCoolDown + (float)currentGameTime;
+                    //    }
+                    //}
 
                     if (state.Buttons.LeftShoulder == ButtonState.Pressed)
                     {
@@ -647,7 +653,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                //soundEffects[2].Play();
+                                soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -687,7 +693,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                //soundEffects[2].Play();
+                                soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -727,7 +733,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                //soundEffects[2].Play();
+                                soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -735,17 +741,19 @@ namespace RapidP1
                     }
 
                     //player2 boost
-                    if (capabilities2.HasYButton)
-                    {
-                        if ((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y > -0.5f) && ball2Pos.Y != 0) //up
-                        {
-                            ball2Pos.Y -= 20;
-                        }
-                        else if ((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0.5f) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
-                        {
-                            ball2Pos.Y += 20;
-                        }
-                    }
+                    //if (capabilities2.HasYButton)
+                    //{
+                    //    if ((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y > -0.5f) && ball2Pos.Y != 0 /*&&(float)currentGameTime >= P2NextDash*/) //up
+                    //    {
+                    //        ball2Pos.Y -= 20;
+                    //        P2NextDash = dashCoolDown + (float)currentGameTime;
+                    //    }
+                    //    else if ((state.Buttons.Y == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0.5f) && ball2Pos.Y != (GameConstants.WindowHeight - 100) /*&& (float)currentGameTime >= P2NextDash*/) //down
+                    //    {
+                    //        ball2Pos.Y += 20;
+                    //        P2NextDash = dashCoolDown + (float)currentGameTime;
+                    //    }
+                    //}
                     //Dash
                     if (state.Buttons.LeftShoulder == ButtonState.Pressed)
                     {
