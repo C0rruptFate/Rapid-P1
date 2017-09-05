@@ -61,6 +61,7 @@ namespace RapidP1
         float boostTimer = 0f;
         float minOrbit = 1f;
         float maxOrbit = 3f;
+        bool isGameStart = true;
         #endregion
 
         #region Properties
@@ -369,7 +370,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities1.HasLeftTrigger)
                     {
-                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f) && (float)currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -441,7 +442,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -480,7 +481,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -519,7 +520,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -581,7 +582,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities2.HasLeftTrigger)
                     {
-                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f) && (float)currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP2 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -653,7 +654,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -693,7 +694,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -733,7 +734,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -777,13 +778,13 @@ namespace RapidP1
 
             if (!isAlive2 && isAlive1)
             {
-                spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
+                //spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
             if (!isAlive1 && isAlive2)
             {
-                spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
+                //spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
@@ -855,6 +856,11 @@ namespace RapidP1
             p2Planets.Add(planets[3]);
             p2Planets.Add(planets[4]);
             p2Planets.Add(planets[5]);
+        }
+        public void resetVariables()
+        {
+            nextFireP1 = 0;
+            nextFireP2 = 0;
         }
     }
 }
