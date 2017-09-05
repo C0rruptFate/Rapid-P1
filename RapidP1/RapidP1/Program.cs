@@ -11,11 +11,17 @@ namespace RapidP1
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+
+        public static bool shouldRestart = false;
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
-                game.Run();
+            do
+            {
+                using (var game = new Game1())
+                    game.Run();
+            } while (shouldRestart);
+
         }
     }
 #endif
