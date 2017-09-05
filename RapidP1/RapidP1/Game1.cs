@@ -35,6 +35,7 @@ namespace RapidP1
         List<Planet> p1Planets = new List<Planet>();
         List<Planet> p2Planets = new List<Planet>();
         private Texture2D[] playerWinImages = new Texture2D[5];
+        Texture2D[] playerScores = new Texture2D[10];
         static int player1Score, player2Score;
 
         Song backgroundMusic;
@@ -100,8 +101,12 @@ namespace RapidP1
                 planet[i] = Content.Load<Texture2D>("Button" + k);
                 playerWinImages[i] = Content.Load<Texture2D>("win_player" + k);
             }
+            for (int i = 0; i < 10; i++)
+            {
+                playerScores[i] = Content.Load<Texture2D>("score_" + i);
+            }
             //planet = Content.Load<Texture2D>("planet1");
-            planet1 = Content.Load<Texture2D>("planet2");
+            planet1 = Content.Load<Texture2D>("planet2");   
             background = Content.Load<Texture2D>("Background");
             startScreen = Content.Load<Texture2D>("logo_solarSlayers");
             win = Content.Load<Texture2D>("win_wins");
@@ -331,8 +336,78 @@ namespace RapidP1
             else
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                spriteBatch.DrawString(spriteFont, player2Score.ToString(), new Vector2(GameConstants.WindowWidth - 100, 0),Color.White);
-                spriteBatch.DrawString(spriteFont, player1Score.ToString(), Vector2.Zero, Color.White);
+                switch (player1Score)
+                {
+                    case 1:
+                        spriteBatch.Draw(playerScores[1], new Vector2(30, 0), Color.White);
+                        break;
+                    case 2:
+                        spriteBatch.Draw(playerScores[2], new Vector2(30, 0), Color.White);
+                        break;
+                    case 3:
+                        spriteBatch.Draw(playerScores[3], new Vector2(30, 0), Color.White);
+                        break;
+                    case 4:
+                        spriteBatch.Draw(playerScores[4], new Vector2(30, 0), Color.White);
+                        break;
+                    case 5:
+                        spriteBatch.Draw(playerScores[5], new Vector2(30, 0), Color.White);
+                        break;
+                    case 6:
+                        spriteBatch.Draw(playerScores[6], new Vector2(30, 0), Color.White);
+                        break;
+                    case 7:
+                        spriteBatch.Draw(playerScores[7], new Vector2(30, 0), Color.White);
+                        break;
+                    case 8:
+                        spriteBatch.Draw(playerScores[8], new Vector2(30, 0), Color.White);
+                        break;
+                    case 9:
+                        spriteBatch.Draw(playerScores[9], new Vector2(30, 0), Color.White);
+                        break;
+                    case 0:
+                        spriteBatch.Draw(playerScores[0], new Vector2(30, 0), Color.White);
+                        break;
+                    default:
+                        break;
+                }
+                switch (player2Score)
+                {
+                    case 1:
+                        spriteBatch.Draw(playerScores[1], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 2:
+                        spriteBatch.Draw(playerScores[2], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 3:
+                        spriteBatch.Draw(playerScores[3], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 4:
+                        spriteBatch.Draw(playerScores[4], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 5:
+                        spriteBatch.Draw(playerScores[5], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 6:
+                        spriteBatch.Draw(playerScores[6], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 7:
+                        spriteBatch.Draw(playerScores[7], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 8:
+                        spriteBatch.Draw(playerScores[8], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 9:
+                        spriteBatch.Draw(playerScores[9], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    case 0:
+                        spriteBatch.Draw(playerScores[0], new Vector2(GameConstants.WindowWidth - 100, 0), Color.White);
+                        break;
+                    default:
+                        break;
+                }
+                //spriteBatch.DrawString(spriteFont, player2Score.ToString(), new Vector2(GameConstants.WindowWidth - 100, 0),Color.White);
+                //spriteBatch.DrawString(spriteFont, player1Score.ToString(), Vector2.Zero, Color.White);
                 if (player1Score == 3)
                 {
                     spriteBatch.Draw(playerWinImages[0], new Vector2(500, 200), Color.White);
