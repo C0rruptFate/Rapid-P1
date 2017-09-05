@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections;
 using Microsoft.Xna.Framework.Audio;
+using System.Collections.Generic;
 
 namespace RapidP1
 {
@@ -17,9 +18,10 @@ namespace RapidP1
         Rectangle drawRectangle;
         Vector2 velocity;
         Vector2 acceleration;
+        List<SoundEffect> soundEffects;
         Vector2 location;
         const float ownerDelay = 1;
-        const float returnDelay = 3;
+        const float returnDelay = 10;
         const float teleportDelay = 500;
         float remainingShootDelay = ownerDelay;
         float remainingReturnDelay = returnDelay;
@@ -130,8 +132,16 @@ namespace RapidP1
 
             velocityOffset.Normalize();  //Gets the direction only
 
-            velocity.X = velocityOffset.X * GameConstants.speed;
-            velocity.Y = velocityOffset.Y * GameConstants.speed;
+            if (Owner == 1)
+            {
+                velocity.X = velocityOffset.X * GameConstants.speed;
+                velocity.Y = velocityOffset.Y * GameConstants.speed;
+            }
+            else
+            {
+                velocity.X = -velocityOffset.X * GameConstants.speed;
+                velocity.Y = -velocityOffset.Y * GameConstants.speed;
+            }
 
             if (newSpeed >= maxNewSpeed)
             {
@@ -197,7 +207,7 @@ namespace RapidP1
                 owner = previousOwner;
                 remainingReturnDelay = returnDelay;
                 returnTimer = false;
-                Game1.soundEffects[3].Play();
+                //soundEffects[3].Play();
                 teleportTimer = true;
             }
 
@@ -306,14 +316,14 @@ namespace RapidP1
                 // bounce off top
                 drawRectangle.Y = 0;
                 velocity.Y *= -1;
-                Game1.soundEffects[0].Play();
+                //soundEffects[0].Play();
             }
             else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WindowHeight)    //Should set up seperate static class for these constants
             {
                 // bounce off bottom
                 drawRectangle.Y = GameConstants.WindowHeight - drawRectangle.Height;
                 velocity.Y *= -1;
-                Game1.soundEffects[0].Play();
+                //soundEffects[0].Play();
             }
         }
 
@@ -324,14 +334,14 @@ namespace RapidP1
                 // bounc off left
                 drawRectangle.X = 0;
                 velocity.X *= -1;
-                Game1.soundEffects[0].Play();
+                //soundEffects[0].Play();
             }
             else if ((drawRectangle.X + drawRectangle.Width) > GameConstants.WindowWidth)
             {
                 // bounce off right
                 drawRectangle.X = GameConstants.WindowWidth - drawRectangle.Width;
                 velocity.X *= -1;
-                Game1.soundEffects[0].Play();
+                //soundEffects[0].Play();
             }
 
 

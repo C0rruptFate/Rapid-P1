@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -13,7 +14,7 @@ namespace RapidP1
         Vector2[] planetPos = new Vector2[20];
         Texture2D sunSprite1, finalWinSprite;
         Texture2D[] planetSprite1 = new Texture2D[10];
-        Game1 g1 = new Game1();
+        List<SoundEffect> soundEffects = new List<SoundEffect>();
         Vector2[] positionOffset = new Vector2[10];
         //float angle;
         float[] radius = new float[10];
@@ -481,7 +482,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
@@ -520,7 +521,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
@@ -559,7 +560,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                                 }
                             }
@@ -717,8 +718,8 @@ namespace RapidP1
                                         direction.Y += 1;
                                     if (direction.Y == 0)
                                     {
-                                        Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
-                                        planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], velocityOffset, newSpeedP2);
+                                        Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                        planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], -velocityOffset, newSpeedP2);
                                     }
                                     else
                                         planets[3].GiveAcceleration(ball2Pos + positionOffset[3 - 3], direction);
@@ -726,7 +727,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
@@ -757,7 +758,7 @@ namespace RapidP1
                                         direction.Y += 1;
                                     if (direction.Y == 0)
                                     {
-                                        Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                        Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
                                         planets[4].GiveAcceleration(ball2Pos + positionOffset[4 - 3], velocityOffset, newSpeedP2);
                                     }
                                     else
@@ -766,7 +767,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
@@ -797,7 +798,7 @@ namespace RapidP1
                                         direction.Y += 1;
                                     if (direction.Y == 0)
                                     {
-                                        Vector2 velocityOffset = new Vector2(-(float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
+                                        Vector2 velocityOffset = new Vector2((float)(0.2f * (float)Math.Sin(0.2f) - 0.1 * (float)Math.Sin(0.1f)), (float)(0.2 * (float)Math.Cos(0.2) - 0.2 * (float)Math.Cos(0.2)));
                                         planets[5].GiveAcceleration(ball2Pos + positionOffset[5 - 3], velocityOffset, newSpeedP2);
                                     }
                                     else
@@ -806,7 +807,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                Game1.soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                                 }
@@ -833,13 +834,13 @@ namespace RapidP1
             if (IsAlive2)
                 spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
 
-            if (!isAlive2)
+            if (!isAlive2 && isAlive1)
             {
                 spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
-            else if (!isAlive1)
+            else if (!isAlive1 && isAlive2)
             {
                 spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
@@ -891,7 +892,7 @@ namespace RapidP1
 
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite, List<SoundEffect> sounds /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -903,6 +904,7 @@ namespace RapidP1
             planetSprite1 = planetSprite;
             playerWins = winSprites;
             finalWinSprite = winSprite;
+            soundEffects = sounds;
 
             this.planets = planets;
             ////Commented out cause these break the playermovement.
