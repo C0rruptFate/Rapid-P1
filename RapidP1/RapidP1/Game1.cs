@@ -29,12 +29,13 @@ namespace RapidP1
         static Vector2[] planetPos = new Vector2[3];
         Planet p1,p2,p3,p4,p5,p6;
         PlayerControl control;
-        //GamePlay play;
+        SpriteFont spriteFont;
         public string gameState;
         List<Planet> planets = new List<Planet>();
         List<Planet> p1Planets = new List<Planet>();
         List<Planet> p2Planets = new List<Planet>();
         private Texture2D[] playerWinImages = new Texture2D[5];
+        static int player1Score, player2Score;
 
         Song backgroundMusic;
         public List<SoundEffect> soundEffects = new List<SoundEffect>();
@@ -105,6 +106,7 @@ namespace RapidP1
             startScreen = Content.Load<Texture2D>("logo_solarSlayers");
             win = Content.Load<Texture2D>("win_wins");
             pressStart = Content.Load<Texture2D>("pressStart");
+            spriteFont = Content.Load<SpriteFont>("Score");
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
             soundEffects.Add(Content.Load<SoundEffect>("Bounce")); //0
@@ -113,7 +115,7 @@ namespace RapidP1
             soundEffects.Add(Content.Load<SoundEffect>("Teleport2")); //3
 
             //Music
-            MediaPlayer.Stop();
+            //MediaPlayer.Stop();
             MediaPlayer.Play(backgroundMusic);
 
 
@@ -178,6 +180,10 @@ namespace RapidP1
                 {
                     restart();
                 }
+                if (gameState == GameStates.GameOver.ToString() && (player1Score == 3 || player2Score == 3))
+                {
+                    newGame();
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Escape) || state.Buttons.Back == ButtonState.Pressed)
             {
@@ -206,6 +212,7 @@ namespace RapidP1
                         if (planet.Owner != 1 && control.IsAlive1)
                         {
                             control.IsAlive1 = false;
+                            player2Score += 1;
                             //Play Audio
                             //soundEffects[1].Play();
                             gameState = GameStates.GameOver.ToString();
@@ -227,6 +234,7 @@ namespace RapidP1
                         if (planet.Owner != 1 && control.IsAlive2)
                         {
                             control.IsAlive2 = false;
+                            player1Score += 1;
                             //Play Audio
                             //soundEffects[1].Play();
                             gameState = GameStates.GameOver.ToString();
@@ -323,6 +331,26 @@ namespace RapidP1
             else
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                spriteBatch.DrawString(spriteFont, player2Score.ToString(), new Vector2(GameConstants.WindowWidth - 100, 0),Color.White);
+                spriteBatch.DrawString(spriteFont, player1Score.ToString(), Vector2.Zero, Color.White);
+                if (player1Score == 3)
+                {
+                    spriteBatch.Draw(playerWinImages[0], new Vector2(500, 200), Color.White);
+                    spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
+                    gameState = GameStates.GameOver.ToString();
+                }
+                if (player2Score == 3)
+                {
+                    spriteBatch.Draw(playerWinImages[1], new Vector2(500, 200), Color.White);
+                    spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
+                    gameState = GameStates.GameOver.ToString();
+
+                }
+                //if ((player1Score > 0 && player1Score <3) && (player2Score > 0 && player2Score <3))
+                //{
+                //    spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
+                //    //restart();
+                //}
 
                 foreach (Planet planet in planets)
                 {
@@ -344,6 +372,14 @@ namespace RapidP1
         public void restart()
         {
             Program.shouldRestart = true;
+            this.Exit();
+        }
+        public void newGame()
+        {
+            player1Score = 0;
+            player2Score = 0;
+            Program.shouldRestart = true;
+            gameState = GameStates.GameStart.ToString();
             this.Exit();
         }
     }
