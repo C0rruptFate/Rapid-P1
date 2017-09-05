@@ -30,12 +30,14 @@ namespace RapidP1
         bool isAlive1 = true;
         bool isAlive2 = true;
         float fireRate = 50f;
+
         double currentGameTime;
         float nextFireP1; //When player 1 can next shoot
         float newSpeedP1; //Multiplier for player 1's planets
         bool joyStickRightP1; //Used to track the players right stick movement.
         float nextSpeedLoseP1; //When player 1 will next lose some speed.
-        float speedLose = 10f; //How quickly players lose speed
+        float nextSpeedGainP1;
+        float speedLose = 20f; //How quickly players lose speed
         float speedLoseIncreaseAmount = 0.1f; //How much speed is lost per tick.
         List<Planet> p1Planets = new List<Planet>(); //List of all player 1's planets.
         float[] p1Angles = new float[10]; //used to track the speed of player 1's orbit speed.
@@ -44,6 +46,7 @@ namespace RapidP1
         float newSpeedP2; //Multiplier for player 2's planets
         bool joyStickRightP2; //Used to track the players right stick movement.
         float nextSpeedLoseP2; //When player 2 will next lose some speed.
+        float nextSpeedGainP2; //
         List<Planet> p2Planets = new List<Planet>(); //the list of all player 2's planets
         float[] p2Angles = new float[10]; //used to track the speed of player 2's orbit speed.
         Texture2D[] playerWins = new Texture2D[5];
@@ -362,7 +365,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities1.HasLeftTrigger)
                     {
-                        if (state.Triggers.Left >= 1f && !joyStickRightP1 && state.Triggers.Right <= 0 && state.ThumbSticks.Right.X <= 0.5f)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f) && (float)currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -374,56 +377,7 @@ namespace RapidP1
                                 newSpeedP1 = minNewSpeed;
                             }
                             nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
-                            joyStickRightP1 = true; //Makes sure you need to move to the other side first.
-                        }
-                        else if (state.Triggers.Right >= 1f && joyStickRightP1 && state.Triggers.Left <= 0 && state.ThumbSticks.Right.X >= -0.5f)
-                        {
-                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount;
-                            if (newSpeedP1 >= maxNewSpeed)
-                            {
-                                newSpeedP1 = maxNewSpeed;
-                            }
-                            else if (newSpeedP1 <= minNewSpeed)
-                            {
-                                newSpeedP1 = minNewSpeed;
-                            }
-                            nextSpeedLoseP1 = speedLose + (float)currentGameTime;
-                            joyStickRightP1 = false;
-
-                        }
-                    }
-
-
-                    if (capabilities1.HasRightXThumbStick)//Maybe change this to triggers or something 
-                    {
-                        if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP1)//Tracks the movement of p1's right joystick
-                        {
-                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
-                            if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
-                            {
-                                newSpeedP1 = maxNewSpeed;
-                            }
-                            else if (newSpeedP1 <= minNewSpeed) //Makes sure we can't go below the min speed.
-                            {
-                                newSpeedP1 = minNewSpeed;
-                            }
-                            nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
-                            joyStickRightP1 = true; //Makes sure you need to move to the other side first.
-                        }
-                        else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP1)
-                        {
-                            newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount;
-                            if (newSpeedP1 >= maxNewSpeed)
-                            {
-                                newSpeedP1 = maxNewSpeed;
-                            }
-                            else if (newSpeedP1 <= minNewSpeed)
-                            {
-                                newSpeedP1 = minNewSpeed;
-                            }
-                            nextSpeedLoseP1 = speedLose + (float)currentGameTime;
-                            joyStickRightP1 = false;
-
+                            nextSpeedGainP1 = speedLose + (float)currentGameTime;
                         }
 
                         if ((float)currentGameTime >= nextSpeedLoseP1)//Ticks down move speed of planets if you arn't moving the joystick.
@@ -621,7 +575,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities2.HasLeftTrigger)
                     {
-                        if (state.Triggers.Left >= 1f && !joyStickRightP2 && state.Triggers.Right <= 0 && state.ThumbSticks.Right.X <= 0.5f)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f) && (float)currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP2 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -633,58 +587,10 @@ namespace RapidP1
                                 newSpeedP2 = minNewSpeed;
                             }
                             nextSpeedLoseP2 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
-                            joyStickRightP2 = true; //Makes sure you need to move to the other side first.
-                        }
-                        else if (state.Triggers.Right >= 1f && joyStickRightP2 && state.Triggers.Left <= 0 && state.ThumbSticks.Right.X >= -0.5f)
-                        {
-                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
-                            if (newSpeedP2 >= maxNewSpeed)
-                            {
-                                newSpeedP2 = maxNewSpeed;
-                            }
-                            else if (newSpeedP2 <= minNewSpeed)
-                            {
-                                newSpeedP2 = minNewSpeed;
-                            }
-                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
-                            joyStickRightP2 = false;
-
-                        }
-                    }
-
-                    if (capabilities2.HasRightXThumbStick)//Maybe change this to triggers or something 
-                    {
-                        if (state.ThumbSticks.Right.X < -0.5f && !joyStickRightP2)
-                        {
-                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
-                            if (newSpeedP2 >= maxNewSpeed)
-                            {
-                                newSpeedP2 = maxNewSpeed;
-                            }
-                            else if (newSpeedP2 <= minNewSpeed)
-                            {
-                                newSpeedP2 = minNewSpeed;
-                            }
-                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
-                            joyStickRightP2 = true;
-                        }
-                        else if (state.ThumbSticks.Right.X > 0.5f && joyStickRightP2)
-                        {
-                            newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount;
-                            if (newSpeedP2 >= maxNewSpeed)
-                            {
-                                newSpeedP2 = maxNewSpeed;
-                            }
-                            else if (newSpeedP2 <= minNewSpeed)
-                            {
-                                newSpeedP2 = minNewSpeed;
-                            }
-                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
-                            joyStickRightP2 = false;
-
+                            nextSpeedGainP2 = speedLose + (float)currentGameTime;
                         }
 
-                        if ((float)currentGameTime >= nextSpeedLoseP2)
+                        if ((float)currentGameTime >= nextSpeedLoseP2)//Ticks down move speed of planets if you arn't moving the joystick.
                         {
                             newSpeedP2 = newSpeedP2 - speedLoseIncreaseAmount;
                             if (newSpeedP2 >= maxNewSpeed)
