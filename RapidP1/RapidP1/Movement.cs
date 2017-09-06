@@ -26,6 +26,8 @@ namespace RapidP1
         List<int> countList = new List<int>();
         Rectangle drawRectangle1;
         Rectangle drawRectangle2;
+        SunAnimation player1Anim;
+        SunAnimation player2Anim;
         float[] velocity = new float[10];
         bool isAlive1 = true;
         bool isAlive2 = true;
@@ -61,6 +63,7 @@ namespace RapidP1
         float boostTimer = 0f;
         float minOrbit = 1f;
         float maxOrbit = 3f;
+        bool isGameStart = true;
         #endregion
 
         #region Properties
@@ -115,17 +118,22 @@ namespace RapidP1
                 //    Exit();
                 //Planet p;
 
+                player1Anim.Update(gameTime);
+                player2Anim.Update(gameTime);
+
                 if (isAlive1)
                 {
                     if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
                     {
                         ball1Pos.Y -= 5;
                         drawRectangle1.Y -= 5;
+                        player1Anim.drawRectangle.Y -= 5;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GameConstants.WindowHeight - 100)) //down
                     {
                         ball1Pos.Y += 5;
                         drawRectangle1.Y += 5;
+                        player1Anim.drawRectangle.Y += 5;
                     }
                     //if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
                     //{
@@ -369,7 +377,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities1.HasLeftTrigger)
                     {
-                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f) && (float)currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -441,7 +449,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -480,7 +488,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -519,7 +527,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -581,7 +589,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities2.HasLeftTrigger)
                     {
-                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f) && (float)currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP2 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -653,7 +661,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -693,7 +701,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -733,7 +741,7 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                soundEffects[2].Play();
+                                //soundEffects[2].Play();
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -770,20 +778,28 @@ namespace RapidP1
         public void Draw(SpriteBatch spriteBatch)
         {
             if (isAlive1)
-                spriteBatch.Draw(sunSprite1, ball1Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            {
+                spriteBatch.Draw(sunSprite1, ball1Pos, null, new Color(255, 144, 0), 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+                player1Anim.Draw(spriteBatch);
+            }
+                
 
             if (IsAlive2)
-                spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            {
+                spriteBatch.Draw(sunSprite1, ball2Pos, null, new Color(18, 160, 195), 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+                player2Anim.Draw(spriteBatch);
+            }
+                
 
             if (!isAlive2 && isAlive1)
             {
-                spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
+                //spriteBatch.Draw(playerWins[0], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
             if (!isAlive1 && isAlive2)
             {
-                spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
+                //spriteBatch.Draw(playerWins[1], new Vector2(500, 200), Color.White);
                 spriteBatch.Draw(finalWinSprite, new Vector2(500, 200), Color.White);
 
             }
@@ -817,7 +833,7 @@ namespace RapidP1
             }
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite, List<SoundEffect> sounds /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite, List<SoundEffect> sounds, Texture2D sunAnimation /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -838,6 +854,9 @@ namespace RapidP1
             drawRectangle1 = new Rectangle((int)sun1Pos.X + 10, (int)sun1Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
             drawRectangle2 = new Rectangle((int)sun2Pos.X + 10, (int)sun2Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
 
+            player1Anim = new SunAnimation(sunAnimation, (int)sun1Pos.X - 12, (int)sun1Pos.Y - 12, new Color(255,228,175));
+            player2Anim = new SunAnimation(sunAnimation, (int)sun2Pos.X - 12, (int)sun2Pos.Y - 12, new Color(175,228,255));
+
             planets[0] = new Planet(planetSprite[0], ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite[1], ball1Pos + positionOffset[1], 1, true);
             planets[2] = new Planet(planetSprite[2], ball1Pos + positionOffset[2], 1, true);
@@ -855,6 +874,11 @@ namespace RapidP1
             p2Planets.Add(planets[3]);
             p2Planets.Add(planets[4]);
             p2Planets.Add(planets[5]);
+        }
+        public void resetVariables()
+        {
+            nextFireP1 = 0;
+            nextFireP2 = 0;
         }
     }
 }

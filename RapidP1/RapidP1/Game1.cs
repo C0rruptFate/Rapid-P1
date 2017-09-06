@@ -20,6 +20,7 @@ namespace RapidP1
         private Texture2D planet1;
         private Texture2D background;
         private Texture2D startScreen;
+        private Texture2D sunAnimationSpriteSheet;
         bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -37,6 +38,18 @@ namespace RapidP1
         private Texture2D[] playerWinImages = new Texture2D[5];
         Texture2D[] playerScores = new Texture2D[10];
         static int player1Score, player2Score;
+        Texture2D spriteSheet1, spriteSheet2, spriteSheet3, spriteSheetLaunch;
+        float time;
+        float frameTime = 0.1f;
+        int frameIndex;
+        const int totalFrames = 16;
+        int frameHeight = 512;
+        int frameWidth = 512;
+        int frameHeight2 = 1024;
+        int frameWidth2 = 1024;
+        float countdownTimer = 10;
+        const float something = 0.02f;
+        static int gameCount = 0;
 
         Song backgroundMusic;
         public List<SoundEffect> soundEffects = new List<SoundEffect>();
@@ -94,7 +107,7 @@ namespace RapidP1
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            sun = Content.Load<Texture2D>("sunP2");
+            sun = Content.Load<Texture2D>("sunMaskOuter");
             for (int i = 0; i < 4; i++)
             {
                 int k = i + 1;
@@ -112,6 +125,12 @@ namespace RapidP1
             win = Content.Load<Texture2D>("win_wins");
             pressStart = Content.Load<Texture2D>("pressStart");
             spriteFont = Content.Load<SpriteFont>("Score");
+            spriteSheet1 = Content.Load<Texture2D>("countdown1");
+            spriteSheet2 = Content.Load<Texture2D>("countdown2");
+            spriteSheet3 = Content.Load<Texture2D>("countdown3");
+            spriteSheetLaunch = Content.Load<Texture2D>("countdownLaunch");
+            sunAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
+
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
             soundEffects.Add(Content.Load<SoundEffect>("Bounce")); //0
@@ -143,7 +162,7 @@ namespace RapidP1
 
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects  /*,p1Planets, p2Planets*/);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects, sunAnimationSpriteSheet /*,p1Planets, p2Planets*/);
             
 
             // TODO: use this.Content to load your game content here
@@ -172,15 +191,11 @@ namespace RapidP1
 
             if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) && !isPlayable) //up
             {
-                if (gameState == GameStates.GameStart.ToString() || gameState == GameStates.GameOver.ToString())
+                if (gameState == GameStates.GameStart.ToString())
                 {
-                    gameState = GameStates.InGame.ToString();
-                    isPlayable = true;
+                    gameState = GameStates.Countdown.ToString();
+                    //isPlayable = true;
                 }
-
-            }
-            else if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed))
-            {
                 if (gameState == GameStates.GameOver.ToString())
                 {
                     restart();
@@ -189,11 +204,27 @@ namespace RapidP1
                 {
                     newGame();
                 }
+
             }
+            //else if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed))
+            //{
+            //    if (gameState == GameStates.GameOver.ToString())
+            //    {
+            //        restart();
+            //    }
+            //    if (gameState == GameStates.GameOver.ToString() && (player1Score == 3 || player2Score == 3))
+            //    {
+            //        newGame();
+            //    }
+            //}
             else if (Keyboard.GetState().IsKeyDown(Keys.Escape) || state.Buttons.Back == ButtonState.Pressed)
             {
                 this.Exit();
             }
+            //if (Keyboard.GetState().IsKeyDown(Keys.Enter) || state.Buttons.Start == ButtonState.Pressed && (gameState == GameStates.Countdown.ToString()) && !isPlayable)
+            //{
+            //    isPlayable = true;
+            //}
             else if (isPlayable)
             {
                 control.Update(gameTime);
@@ -216,8 +247,13 @@ namespace RapidP1
 
                         if (planet.Owner != 1 && control.IsAlive1)
                         {
-                            control.IsAlive1 = false;
-                            player2Score += 1;
+                            //control.IsAlive1 = false;
+                            if (control.IsAlive2)
+                            {
+                                player2Score += 1;
+                                gameCount += 1;
+                            }
+                            //player2Score += 1;
                             //Play Audio
                             //soundEffects[1].Play();
                             gameState = GameStates.GameOver.ToString();
@@ -238,8 +274,13 @@ namespace RapidP1
 
                         if (planet.Owner != 1 && control.IsAlive2)
                         {
-                            control.IsAlive2 = false;
-                            player1Score += 1;
+                            //control.IsAlive2 = false;
+                            if (control.IsAlive1)
+                            {
+                                player1Score += 1;
+                                gameCount += 1;
+                            }
+                            //player1Score += 1;
                             //Play Audio
                             //soundEffects[1].Play();
                             gameState = GameStates.GameOver.ToString();
@@ -305,7 +346,51 @@ namespace RapidP1
                     }
                 }
             }
-            base.Update(gameTime);
+
+            //if (countdownTimer >=0)
+            //{
+            //    countdownTimer--;
+            //}
+
+            //time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //while (time > frameTime)
+            //{
+            //    frameIndex++;
+            //    time = 0f;
+            //}
+            //if (frameIndex > totalFrames) frameIndex = 1;
+            //Rectangle source1 = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
+            ////Rectangle source2 = new Rectangle(frameIndex * frameWidth, frameHeight/4, frameWidth, frameHeight);
+            ////Rectangle source3 = new Rectangle(frameIndex * frameWidth, frameHeight/2, frameWidth, frameHeight);
+            ////Rectangle source4 = new Rectangle(frameIndex * frameWidth, frameHeight * 3/4, frameWidth, frameHeight);
+            //Vector2 position = new Vector2(500, 500);
+
+            //    if (gameState == GameStates.Countdown.ToString())
+            //    {
+            //    spriteBatch.Begin();
+            //        spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+            //        if (countdownTimer <= 300 && countdownTimer > 200)
+            //        {
+            //            spriteBatch.Draw(spriteSheet3, position, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            //            //countdownTimer -= 10;
+            //        }
+            //        else if (countdownTimer <= 200 && countdownTimer > 100)
+            //        {
+            //            spriteBatch.Draw(spriteSheet2, position, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            //            //countdownTimer -= 10;
+            //        }
+            //        else if (countdownTimer < 100 && countdownTimer > 0)
+            //        {
+            //            spriteBatch.Draw(spriteSheet1, position, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            //        }
+            //        else//don't show sprite
+            //        {
+            //            gameState = GameStates.InGame.ToString();
+            //        isPlayable = true;
+            //        }
+            //    spriteBatch.End();
+            //    }
+                base.Update(gameTime);
         }
 
         /// <summary>
@@ -316,23 +401,91 @@ namespace RapidP1
         {
             GraphicsDevice.Clear(Color.White);
 
-            
-
+            time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            while (time > frameTime)
+            {
+                frameIndex++;
+                time = 0f;
+            }
+            if (frameIndex > totalFrames) frameIndex = 1;
+            Rectangle source1 = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
+            Rectangle source2 = new Rectangle(frameIndex * frameWidth2, frameHeight2, frameWidth2, frameHeight2);
+            //Rectangle source3 = new Rectangle(frameIndex * frameWidth, frameHeight/2, frameWidth, frameHeight);
+            //Rectangle source4 = new Rectangle(frameIndex * frameWidth, frameHeight * 3/4, frameWidth, frameHeight);
+            Vector2 position1 = new Vector2(700, 300);
+            Vector2 position2 = new Vector2(500, 0);
             // TODO: Add your drawing code here
-            
+
             spriteBatch.Begin();
             if (gameState == GameStates.GameStart.ToString())
             {
-                spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
-                //spriteBatch.Draw(pressStart, new Vector2(900, 700), Color.White);
-                spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+                if (gameCount==0)
+                {
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
+                    //spriteBatch.Draw(pressStart, new Vector2(900, 700), Color.White);
+                    spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+                }
+                //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                //spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
+                ////spriteBatch.Draw(pressStart, new Vector2(900, 700), Color.White);
+                //spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
 
+                //spriteBatch.Draw(spriteSheet, position, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             }
-            //if (gameState == GameStates.GameOver.ToString())
-            //{
-            //    spriteBatch.Draw(screenBackground, new Vector2(0, 0), Color.White);
-            //}
+            else if (gameState==GameStates.Countdown.ToString())
+            {
+                spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                if (gameCount == 0)
+                {
+                    if (countdownTimer <= 10 && countdownTimer > 08)
+                    {
+                        spriteBatch.Draw(spriteSheet3, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else if (countdownTimer <= 08 && countdownTimer > 06)
+                    {
+                        spriteBatch.Draw(spriteSheet2, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else if (countdownTimer <= 06 && countdownTimer > 04)
+                    {
+                        spriteBatch.Draw(spriteSheet1, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else if (countdownTimer <= 04 && countdownTimer > 02)
+                    {
+                        spriteBatch.Draw(spriteSheetLaunch, position2, source2, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else
+                    {
+                        gameState = GameStates.InGame.ToString();
+                        isPlayable = true;
+                    }
+                }
+                else
+                {
+                    if (countdownTimer <= 10 && countdownTimer > 08)
+                    {
+                        spriteBatch.Draw(spriteSheetLaunch, position2, source2, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else
+                    {
+                        gameState = GameStates.InGame.ToString();
+                        isPlayable = true;
+                    }
+                }
+                
+                //spriteBatch.Draw(spriteSheet2, position, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                //isPlayable = true;
+            }
             else
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
@@ -413,12 +566,14 @@ namespace RapidP1
                     spriteBatch.Draw(playerWinImages[0], new Vector2(500, 200), Color.White);
                     spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
                     gameState = GameStates.GameOver.ToString();
+                    isPlayable = false;
                 }
                 if (player2Score == 3)
                 {
                     spriteBatch.Draw(playerWinImages[1], new Vector2(500, 200), Color.White);
                     spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
                     gameState = GameStates.GameOver.ToString();
+                    isPlayable = false;
 
                 }
                 //if ((player1Score > 0 && player1Score <3) && (player2Score > 0 && player2Score <3))
@@ -446,6 +601,7 @@ namespace RapidP1
 
         public void restart()
         {
+            soundEffects.Clear();
             Program.shouldRestart = true;
             this.Exit();
         }
@@ -453,6 +609,8 @@ namespace RapidP1
         {
             player1Score = 0;
             player2Score = 0;
+            gameCount = 0;
+            control.resetVariables();
             Program.shouldRestart = true;
             gameState = GameStates.GameStart.ToString();
             this.Exit();
@@ -461,6 +619,7 @@ namespace RapidP1
 
     public enum GameStates
     {
+        Countdown,
         GameStart,
         InGame,
         GameOver
