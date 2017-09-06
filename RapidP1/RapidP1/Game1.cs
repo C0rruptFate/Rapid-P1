@@ -21,7 +21,6 @@ namespace RapidP1
         private Texture2D background;
         private Texture2D startScreen;
         private Texture2D sunAnimationSpriteSheet;
-        private Texture2D twinkleAnimationSpriteSheet;
         bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,7 +35,6 @@ namespace RapidP1
         List<Planet> planets = new List<Planet>();
         List<Planet> p1Planets = new List<Planet>();
         List<Planet> p2Planets = new List<Planet>();
-        List<Twinkle> twinkles = new List<Twinkle>();
         private Texture2D[] playerWinImages = new Texture2D[5];
         Texture2D[] playerScores = new Texture2D[10];
         static int player1Score, player2Score;
@@ -52,8 +50,6 @@ namespace RapidP1
         float countdownTimer = 10;
         const float something = 0.02f;
         static int gameCount = 0;
-        int random = 0;
-
 
         Song backgroundMusic;
         public List<SoundEffect> soundEffects = new List<SoundEffect>();
@@ -135,8 +131,6 @@ namespace RapidP1
             spriteSheet3 = Content.Load<Texture2D>("countdown3");
             spriteSheetLaunch = Content.Load<Texture2D>("countdownLaunch");
             sunAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
-            twinkleAnimationSpriteSheet = Content.Load<Texture2D>("starSheet");
-            //twinkleAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
 
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
@@ -196,11 +190,6 @@ namespace RapidP1
 
             GamePadState state = GamePad.GetState(PlayerIndex.One);
 
-            if (new Random().Next(250) == 0)
-            {
-                twinkles.Add(new Twinkle(twinkleAnimationSpriteSheet, new Random().Next(100 , 1500), new Random().Next(50, 900)));
-            }
-
             if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) && !isPlayable) //up
             {
                 if (gameState == GameStates.GameStart.ToString())
@@ -240,11 +229,6 @@ namespace RapidP1
             else if (isPlayable)
             {
                 control.Update(gameTime);
-
-                foreach (Twinkle twinkle in twinkles)
-                {
-                    twinkle.Update(gameTime);
-                }
 
                 //Collisions between planet and players
                 foreach (Planet planet in planets)
@@ -364,12 +348,6 @@ namespace RapidP1
                 }
             }
 
-            // clean out finished twinkles
-            for (int i = twinkles.Count - 1; i >= 0; i--)
-            {
-                if (twinkles[i].Finished) twinkles.RemoveAt(i);
-            }
-
             //if (countdownTimer >=0)
             //{
             //    countdownTimer--;
@@ -413,7 +391,7 @@ namespace RapidP1
             //        }
             //    spriteBatch.End();
             //    }
-            base.Update(gameTime);
+                base.Update(gameTime);
         }
 
         /// <summary>
@@ -440,7 +418,6 @@ namespace RapidP1
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-
             if (gameState == GameStates.GameStart.ToString())
             {
                 if (gameCount==0)
@@ -612,12 +589,6 @@ namespace RapidP1
                         control.Draw(spriteBatch);
                     else
                         planet.Draw(spriteBatch);
-                }
-
-
-                foreach (Twinkle twinkle in twinkles)
-                {
-                    twinkle.Draw(spriteBatch);
                 }
 
                 control.Draw(spriteBatch);
