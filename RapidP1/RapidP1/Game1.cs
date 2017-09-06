@@ -20,7 +20,7 @@ namespace RapidP1
         private Texture2D planet1;
         private Texture2D background;
         private Texture2D startScreen;
-        private Texture2D playerAnimationSprite;
+        private Texture2D sunAnimationSpriteSheet;
         bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -107,7 +107,7 @@ namespace RapidP1
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            sun = Content.Load<Texture2D>("sunP2");
+            sun = Content.Load<Texture2D>("sunMaskOuter");
             for (int i = 0; i < 4; i++)
             {
                 int k = i + 1;
@@ -129,6 +129,8 @@ namespace RapidP1
             spriteSheet2 = Content.Load<Texture2D>("countdown2");
             spriteSheet3 = Content.Load<Texture2D>("countdown3");
             spriteSheetLaunch = Content.Load<Texture2D>("countdownLaunch");
+            sunAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
+
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
             soundEffects.Add(Content.Load<SoundEffect>("Bounce")); //0
@@ -160,7 +162,7 @@ namespace RapidP1
 
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects, playerAnimationSprite /*,p1Planets, p2Planets*/);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects, sunAnimationSpriteSheet /*,p1Planets, p2Planets*/);
             
 
             // TODO: use this.Content to load your game content here

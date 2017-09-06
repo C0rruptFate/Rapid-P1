@@ -118,17 +118,22 @@ namespace RapidP1
                 //    Exit();
                 //Planet p;
 
+                player1Anim.Update(gameTime);
+                player2Anim.Update(gameTime);
+
                 if (isAlive1)
                 {
                     if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
                     {
                         ball1Pos.Y -= 5;
                         drawRectangle1.Y -= 5;
+                        player1Anim.drawRectangle.Y -= 5;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GameConstants.WindowHeight - 100)) //down
                     {
                         ball1Pos.Y += 5;
                         drawRectangle1.Y += 5;
+                        player1Anim.drawRectangle.Y += 5;
                     }
                     //if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
                     //{
@@ -773,10 +778,18 @@ namespace RapidP1
         public void Draw(SpriteBatch spriteBatch)
         {
             if (isAlive1)
-                spriteBatch.Draw(sunSprite1, ball1Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            {
+                spriteBatch.Draw(sunSprite1, ball1Pos, null, new Color(255, 144, 0), 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+                player1Anim.Draw(spriteBatch);
+            }
+                
 
             if (IsAlive2)
-                spriteBatch.Draw(sunSprite1, ball2Pos, null, Color.White, 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+            {
+                spriteBatch.Draw(sunSprite1, ball2Pos, null, new Color(18, 160, 195), 0f, Vector2.Zero, 0.08f, SpriteEffects.None, 0f);
+                player2Anim.Draw(spriteBatch);
+            }
+                
 
             if (!isAlive2 && isAlive1)
             {
@@ -841,8 +854,8 @@ namespace RapidP1
             drawRectangle1 = new Rectangle((int)sun1Pos.X + 10, (int)sun1Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
             drawRectangle2 = new Rectangle((int)sun2Pos.X + 10, (int)sun2Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
 
-            player1Anim = new SunAnimation(sunAnimation, (int)sun1Pos.X, (int)sun1Pos.Y, new Color(0,0,0));
-            player2Anim = new SunAnimation(sunAnimation, (int)sun2Pos.X, (int)sun2Pos.Y, new Color(0,0,0));
+            player1Anim = new SunAnimation(sunAnimation, (int)sun1Pos.X - 12, (int)sun1Pos.Y - 12, new Color(255,228,175));
+            player2Anim = new SunAnimation(sunAnimation, (int)sun2Pos.X - 12, (int)sun2Pos.Y - 12, new Color(175,228,255));
 
             planets[0] = new Planet(planetSprite[0], ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite[1], ball1Pos + positionOffset[1], 1, true);

@@ -88,7 +88,7 @@ namespace RapidP1
             {
                 // check for advancing animation frame
                 elapsedFrameTime += gameTime.ElapsedGameTime.Milliseconds;
-                if (elapsedFrameTime > 70)
+                if (elapsedFrameTime > 50)
                 {
                     // reset frame timer
                     elapsedFrameTime = 0;
