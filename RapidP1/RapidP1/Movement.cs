@@ -26,6 +26,8 @@ namespace RapidP1
         List<int> countList = new List<int>();
         Rectangle drawRectangle1;
         Rectangle drawRectangle2;
+        SunAnimation player1Anim;
+        SunAnimation player2Anim;
         float[] velocity = new float[10];
         bool isAlive1 = true;
         bool isAlive2 = true;
@@ -818,7 +820,7 @@ namespace RapidP1
             }
         }
 
-        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite, List<SoundEffect> sounds /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
+        public PlayerControl(Vector2 sun1Pos, Vector2 sun2Pos, Vector2[] playerPos, Texture2D sunSprite, Texture2D[] planetSprite, List<Planet> planets, Texture2D[] winSprites, Texture2D winSprite, List<SoundEffect> sounds, Texture2D sunAnimation /*, List<Planet> p1Planets, List<Planet> p2Planets*/)
         {
             ball1Pos = sun1Pos;
             ball2Pos = sun2Pos;
@@ -838,6 +840,9 @@ namespace RapidP1
             //this.p2Planets = p2Planets;
             drawRectangle1 = new Rectangle((int)sun1Pos.X + 10, (int)sun1Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
             drawRectangle2 = new Rectangle((int)sun2Pos.X + 10, (int)sun2Pos.Y + 10, (int)(sunSprite.Width * 0.06f), (int)(sunSprite.Height * 0.06f));
+
+            player1Anim = new SunAnimation(sunAnimation, (int)sun1Pos.X, (int)sun1Pos.Y, new Color(0,0,0));
+            player2Anim = new SunAnimation(sunAnimation, (int)sun2Pos.X, (int)sun2Pos.Y, new Color(0,0,0));
 
             planets[0] = new Planet(planetSprite[0], ball1Pos + positionOffset[0], 1, true);
             planets[1] = new Planet(planetSprite[1], ball1Pos + positionOffset[1], 1, true);

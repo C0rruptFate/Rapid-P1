@@ -20,6 +20,7 @@ namespace RapidP1
         private Texture2D planet1;
         private Texture2D background;
         private Texture2D startScreen;
+        private Texture2D playerAnimationSprite;
         bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -159,7 +160,7 @@ namespace RapidP1
 
             //play = new GamePlay(gameState, startScreen);
 
-            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects  /*,p1Planets, p2Planets*/);
+            control = new PlayerControl(ball1Pos, ball2Pos, planetPos, sun, planet, planets, playerWinImages,win, soundEffects, playerAnimationSprite /*,p1Planets, p2Planets*/);
             
 
             // TODO: use this.Content to load your game content here
