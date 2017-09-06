@@ -188,15 +188,11 @@ namespace RapidP1
 
             if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) && !isPlayable) //up
             {
-                if (gameState == GameStates.GameStart.ToString() || gameState == GameStates.GameOver.ToString())
+                if (gameState == GameStates.GameStart.ToString())
                 {
                     gameState = GameStates.Countdown.ToString();
                     //isPlayable = true;
                 }
-
-            }
-            else if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed))
-            {
                 if (gameState == GameStates.GameOver.ToString())
                 {
                     restart();
@@ -205,7 +201,19 @@ namespace RapidP1
                 {
                     newGame();
                 }
+
             }
+            //else if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed))
+            //{
+            //    if (gameState == GameStates.GameOver.ToString())
+            //    {
+            //        restart();
+            //    }
+            //    if (gameState == GameStates.GameOver.ToString() && (player1Score == 3 || player2Score == 3))
+            //    {
+            //        newGame();
+            //    }
+            //}
             else if (Keyboard.GetState().IsKeyDown(Keys.Escape) || state.Buttons.Back == ButtonState.Pressed)
             {
                 this.Exit();
@@ -236,7 +244,7 @@ namespace RapidP1
 
                         if (planet.Owner != 1 && control.IsAlive1)
                         {
-                            control.IsAlive1 = false;
+                            //control.IsAlive1 = false;
                             if (control.IsAlive2)
                             {
                                 player2Score += 1;
@@ -263,7 +271,7 @@ namespace RapidP1
 
                         if (planet.Owner != 1 && control.IsAlive2)
                         {
-                            control.IsAlive2 = false;
+                            //control.IsAlive2 = false;
                             if (control.IsAlive1)
                             {
                                 player1Score += 1;
@@ -555,12 +563,14 @@ namespace RapidP1
                     spriteBatch.Draw(playerWinImages[0], new Vector2(500, 200), Color.White);
                     spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
                     gameState = GameStates.GameOver.ToString();
+                    isPlayable = false;
                 }
                 if (player2Score == 3)
                 {
                     spriteBatch.Draw(playerWinImages[1], new Vector2(500, 200), Color.White);
                     spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
                     gameState = GameStates.GameOver.ToString();
+                    isPlayable = false;
 
                 }
                 //if ((player1Score > 0 && player1Score <3) && (player2Score > 0 && player2Score <3))
