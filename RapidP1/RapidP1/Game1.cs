@@ -430,30 +430,46 @@ namespace RapidP1
             else if (gameState==GameStates.Countdown.ToString())
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                if (countdownTimer <= 10 && countdownTimer > 08)
+                if (gameCount == 0)
                 {
-                    spriteBatch.Draw(spriteSheet3, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                    countdownTimer -= something;
-                }
-                else if (countdownTimer <= 08 && countdownTimer > 06)
-                {
-                    spriteBatch.Draw(spriteSheet2, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                    countdownTimer -= something;
-                }
-                else if (countdownTimer <= 06 && countdownTimer > 04)
-                {
-                    spriteBatch.Draw(spriteSheet1, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                    countdownTimer -= something;
-                }
-                else if (countdownTimer <= 04 && countdownTimer > 02)
-                {
-                    spriteBatch.Draw(spriteSheetLaunch, position2, source2, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
-                    countdownTimer -= something;
+                    if (countdownTimer <= 10 && countdownTimer > 08)
+                    {
+                        spriteBatch.Draw(spriteSheet3, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else if (countdownTimer <= 08 && countdownTimer > 06)
+                    {
+                        spriteBatch.Draw(spriteSheet2, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else if (countdownTimer <= 06 && countdownTimer > 04)
+                    {
+                        spriteBatch.Draw(spriteSheet1, position1, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else if (countdownTimer <= 04 && countdownTimer > 02)
+                    {
+                        spriteBatch.Draw(spriteSheetLaunch, position2, source2, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else
+                    {
+                        gameState = GameStates.InGame.ToString();
+                        isPlayable = true;
+                    }
                 }
                 else
                 {
-                    gameState = GameStates.InGame.ToString();
-                    isPlayable = true;
+                    if (countdownTimer <= 10 && countdownTimer > 08)
+                    {
+                        spriteBatch.Draw(spriteSheetLaunch, position2, source2, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+                        countdownTimer -= something;
+                    }
+                    else
+                    {
+                        gameState = GameStates.InGame.ToString();
+                        isPlayable = true;
+                    }
                 }
                 
                 //spriteBatch.Draw(spriteSheet2, position, source1, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
