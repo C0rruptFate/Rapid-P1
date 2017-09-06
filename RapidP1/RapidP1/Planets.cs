@@ -86,7 +86,7 @@ namespace RapidP1
             this.sprite = sprite;
             drawRectangle = new Rectangle((int)location.X - sprite.Width/2,             //X-coordinate of the rectangle
                                             (int)location.Y - sprite.Height / 2,        //Y-coordinate of the rectangle
-                                            (int)(sprite.Width*0.2f), (int)(sprite.Height*0.2f));               //Height and Width of rectangle
+                                            (int)(sprite.Width*0.06f), (int)(sprite.Height*0.06f));               //Height and Width of rectangle
             this.location = location;
 
             this.owner = owner;

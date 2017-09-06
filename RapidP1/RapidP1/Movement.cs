@@ -118,11 +118,13 @@ namespace RapidP1
                 //    Exit();
                 //Planet p;
 
-                player1Anim.Update(gameTime);
-                player2Anim.Update(gameTime);
+               
+                
 
                 if (isAlive1)
                 {
+                    player1Anim.Update(gameTime);
+
                     if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
                     {
                         ball1Pos.Y -= 5;
@@ -169,15 +171,19 @@ namespace RapidP1
 
                 if (isAlive2)
                 {
+                    player2Anim.Update(gameTime);
+
                     if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
                     {
                         ball2Pos.Y -= 5;
                         drawRectangle2.Y -= 5;
+                        player2Anim.drawRectangle.Y -= 5;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.NumPad2) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
                     {
                         ball2Pos.Y += 5;
                         drawRectangle2.Y += 5;
+                        player2Anim.drawRectangle.Y += 5;
                     }
                     //if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
                     //{
@@ -365,12 +371,14 @@ namespace RapidP1
                         {
                             ball1Pos.Y += 5;
                             drawRectangle1.Y += 5;
+                            player1Anim.drawRectangle.Y += 5;
                         }
                         //Move Down
                         else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != 0)
                         {
                             ball1Pos.Y -= 5;
                             drawRectangle1.Y -= 5;
+                            player1Anim.drawRectangle.Y -= 5;
                         }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -577,12 +585,14 @@ namespace RapidP1
                         {
                             ball2Pos.Y += 5;
                             drawRectangle2.Y += 5;
+                            player2Anim.drawRectangle.Y += 5;
                         }
                         //Move Down
                         else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != 0)
                         {
                             ball2Pos.Y -= 5;
                             drawRectangle2.Y -= 5;
+                            player2Anim.drawRectangle.Y -= 5;
                         }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -816,15 +826,14 @@ namespace RapidP1
                     {
                         if (planets[k].InOrbit && planets[k].Owner == 1)
                         {
-
-                            spriteBatch.Draw(planetSprite1[k], ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+                            spriteBatch.Draw(planetSprite1[k], ball1Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.06f, SpriteEffects.None, 0f);   
                         }
                     }
                     for (int k = 3; k < 6; k++)
                     {
                         if (planets[k].InOrbit && planets[k].Owner == 2)
                         {
-                            spriteBatch.Draw(planetSprite1[k-3], ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+                            spriteBatch.Draw(planetSprite1[k-3], ball2Pos + positionOffset[k], null, Color.White, 0f, Vector2.Zero, 0.06f, SpriteEffects.None, 0f);
                         }
 
                         //}
