@@ -114,6 +114,7 @@ namespace RapidP1
                 planet[i] = Content.Load<Texture2D>("Button" + k);
                 playerWinImages[i] = Content.Load<Texture2D>("win_player" + k);
             }
+
             for (int i = 0; i < 10; i++)
             {
                 playerScores[i] = Content.Load<Texture2D>("score_" + i);
