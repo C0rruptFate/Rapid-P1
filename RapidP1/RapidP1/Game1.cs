@@ -198,7 +198,15 @@ namespace RapidP1
 
             if (new Random().Next(250) == 0)
             {
-                twinkles.Add(new Twinkle(twinkleAnimationSpriteSheet, new Random().Next(100 , 1500), new Random().Next(50, 900)));
+                twinkles.Add(new Twinkle(twinkleAnimationSpriteSheet, new Random().Next(500 , 1500), new Random().Next(100, 900)));
+            }
+            else if (new Random().Next(200) == 0)
+            {
+                twinkles.Add(new Twinkle(twinkleAnimationSpriteSheet, new Random().Next(100, 500), new Random().Next(600, 900)));
+            }
+            else if (new Random().Next(150) == 0)
+            {
+                twinkles.Add(new Twinkle(twinkleAnimationSpriteSheet, new Random().Next(1400, 1800), new Random().Next(300, 600)));
             }
 
             if (((Keyboard.GetState().IsKeyDown(Keys.Enter)) || state.Buttons.Start == ButtonState.Pressed) && !isPlayable) //up
