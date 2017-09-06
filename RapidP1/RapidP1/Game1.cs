@@ -220,7 +220,7 @@ namespace RapidP1
                 {
                     restart();
                 }
-                if (gameState == GameStates.GameOver.ToString() && (player1Score == 3 || player2Score == 3))
+                if (gameState == GameStates.GameOver.ToString() && (player1Score == 5 || player2Score == 5))
                 {
                     newGame();
                 }
@@ -593,14 +593,14 @@ namespace RapidP1
                 }
                 //spriteBatch.DrawString(spriteFont, player2Score.ToString(), new Vector2(GameConstants.WindowWidth - 100, 0),Color.White);
                 //spriteBatch.DrawString(spriteFont, player1Score.ToString(), Vector2.Zero, Color.White);
-                if (player1Score == 3)
+                if (player1Score == 5)
                 {
                     spriteBatch.Draw(playerWinImages[0], new Vector2(500, 200), Color.White);
                     spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
                     gameState = GameStates.GameOver.ToString();
                     isPlayable = false;
                 }
-                if (player2Score == 3)
+                if (player2Score == 5)
                 {
                     spriteBatch.Draw(playerWinImages[1], new Vector2(500, 200), Color.White);
                     spriteBatch.Draw(win, new Vector2(500, 200), Color.White);
