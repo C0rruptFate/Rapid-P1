@@ -19,6 +19,9 @@ namespace RapidP1
         private Texture2D[] planet = new Texture2D[10];
         private Texture2D planet1;
         private Texture2D background;
+        private Texture2D background1;
+        private Texture2D background2;
+        private Texture2D background3;
         private Texture2D startScreen;
         private Texture2D sunAnimationSpriteSheet;
         private Texture2D twinkleAnimationSpriteSheet;
@@ -53,7 +56,9 @@ namespace RapidP1
         const float something = 0.02f;
         static int gameCount = 0;
         int random = 0;
-
+        private ScrollingBackground myBackground1;
+        private ScrollingBackground myBackground2;
+        private ScrollingBackground myBackground3;
 
         Song backgroundMusic;
         public List<SoundEffect> soundEffects = new List<SoundEffect>();
@@ -112,6 +117,11 @@ namespace RapidP1
             graphics.ApplyChanges();
             spriteBatch = new SpriteBatch(GraphicsDevice);
             sun = Content.Load<Texture2D>("sunMaskOuter");
+
+            myBackground1 = new ScrollingBackground(1);
+            myBackground2 = new ScrollingBackground(1);
+            myBackground3 = new ScrollingBackground(1);
+
             for (int i = 0; i < 4; i++)
             {
                 int k = i + 1;
@@ -126,6 +136,9 @@ namespace RapidP1
             //planet = Content.Load<Texture2D>("planet1");
             planet1 = Content.Load<Texture2D>("planet2");   
             background = Content.Load<Texture2D>("Background");
+            background1 = Content.Load<Texture2D>("Background_1");
+            background2 = Content.Load<Texture2D>("Background_2");
+            background3 = Content.Load<Texture2D>("Background_3");
             startScreen = Content.Load<Texture2D>("logo_solarSlayers");
             win = Content.Load<Texture2D>("win_wins");
             pressStart = Content.Load<Texture2D>("pressStart");
@@ -138,6 +151,10 @@ namespace RapidP1
             twinkleAnimationSpriteSheet = Content.Load<Texture2D>("starSheet");
             controllerMapping = Content.Load<Texture2D>("controller");
             //twinkleAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
+
+            myBackground1.Load(GraphicsDevice,background1);
+            myBackground2.Load(GraphicsDevice, background2);
+            myBackground3.Load(GraphicsDevice, background3);
 
             //Add sounds
             backgroundMusic = Content.Load<Song>("BackgroundMusic");
@@ -196,6 +213,13 @@ namespace RapidP1
             //    Exit();
 
             GamePadState state = GamePad.GetState(PlayerIndex.One);
+
+            // The time since Update was called last.
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            myBackground1.Update(elapsed * 60);
+            myBackground2.Update(elapsed * 30);
+            myBackground3.Update(elapsed * 50);
 
             if (new Random().Next(250) == 0)
             {
@@ -455,7 +479,10 @@ namespace RapidP1
                 if (gameCount==0)
                 {
                     spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
+                    myBackground1.Draw(spriteBatch);
+                    myBackground2.Draw(spriteBatch);
+                    myBackground3.Draw(spriteBatch);
+                    spriteBatch.Draw(startScreen, Vector2.Zero, Color.White);
                     //spriteBatch.Draw(pressStart, new Vector2(900, 700), Color.White);
                     spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
                     spriteBatch.Draw(controllerMapping, new Vector2(500, 800), null, Color.White, 0f, Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
@@ -463,6 +490,9 @@ namespace RapidP1
                 else
                 {
                     spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    myBackground1.Draw(spriteBatch);
+                    myBackground2.Draw(spriteBatch);
+                    myBackground3.Draw(spriteBatch);
                     spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
                 }
                 //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
@@ -475,6 +505,9 @@ namespace RapidP1
             else if (gameState==GameStates.Countdown.ToString())
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                myBackground1.Draw(spriteBatch);
+                myBackground2.Draw(spriteBatch);
+                myBackground3.Draw(spriteBatch);
                 if (gameCount == 0)
                 {
                     if (countdownTimer <= 10 && countdownTimer > 08)
@@ -523,6 +556,9 @@ namespace RapidP1
             else
             {
                 spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                myBackground1.Draw(spriteBatch);
+                myBackground2.Draw(spriteBatch);
+                myBackground3.Draw(spriteBatch);
                 switch (player1Score)
                 {
                     case 1:
