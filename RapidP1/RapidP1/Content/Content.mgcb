@@ -626,3 +626,15 @@
 /processorParam:TextureFormat=Color
 /build:explosionSheet.png
 
+#begin countDownSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:countDownSound.wav
+
+#begin countDownSound1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:countDownSound1.wav
+
