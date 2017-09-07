@@ -25,6 +25,7 @@ namespace RapidP1
         private Texture2D startScreen;
         private Texture2D sunAnimationSpriteSheet;
         private Texture2D twinkleAnimationSpriteSheet;
+        private Texture2D explosionAnimationSpriteSheet;
         bool isPlayable = false;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -40,6 +41,7 @@ namespace RapidP1
         List<Planet> p1Planets = new List<Planet>();
         List<Planet> p2Planets = new List<Planet>();
         List<Twinkle> twinkles = new List<Twinkle>();
+        List<Explosion> explosions = new List<Explosion>();
         private Texture2D[] playerWinImages = new Texture2D[5];
         Texture2D[] playerScores = new Texture2D[10];
         static int player1Score, player2Score;
@@ -155,6 +157,7 @@ namespace RapidP1
             spriteSheetLaunch = Content.Load<Texture2D>("countdownLaunch");
             sunAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
             twinkleAnimationSpriteSheet = Content.Load<Texture2D>("starSheet");
+            explosionAnimationSpriteSheet = Content.Load<Texture2D>("explosionSheet");
             controllerMapping = Content.Load<Texture2D>("controller");
             //twinkleAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
 
@@ -285,6 +288,11 @@ namespace RapidP1
                     twinkle.Update(gameTime);
                 }
 
+                foreach (Explosion explosion in explosions)
+                {
+                    explosion.Update(gameTime);
+                }
+
                 //Collisions between planet and players
                 foreach (Planet planet in planets)
                 {
@@ -309,10 +317,14 @@ namespace RapidP1
                                 player2Score += 1;
                                 gameCount += 1;
                                 p1NextHit = (float)currentGameTime + hitDelay;
+
+                                explosions.Add(new Explosion(explosionAnimationSpriteSheet, (int)control.ball1Pos.X + 40, (int)control.ball1Pos.Y + 40, new Color(255, 228, 175)));
+
                             }
+
                             //player2Score += 1;
                             //Play Audio
-                            //soundEffects[1].Play();
+                            soundEffects[1].Play();
                             gameState = GameStates.GameOver.ToString();
                         }
                     }
@@ -329,7 +341,7 @@ namespace RapidP1
                         planet.Velocity = collsionInfo2.FirstVelocity;
                         planet.DrawRectangle = collsionInfo2.FirstDrawRectangle;
 
-                        if (planet.Owner != 1 && control.IsAlive2 && (float)currentGameTime >= p2NextHit)
+                        if (planet.Owner != 2 && control.IsAlive2 && (float)currentGameTime >= p2NextHit)
                         {
                             //control.IsAlive2 = false;
                             if (control.IsAlive1)
@@ -337,10 +349,12 @@ namespace RapidP1
                                 player1Score += 1;
                                 gameCount += 1;
                                 p2NextHit = (float)currentGameTime + hitDelay;
+
+                                explosions.Add(new Explosion(explosionAnimationSpriteSheet, (int)control.ball2Pos.X + 40, (int)control.ball2Pos.Y + 40, new Color(175, 228, 255)));
                             }
                             //player1Score += 1;
                             //Play Audio
-                            //soundEffects[1].Play();
+                            soundEffects[1].Play();
                             gameState = GameStates.GameOver.ToString();
                         }
                     }
@@ -409,6 +423,12 @@ namespace RapidP1
             for (int i = twinkles.Count - 1; i >= 0; i--)
             {
                 if (twinkles[i].Finished) twinkles.RemoveAt(i);
+            }
+
+            // clean out finished explosions
+            for (int i = explosions.Count - 1; i >= 0; i--)
+            {
+                if (explosions[i].Finished) explosions.RemoveAt(i);
             }
 
             //if (countdownTimer >=0)
@@ -672,6 +692,11 @@ namespace RapidP1
                 foreach (Twinkle twinkle in twinkles)
                 {
                     twinkle.Draw(spriteBatch);
+                }
+
+                foreach (Explosion explosion in explosions)
+                {
+                    explosion.Draw(spriteBatch);
                 }
 
                 control.Draw(spriteBatch);

@@ -10,7 +10,7 @@ namespace RapidP1
     public class PlayerControl
     {
         #region Declarations
-        Vector2 ball1Pos, ball2Pos;
+        public Vector2 ball1Pos, ball2Pos;
         Vector2[] planetPos = new Vector2[20];
         Texture2D sunSprite1, finalWinSprite;
         Texture2D[] planetSprite1 = new Texture2D[10];
