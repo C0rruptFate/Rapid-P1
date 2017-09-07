@@ -15,7 +15,7 @@ namespace RapidP1
     public class Game1 : Game
     {
         #region init
-        private Texture2D sun, win, pressStart;
+        private Texture2D sun, win, pressStart, controllerMapping;
         private Texture2D[] planet = new Texture2D[10];
         private Texture2D planet1;
         private Texture2D background;
@@ -136,6 +136,7 @@ namespace RapidP1
             spriteSheetLaunch = Content.Load<Texture2D>("countdownLaunch");
             sunAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
             twinkleAnimationSpriteSheet = Content.Load<Texture2D>("starSheet");
+            controllerMapping = Content.Load<Texture2D>("controller");
             //twinkleAnimationSpriteSheet = Content.Load<Texture2D>("sunSpriteSheet2");
 
             //Add sounds
@@ -457,6 +458,7 @@ namespace RapidP1
                     spriteBatch.Draw(startScreen, new Vector2(0, 0), Color.White);
                     //spriteBatch.Draw(pressStart, new Vector2(900, 700), Color.White);
                     spriteBatch.Draw(pressStart, new Vector2(900, 700), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(controllerMapping, new Vector2(500, 800), null, Color.White, 0f, Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
                 }
                 else
                 {
