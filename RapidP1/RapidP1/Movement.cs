@@ -34,6 +34,7 @@ namespace RapidP1
         float fireRate = 50f;
         float dashCoolDown = 20f;
         float dashDistance = 30f;
+        int playerMoveSpeed = 10;
 
         double currentGameTime;
         float nextFireP1; //When player 1 can next shoot
@@ -127,15 +128,15 @@ namespace RapidP1
 
                     if ((Keyboard.GetState().IsKeyDown(Keys.W)) && ball1Pos.Y != 0) //up
                     {
-                        ball1Pos.Y -= 5;
-                        drawRectangle1.Y -= 5;
-                        player1Anim.drawRectangle.Y -= 5;
+                        ball1Pos.Y -= playerMoveSpeed;
+                        drawRectangle1.Y -= playerMoveSpeed;
+                        player1Anim.drawRectangle.Y -= playerMoveSpeed;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.S) && ball1Pos.Y != (GameConstants.WindowHeight - 100)) //down
                     {
-                        ball1Pos.Y += 5;
-                        drawRectangle1.Y += 5;
-                        player1Anim.drawRectangle.Y += 5;
+                        ball1Pos.Y += playerMoveSpeed;
+                        drawRectangle1.Y += playerMoveSpeed;
+                        player1Anim.drawRectangle.Y += playerMoveSpeed;
                     }
                     //if (Keyboard.GetState().IsKeyDown(Keys.A) && ball1Pos.X != 0) //left
                     //{
@@ -175,15 +176,15 @@ namespace RapidP1
 
                     if ((Keyboard.GetState().IsKeyDown(Keys.NumPad8)) && ball2Pos.Y != 0) //up
                     {
-                        ball2Pos.Y -= 5;
-                        drawRectangle2.Y -= 5;
-                        player2Anim.drawRectangle.Y -= 5;
+                        ball2Pos.Y -= playerMoveSpeed;
+                        drawRectangle2.Y -= playerMoveSpeed;
+                        player2Anim.drawRectangle.Y -= playerMoveSpeed;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.NumPad2) && ball2Pos.Y != (GameConstants.WindowHeight - 100)) //down
                     {
-                        ball2Pos.Y += 5;
-                        drawRectangle2.Y += 5;
-                        player2Anim.drawRectangle.Y += 5;
+                        ball2Pos.Y += playerMoveSpeed;
+                        drawRectangle2.Y += playerMoveSpeed;
+                        player2Anim.drawRectangle.Y += playerMoveSpeed;
                     }
                     //if (Keyboard.GetState().IsKeyDown(Keys.NumPad4) && ball2Pos.X != 0) //left
                     //{
@@ -367,18 +368,18 @@ namespace RapidP1
                         //else if (state.ThumbSticks.Left.X > 0.5f && ball1Pos.X != (GameConstants.WindowWidth - 100))
                         //    ball1Pos.X += 10.0f;
                         //Move Up
-                        if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100))
+                        if (state.ThumbSticks.Left.Y < -0.5f && ball1Pos.Y != (GameConstants.WindowHeight - 100) && (ball1Pos.Y + playerMoveSpeed) <= (GameConstants.WindowHeight - 100))
                         {
-                            ball1Pos.Y += 5;
-                            drawRectangle1.Y += 5;
-                            player1Anim.drawRectangle.Y += 5;
+                            ball1Pos.Y += playerMoveSpeed;
+                            drawRectangle1.Y += playerMoveSpeed;
+                            player1Anim.drawRectangle.Y += playerMoveSpeed;
                         }
                         //Move Down
-                        else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != 0)
+                        else if (state.ThumbSticks.Left.Y > 0.5f && ball1Pos.Y != 0 && (ball1Pos.Y - playerMoveSpeed) >= 0)
                         {
-                            ball1Pos.Y -= 5;
-                            drawRectangle1.Y -= 5;
-                            player1Anim.drawRectangle.Y -= 5;
+                            ball1Pos.Y -= playerMoveSpeed;
+                            drawRectangle1.Y -= playerMoveSpeed;
+                            player1Anim.drawRectangle.Y -= playerMoveSpeed;
                         }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -457,7 +458,10 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                //soundEffects[2].Play();
+                                if (soundEffects[2] != null)
+                                {
+                                    soundEffects[2].Play();
+                                }
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -496,7 +500,10 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                //soundEffects[2].Play();
+                                if (soundEffects[2] != null)
+                                {
+                                    soundEffects[2].Play();
+                                }
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -535,7 +542,12 @@ namespace RapidP1
                                 //{
                                 //    planetCount1--;
                                 //}
-                                //soundEffects[2].Play();
+
+                                if (soundEffects[2] != null)
+                                {
+                                    soundEffects[2].Play();
+                                }
+                                
                                 nextFireP1 = fireRate + (float)currentGameTime;
                             }
                         }
@@ -580,19 +592,19 @@ namespace RapidP1
                         ////Move Right
                         //else if (state.ThumbSticks.Left.X > 0.5f && ball2Pos.X != (GameConstants.WindowWidth - 100))
                         //    ball2Pos.X += 10.0f;
-                        //Move Up
-                        if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100))
-                        {
-                            ball2Pos.Y += 5;
-                            drawRectangle2.Y += 5;
-                            player2Anim.drawRectangle.Y += 5;
-                        }
                         //Move Down
-                        else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != 0)
+                        if (state.ThumbSticks.Left.Y < -0.5f && ball2Pos.Y != (GameConstants.WindowHeight - 100) && (ball2Pos.Y + playerMoveSpeed) <= (GameConstants.WindowHeight - 100))
                         {
-                            ball2Pos.Y -= 5;
-                            drawRectangle2.Y -= 5;
-                            player2Anim.drawRectangle.Y -= 5;
+                            ball2Pos.Y += playerMoveSpeed;
+                            drawRectangle2.Y += playerMoveSpeed;
+                            player2Anim.drawRectangle.Y += playerMoveSpeed;
+                        }
+                        //Move Up
+                        else if (state.ThumbSticks.Left.Y > 0.5f && ball2Pos.Y != 0 && (ball2Pos.Y - playerMoveSpeed) >= 0)
+                        {
+                            ball2Pos.Y -= playerMoveSpeed;
+                            drawRectangle2.Y -= playerMoveSpeed;
+                            player2Anim.drawRectangle.Y -= playerMoveSpeed;
                         }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -671,7 +683,10 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                //soundEffects[2].Play();
+                                if (soundEffects[2] != null)
+                                {
+                                    soundEffects[2].Play();
+                                }
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -711,7 +726,10 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                //soundEffects[2].Play();
+                                if (soundEffects[2] != null)
+                                {
+                                    soundEffects[2].Play();
+                                }
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
@@ -751,7 +769,10 @@ namespace RapidP1
                                 //{
                                 //    planetCount2--;
                                 //}
-                                //soundEffects[2].Play();
+                                if (soundEffects[2] != null)
+                                {
+                                    soundEffects[2].Play();
+                                }
                                 nextFireP2 = fireRate + (float)currentGameTime;
 
                             }
