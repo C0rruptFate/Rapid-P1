@@ -36,7 +36,7 @@ namespace RapidP1
         float dashDistance = 30f;
         int playerMoveSpeed = 10;
 
-        double currentGameTime;
+        //double currentGameTime;
         float nextFireP1; //When player 1 can next shoot
         float newSpeedP1; //Multiplier for player 1's planets
         bool joyStickRightP1; //Used to track the players right stick movement.
@@ -114,7 +114,7 @@ namespace RapidP1
                 GamePadCapabilities capabilities1 = GamePad.GetCapabilities(PlayerIndex.One);
                 GamePadCapabilities capabilities2 = GamePad.GetCapabilities(PlayerIndex.Two);
                 //currentGameTime = DateTime.Now.Millisecond;
-                currentGameTime++;
+                //currentGameTime++;
                 //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 //    Exit();
                 //Planet p;
@@ -309,7 +309,7 @@ namespace RapidP1
                     }
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFireP1 <= currentGameTime) //p1 shoot
+                if (Keyboard.GetState().IsKeyDown(Keys.Q) && nextFireP1 <= Game1.currentGameTime) //p1 shoot
                     {
                         //for (int i = 0; i < 1; i++)
                         //{
@@ -324,13 +324,13 @@ namespace RapidP1
                                 planetCount1--;
                             }
 
-                            nextFireP1 = fireRate + (float)currentGameTime;
+                            nextFireP1 = fireRate + (float)Game1.currentGameTime;
                         }
                         //}
                         //planetCount++;
                     }
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.NumPad0) && nextFireP2 <= currentGameTime) //p2 shoot
+                    if (Keyboard.GetState().IsKeyDown(Keys.NumPad0) && nextFireP2 <= Game1.currentGameTime) //p2 shoot
                     {
                         if (planets[planetCount2].Owner == 2 && planets[planetCount2].InOrbit)
                         {
@@ -342,7 +342,7 @@ namespace RapidP1
                             {
                                 planetCount2--;
                             }
-                            nextFireP2 = fireRate + (float)currentGameTime;
+                            nextFireP2 = fireRate + (float)Game1.currentGameTime;
 
                         }
                     }
@@ -386,7 +386,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities1.HasLeftTrigger)
                     {
-                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)Game1.currentGameTime >= nextSpeedGainP1)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP1 = newSpeedP1 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP1 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -397,11 +397,11 @@ namespace RapidP1
                             {
                                 newSpeedP1 = minNewSpeed;
                             }
-                            nextSpeedLoseP1 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
-                            nextSpeedGainP1 = speedLose + (float)currentGameTime;
+                            nextSpeedLoseP1 = speedLose + (float)Game1.currentGameTime; //resets the time it takes to tick back down
+                            nextSpeedGainP1 = speedLose + (float)Game1.currentGameTime;
                         }
 
-                        if ((float)currentGameTime >= nextSpeedLoseP1)//Ticks down move speed of planets if you arn't moving the joystick.
+                        if ((float)Game1.currentGameTime >= nextSpeedLoseP1)//Ticks down move speed of planets if you arn't moving the joystick.
                         {
                             newSpeedP1 = newSpeedP1 - speedLoseIncreaseAmount;
                             if (newSpeedP1 >= maxNewSpeed)
@@ -417,7 +417,7 @@ namespace RapidP1
                             {
                                 newSpeedP1 = 0.3f;
                             }
-                            nextSpeedLoseP1 = speedLose + (float)currentGameTime;
+                            nextSpeedLoseP1 = speedLose + (float)Game1.currentGameTime;
                         }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -427,7 +427,7 @@ namespace RapidP1
                     if (capabilities1.HasAButton)
                     {
                         //Shoot
-                        if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                        if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= Game1.currentGameTime)
                         {
                             if (planets[0].Owner == 1 && planets[0].InOrbit)
                             {
@@ -462,14 +462,14 @@ namespace RapidP1
                                 {
                                     soundEffects[2].Play();
                                 }
-                                nextFireP1 = fireRate + (float)currentGameTime;
+                                nextFireP1 = fireRate + (float)Game1.currentGameTime;
                             }
                         }
                     }
                     if (capabilities1.HasBButton)
                     {
                         //Shoot
-                        if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                        if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= Game1.currentGameTime)
                         {
                             if (planets[1].Owner == 1 && planets[1].InOrbit)
                             {
@@ -504,14 +504,14 @@ namespace RapidP1
                                 {
                                     soundEffects[2].Play();
                                 }
-                                nextFireP1 = fireRate + (float)currentGameTime;
+                                nextFireP1 = fireRate + (float)Game1.currentGameTime;
                             }
                         }
                     }
                     if (capabilities1.HasXButton)
                     {
                         //Shoot
-                        if (state.Buttons.X == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                        if (state.Buttons.X == ButtonState.Pressed && nextFireP1 <= Game1.currentGameTime)
                         {
                             if (planets[2].Owner == 1 && planets[2].InOrbit)
                             {
@@ -548,7 +548,7 @@ namespace RapidP1
                                     soundEffects[2].Play();
                                 }
                                 
-                                nextFireP1 = fireRate + (float)currentGameTime;
+                                nextFireP1 = fireRate + (float)Game1.currentGameTime;
                             }
                         }
                     }
@@ -611,7 +611,7 @@ namespace RapidP1
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (capabilities2.HasLeftTrigger)
                     {
-                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
+                        if ((state.Triggers.Left >= 1f || state.Triggers.Right >= 1f || state.Buttons.RightShoulder == ButtonState.Pressed || state.Buttons.LeftShoulder == ButtonState.Pressed) && (float)Game1.currentGameTime >= nextSpeedGainP2)//Tracks the movement of p1's right joystick
                         {
                             newSpeedP2 = newSpeedP2 + speedLoseIncreaseAmount; //increase speed
                             if (newSpeedP2 >= maxNewSpeed) //Makes sure we can't go above the max speed.
@@ -622,11 +622,11 @@ namespace RapidP1
                             {
                                 newSpeedP2 = minNewSpeed;
                             }
-                            nextSpeedLoseP2 = speedLose + (float)currentGameTime; //resets the time it takes to tick back down
-                            nextSpeedGainP2 = speedLose + (float)currentGameTime;
+                            nextSpeedLoseP2 = speedLose + (float)Game1.currentGameTime; //resets the time it takes to tick back down
+                            nextSpeedGainP2 = speedLose + (float)Game1.currentGameTime;
                         }
 
-                        if ((float)currentGameTime >= nextSpeedLoseP2)//Ticks down move speed of planets if you arn't moving the joystick.
+                        if ((float)Game1.currentGameTime >= nextSpeedLoseP2)//Ticks down move speed of planets if you arn't moving the joystick.
                         {
                             newSpeedP2 = newSpeedP2 - speedLoseIncreaseAmount;
                             if (newSpeedP2 >= maxNewSpeed)
@@ -642,7 +642,7 @@ namespace RapidP1
                             {
                                 newSpeedP2 = 0.3f;
                             }
-                            nextSpeedLoseP2 = speedLose + (float)currentGameTime;
+                            nextSpeedLoseP2 = speedLose + (float)Game1.currentGameTime;
                         }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -652,7 +652,7 @@ namespace RapidP1
                     if (capabilities2.HasAButton)
                     {
                         //Shoot
-                        if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                        if (state.Buttons.A == ButtonState.Pressed && nextFireP1 <= Game1.currentGameTime)
                         {
                             if (planets[3].Owner == 2 && planets[3].InOrbit)
                             {
@@ -687,7 +687,7 @@ namespace RapidP1
                                 {
                                     soundEffects[2].Play();
                                 }
-                                nextFireP2 = fireRate + (float)currentGameTime;
+                                nextFireP2 = fireRate + (float)Game1.currentGameTime;
 
                             }
                         }
@@ -695,7 +695,7 @@ namespace RapidP1
                     if (capabilities2.HasBButton)
                     {
                         //Shoot
-                        if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= currentGameTime)
+                        if (state.Buttons.B == ButtonState.Pressed && nextFireP1 <= Game1.currentGameTime)
                         {
                             if (planets[4].Owner == 2 && planets[4].InOrbit)
                             {
@@ -730,7 +730,7 @@ namespace RapidP1
                                 {
                                     soundEffects[2].Play();
                                 }
-                                nextFireP2 = fireRate + (float)currentGameTime;
+                                nextFireP2 = fireRate + (float)Game1.currentGameTime;
 
                             }
                         }
@@ -738,7 +738,7 @@ namespace RapidP1
                     if (capabilities2.HasXButton)
                     {
                         //Shoot
-                        if (state.Buttons.X == ButtonState.Pressed && nextFireP2 <= currentGameTime)
+                        if (state.Buttons.X == ButtonState.Pressed && nextFireP2 <= Game1.currentGameTime)
                         {
                             if (planets[5].Owner == 2 && planets[5].InOrbit)
                             {
@@ -773,7 +773,7 @@ namespace RapidP1
                                 {
                                     soundEffects[2].Play();
                                 }
-                                nextFireP2 = fireRate + (float)currentGameTime;
+                                nextFireP2 = fireRate + (float)Game1.currentGameTime;
 
                             }
                         }

@@ -60,6 +60,12 @@ namespace RapidP1
         private ScrollingBackground myBackground2;
         private ScrollingBackground myBackground3;
 
+        float hitDelay = 50f;
+        float p1NextHit;
+        float p2NextHit;
+
+        public static double currentGameTime;
+
         Song backgroundMusic;
         public List<SoundEffect> soundEffects = new List<SoundEffect>();
 
@@ -211,7 +217,7 @@ namespace RapidP1
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
-
+            currentGameTime++;
             GamePadState state = GamePad.GetState(PlayerIndex.One);
 
             // The time since Update was called last.
@@ -290,18 +296,19 @@ namespace RapidP1
                                                               Vector2.Zero, control.DrawRectangle1
                                                               );
 
-                    if (collsionInfo1 != null)
+                    if (collsionInfo1 != null )
                     {
                         planet.Velocity = collsionInfo1.FirstVelocity;
                         planet.DrawRectangle = collsionInfo1.FirstDrawRectangle;
 
-                        if (planet.Owner != 1 && control.IsAlive1)
+                        if (planet.Owner != 1 && control.IsAlive1 && (float)currentGameTime >= p1NextHit)
                         {
                             //control.IsAlive1 = false;
                             if (control.IsAlive2)
                             {
                                 player2Score += 1;
                                 gameCount += 1;
+                                p1NextHit = (float)currentGameTime + hitDelay;
                             }
                             //player2Score += 1;
                             //Play Audio
@@ -322,13 +329,14 @@ namespace RapidP1
                         planet.Velocity = collsionInfo2.FirstVelocity;
                         planet.DrawRectangle = collsionInfo2.FirstDrawRectangle;
 
-                        if (planet.Owner != 1 && control.IsAlive2)
+                        if (planet.Owner != 1 && control.IsAlive2 && (float)currentGameTime >= p2NextHit)
                         {
                             //control.IsAlive2 = false;
                             if (control.IsAlive1)
                             {
                                 player1Score += 1;
                                 gameCount += 1;
+                                p2NextHit = (float)currentGameTime + hitDelay;
                             }
                             //player1Score += 1;
                             //Play Audio
