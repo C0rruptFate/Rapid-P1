@@ -250,13 +250,9 @@ namespace RapidP1
                     gameState = GameStates.Countdown.ToString();
                     //isPlayable = true;
                 }
-                if (gameState == GameStates.GameOver.ToString())
-                {
-                    restart();
-                }
                 if (gameState == GameStates.GameOver.ToString() && (player1Score == 5 || player2Score == 5))
                 {
-                    newGame();
+                    this.Exit();
                 }
 
             }
@@ -708,22 +704,22 @@ namespace RapidP1
             base.Draw(gameTime);
         }
 
-        public void restart()
-        {
-            soundEffects.Clear();
-            Program.shouldRestart = true;
-            this.Exit();
-        }
-        public void newGame()
-        {
-            player1Score = 0;
-            player2Score = 0;
-            gameCount = 0;
-            control.resetVariables();
-            Program.shouldRestart = true;
-            gameState = GameStates.GameStart.ToString();
-            this.Exit();
-        }
+        //public void restart()
+        //{
+        //    soundEffects.Clear();
+        //    Program.shouldRestart = true;
+        //    this.Exit();
+        //}
+        //public void newGame()
+        //{
+        //    player1Score = 0;
+        //    player2Score = 0;
+        //    gameCount = 0;
+        //    control.resetVariables();
+        //    Program.shouldRestart = true;
+        //    gameState = GameStates.GameStart.ToString();
+        //    this.Exit();
+        //}
     }
 
     public enum GameStates
