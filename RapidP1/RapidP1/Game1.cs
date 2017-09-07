@@ -69,7 +69,7 @@ namespace RapidP1
         public static double currentGameTime;
 
         Song backgroundMusic;
-        public List<SoundEffect> soundEffects = new List<SoundEffect>();
+        public static List<SoundEffect> soundEffects = new List<SoundEffect>();
 
         #endregion
 
